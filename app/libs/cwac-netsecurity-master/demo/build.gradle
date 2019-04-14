@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
+}
+
+dependencies {
+    implementation "com.squareup.picasso:picasso:2.5.2"
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+    implementation "com.squareup.okhttp3:okhttp:3.9.0"
+    debugImplementation project(":netsecurity-netcipher")
+    releaseImplementation "com.commonsware.cwac:netsecurity-netcipher:0.4.4"
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 26
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}

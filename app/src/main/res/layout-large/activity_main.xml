@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/simpleGridView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></include>
+
+    <GridView
+        android:id="@+id/simpleGridView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:footerDividersEnabled="false"
+        android:listSelector="@drawable/selector"
+        android:numColumns="2"
+        android:padding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintBottom_toTopOf="@+id/cardN"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/simpleGridView"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+
+            android:layoutDirection="locale"
+            app:itemBackground="@color/SecondaryLight"
+            app:itemIconTint="@color/colorAccent"
+            app:itemTextColor="@color/colorAccent"
+            app:menu="@menu/bottom_nav_item"
+            />
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>
