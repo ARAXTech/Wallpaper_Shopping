@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
         import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import Ui.DimensionUtils;
 import com.example.qhs.deydigital.R;
+import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONArray;
@@ -29,8 +30,8 @@ import Model.ListItem;
 
 public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
-    private Context context;
-    private List<ListItem> listItems;
+    public static Context context;
+    public static List<ListItem> listItems;
 
 
     public  RecyclerAdapter(  Context context, List listitem){
@@ -66,63 +67,23 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
 
         String temp = item.getImgLink();
 
-        temp = temp.replace("https", "http");
+      //  temp = temp.replace("https", "http");
 
         //Glide.get(context).clearMemory();
-        Log.d("glide",item.getImgLink().toString());
-        Glide.with(context)
+//        Glide.with(context)
+//                .load(temp)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                //.skipMemoryCache(true)
+//                //.signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+//                .thumbnail(0.5f)
+//                //.crossFade()
+//                //.diskCacheStrategy(DiskCacheStrategy.ALL)
+//             //   .override(400,200)
+//                .into(holder.imgR);
+
+        Picasso.with(context)
                 .load(temp)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                //.skipMemoryCache(true)
-                //.signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
-                .thumbnail(0.5f)
-                //.crossFade()
-                //.diskCacheStrategy(DiskCacheStrategy.ALL)
-                ///.override(400,200)
                 .into(holder.imgR);
-
-
-
-       //   Picasso.with(context)
-        //    .load(temp).placeholder(R.drawable.ic_launcher_background)
-          //.resize(700,500)
-
-        //  .into(holder.imgR);
-
-        /*Picasso.with(context)
-                .load(item.getImgLink())
-                .networkPolicy(NetworkPolicy.OFFLINE)
-               .into(holder.imgR, new Callback() {
-                    @Override
-                   public void onSuccess() {
-                        //..image loaded from cache
-                    }
-
-                    @Override
-                    public void onError() {
-                        //Try again online if cache failed
-                        Picasso.with(context)
-                                .load(item.getImgLink())
-                                .error(R.drawable.ic_launcher_background)
-                                .into(holder.imgR, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        //... image loaded from online
-                                    }
-
-
-@Override
-                                    public void onError() {
-                                        Log.v("Picasso","Could not fetch image");
-                                    }
-                                });
-                    }
-                });*/
-        /*Glide
-                .with( context )
-                .load( item.getImgLink() )
-               // .skipMemoryCache( true )
-                .into( holder.imgR );*/
 
     }
 
@@ -139,7 +100,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imgR;
         //public TextView txtdescriptionR;
@@ -154,15 +115,13 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         public ViewHolder(View itemView) {
             super(itemView);
 
-            GridLayoutManager.LayoutParams layoutParams = new
-                    GridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-
-            float margin = DimensionUtils.convertDpToPixel(0, context);
-            layoutParams.setMargins((int) margin, (int) margin, (int) margin,
-                    (int) margin);
-
-            itemView.setLayoutParams(layoutParams);
+//            GridLayoutManager.LayoutParams layoutParams = new
+//                    GridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.MATCH_PARENT);
+//            float margin = DimensionUtils.convertDpToPixel(5,context);
+//            layoutParams.setMargins((int) margin, (int) margin, (int) margin,
+//                    (int) margin);
+//            itemView.setLayoutParams(layoutParams);
 
 
             imgR=itemView.findViewById(R.id.imgR);
@@ -190,8 +149,8 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                                String temp = item.getImage_json().getJSONObject(i).getString("src");
 
                                temp = temp.replace("https", "http");
-
-                               item.setImg_src(temp);
+                             Log.d("Temppp",temp);
+                                 item.setImg_src(temp);
 
 
                            } catch (JSONException e) {

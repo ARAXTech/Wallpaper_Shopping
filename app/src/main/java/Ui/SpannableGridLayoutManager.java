@@ -619,5 +619,4 @@ public class SpannableGridLayoutManager extends RecyclerView.LayoutManager {
                 }
             }
         }
-        throw new IllegalArgumentException("Could not parse aspect ratio: '" + aspect + "'");
-    }}
+        throw new IllegalArgumentException("Could not parse aspect ratio: '" + aspect + "'");}}

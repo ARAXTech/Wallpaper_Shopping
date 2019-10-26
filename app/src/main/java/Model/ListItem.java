@@ -10,13 +10,83 @@ import java.util.List;
 
 public class ListItem {
 
-    String imgLink;
+
+
+    int id1;
+    public ArrayList<String> img_src;
     String description;
     String name;
     String id;
-    List<JSONArray> image_series;
+    String favorite;
+    String imgLink;
+    int price;
+    int count;
+
+    int num_link;
     JSONArray image_json;
-    public ArrayList<String> img_src;
+    List<JSONArray> image_series;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+
+
+    public int getNum_link() {
+        return num_link;
+    }
+
+    public void setNum_link(int num_link) {
+        this.num_link = num_link;
+    }
+
+
+
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
+
+    public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count) {
+        this.id=id;
+        this.imgLink=imgLink;
+        this.description = description;
+        this.name = name;
+        this.favorite=favorite;
+        this.num_link=num_link;
+        this.price=price;
+        this.count=count;
+    }
+
+    public ListItem() {
+
+    }
+
+
+    public int getId1() {
+        return id1;
+    }
+
+    public void setId1(int id1) {
+        this.id1 = id1;
+    }
 
 
     public String getName() {
@@ -30,12 +100,10 @@ public class ListItem {
     public String getId() {
         return id;
     }
-
-    public void setId(String id) {
+    public void setId(String id)
+    {
         this.id = id;
     }
-
-
     public List<JSONArray> getImage_series() {
         return image_series;
     }
@@ -58,7 +126,9 @@ public class ListItem {
     public List<String> getImg_src() {
         return img_src;
     }
-
+    public void setImg_src(ArrayList <String> img_src) {
+        this.img_src = img_src;
+    }
     public void setImg_src(String src) {
         this.img_src.add(src);
     }
@@ -84,17 +154,6 @@ public class ListItem {
         this.description = description;
     }
 
-    /* public void setImage_series( List image_series_item){
-
-         for(int i = 0; i < image_series_item.size(); i++)
-             this.image_series.set(i,image_series_item.get(i));
-
-     }
-     public List getImage_series(){
-
-         return this.image_series;
-     }
- */
     public JSONArray getImage_json() {
         return image_json;
     }

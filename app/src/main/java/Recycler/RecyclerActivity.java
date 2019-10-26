@@ -1,5 +1,6 @@
 package Recycler;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -10,74 +11,83 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.qhs.deydigital.AuthHelper;
+import com.example.qhs.deydigital.LoginActivity;
 import com.example.qhs.deydigital.MainActivity;
 import com.example.qhs.deydigital.R;
-import Ui.SpannableGridLayoutManager;
+import com.example.qhs.deydigital.UIElement;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
+
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
+
 
 import About.AboutUs;
 import Model.ListItem;
 import Model.RecyclerHorizentalItem;
+import Ui.SpannableGridLayoutManager;
+
 
 import static com.android.volley.toolbox.Volley.newRequestQueue;
 
 public class RecyclerActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private List<ListItem> listItems;
+    public RecyclerView recyclerView;
+    public RecyclerAdapter adapter;
+    public List<ListItem> listItems;
     private List<JSONArray> imageList;
-    //Json parametr
-    private final static String URL_products = "https://deydigital.ir/wc-api/v3/products?filter[limit] =-1";
-    private final static String URL_category = "https://deydigital.ir/wc-api/v3/products?filter[categories]=";
+    // okhttp request
+    private ProgressDialog mProgressDialog;
+    //log in
+    private AuthHelper mAuthHelper;
+    private Menu mOptionsMenu;
+    private Button profileBtn;
+
+    //com.example.qhs.deydigital.Json parametr
+    private final static String URL_products = "https://mobifytech.ir/wc-api/v3/products?filter[limit] =-1";
+    private final static String URL_category = "https://mobifytech.ir/wc-api/v3/products?filter[categories]=";
     private static String URL;
-    private final static String URL_category_product = "https://deydigital.ir/wp-json/wc/v1/products?category=";
+    private final static String URL_category_product = "http://mobifytech.ir/wp-json/wc/v3/products?category=";
     private static String category_id;
     private final static String per_page = "&per_page=";
     private final static String per_page_number = "100";
@@ -95,8 +105,9 @@ public class RecyclerActivity extends AppCompatActivity {
     private List<RecyclerHorizentalItem> HorizentalItems = new ArrayList<>();
 
     public ProgressBar pgsBar;
-    public Context context;
+   // public Context context;
     public String URL_complete;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,116 +115,61 @@ public class RecyclerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recycler);
 
 
-//Toolbar
+        queue = newRequestQueue(this);
+        //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        final Typeface face = Typeface.createFromAsset(getAssets(), "fonts/homa.ttf");
-        TextView txtView_title = (TextView) findViewById(R.id.txtTitle);
-        txtView_title.setTypeface(face);
-
+        UIElement cls = new UIElement(RecyclerActivity.this,this);
+        cls.FontMethod();
+        //add back button in toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
-        // NukeSSLCerts.nuke();
-
-        hurlStack = new HurlStack() {
-            @Override
-            protected HttpURLConnection createConnection(java.net.URL url)
-                    throws IOException {
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) super
-                        .createConnection(url);
-                try {
-                    httpsURLConnection
-                            .setSSLSocketFactory(getSSLSocketFactory(getApplicationContext()));
-                    //httpsURLConnection.setHostnameVerifier(getHostnameVerifier());
-                    //Log.d("HostnameVerifier****", getHostnameVerifier().toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return httpsURLConnection;
-            }
-        };
-
-        queue = newRequestQueue(this, hurlStack);
-
         //Navigation
+        UIElement cls1 = new UIElement(RecyclerActivity.this,this);
+        cls1.NavigationMethod();
 
-        BottomNavigationView bottomNavigation =
-                (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
-        for (int i = 0; i < menuView.getChildCount(); i++) {
-            final View iconView = menuView.getChildAt(i).findViewById(android.support.design.R.id.icon);
-            final ViewGroup.LayoutParams layoutParams = iconView.getLayoutParams();
-            final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_LARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_SMALL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-            }
-            iconView.setLayoutParams(layoutParams);
-        }
-        ;
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        //Profile
+        profileBtn=(Button) findViewById(R.id.ProfileBtn);
+        mProgressDialog = new ProgressDialog(this);
+        mAuthHelper = AuthHelper.getInstance(this);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                handleBottomNavigationItemSelected(item);
-                return true;
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
             }
         });
-        //
-        /*int logos[] = {R.drawable.logo1, R.drawable.logo2, R.drawable.logo3, R.drawable.logo4,
-                R.drawable.logo5, R.drawable.logo6, R.drawable.logo7, R.drawable.logo8,
-                R.drawable.logo9,R.drawable.logo10,R.drawable.logo11 };
-        String txt[]={"پوستردیواری","اتاق","پشت Tv","گل تزئینی","فضاهای ایستاده","هنری","طبیعت",
-                "اماکن و ساختمان ها","سه بعدی","پوسترسقفی","نمونه های اجرا شده"};*/
+        if (mAuthHelper.isLoggedIn()) {
+            Log.d("USERNAME: ", "isloggedin");
+            profileBtn.setVisibility(View.GONE);
+            // setupView();
+        } else {
+
+            //  finish();
+        }
+
+        //Horizental RecyclerView
+        //image for horizental com.example.qhs.deydigital.Recycler
         int logos[] = {
-                R.drawable.logo1, R.drawable.logo2, R.drawable.logo3, R.drawable.logo4,
-                R.drawable.logo5, R.drawable.logo6, R.drawable.logo7, R.drawable.logo8,
-                R.drawable.logo9, R.drawable.logo10, R.drawable.logo11, R.drawable.logo12,
-                R.drawable.logo13};
-        //String txt[]={"پوستردیواری","اتاق","پشت Tv","گل تزئینی","فضاهای ایستاده","هنری","طبیعت","اماکن و ساختمان ها",
-        //    "سه بعدی","پوسترسقفی","نمونه های اجرا شده"};
-        String txt[] = {
+                R.drawable.logo1, R.drawable.logo12, R.drawable.logo3, R.drawable.logo6,
+                R.drawable.logo8,R.drawable.logo5};
+        //text for horizental com.example.qhs.deydigital.Recycler
+        String txt[]={
                 "سالن پذیرایی",
-                "اتاق",
-                "پشت Tv",
-                "گل تزئینی",
-                "فضاهای ایستاده",
-                "هنری",
-                "طبیعت",
-                "اماکن",
-                "سه بعدی",
-                "پوسترسقفی",
-                "نمونه های اجرا شده",
                 "اتاق کودک",
-                "وسیله نقلیه"};
+                "پشت Tv",
+                "اتاق خواب",
+                "سه بعدی",
+                "هنری",
+        };
 
         recyclerViewHorizental = (RecyclerView) findViewById(R.id.reciclerViewHorizental);
 
@@ -247,20 +203,18 @@ public class RecyclerActivity extends AppCompatActivity {
             category_id = extras.getString("key");
         }
 
-        URL = URL_category_product + category_id + per_page;
-        Log.d("URL:", URL);
-
         imageList = new ArrayList<JSONArray>();
         image_series_json = new JSONArray();
 
-        ///Recycler
+        ///com.example.qhs.deydigital.Recycler
         recyclerView = (RecyclerView) findViewById(R.id.reciclerViewID);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         //********************
         SpannableGridLayoutManager gridLayoutManager = new
                 SpannableGridLayoutManager(new SpannableGridLayoutManager.GridSpanLookup() {
             @Override
-            public SpannableGridLayoutManager.SpanInfo getSpanInfo(int position) {
+            public SpannableGridLayoutManager.SpanInfo getSpanInfo(int position)
+            {
                 if (position == 0) {
                     return new SpannableGridLayoutManager.SpanInfo(2, 2);
                     //this will count of row and column you want to replace
@@ -270,20 +224,21 @@ public class RecyclerActivity extends AppCompatActivity {
             }
         }, 3, 1f); // 3 is the number of coloumn , how nay to display is 1f
 
-        //*******************
         recyclerView.setLayoutManager(gridLayoutManager);
+
+        //*******************
+     // recyclerView.setLayoutManager( new GridLayoutManager(this,3));
         // SnapHelper snapHelper = new PagerSnapHelper();
-        //   snapHelper.attachToRecyclerView(recyclerView);
+          // snapHelper.attachToRecyclerView(recyclerView);
         listItems = new ArrayList<>();
-
-        final Context context = this;
-
-        //
-        //adapter=new RecyclerAdapter( this,listItems, image_series_json);
         adapter = new RecyclerAdapter(this, listItems);
         recyclerView.setAdapter(adapter);
-        //
-        category_Response_edited(URL);
+
+        try {
+            category_Response_edited(URL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         // newMyResponse(URL_products);
         pgsBar = (ProgressBar) findViewById(R.id.pBar);
 
@@ -310,192 +265,159 @@ public class RecyclerActivity extends AppCompatActivity {
         };
     }
 
-    public void category_Response_edited(String url) {
 
+    private void dismissDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    public void category_Response_edited(String url) throws MalformedURLException {
+
+        imageList.clear();
         Bundle extras = getIntent().getExtras();
         String count_string = extras.getString("count");
-        int count_int = Integer.valueOf(count_string);
+        String key_string = extras.getString("key");
+//        int count_int = Integer.valueOf(count_string);
 
+        String url_jwt = URL_category_product + key_string;
 
         JsonArrayRequest jsonArrayRequest;
-        String offset_number_e = offset_number;
-        String per_page_number_e = per_page_number;
 
-        int page_number = 1;
-        //count_int = 100;
+        jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url_jwt, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
 
-        for (int j = 0; j < (count_int / 100) + 1; j++) {
+                    //JSONArray products = response.getJSONArray();
+                    for (int i = 0; i < response.length(); i++) {
 
-          /*  if( j == count_int / 100 ){
-                if( response_number == 100)
-                    j = j-1;
-            }*/
-            //String URL_complete = url + per_page_number_e + offset + offset_number_e;
-            URL_complete = url + per_page_number_e + "&page=" + String.valueOf(page_number++);
-
-            offset_number_e = per_page_number_e + offset_number_e;
-            per_page_number_e = "100";
-
-            // Log.d("j",String.valueOf(j));
-            // iteration_number=j;
-            //URL myURL = new URL(URL_complete);
+                        response_number = response.length();
 
 
-            jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
-                    URL_complete, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    try {
+                        image_series_json = response.getJSONObject(i).getJSONArray("images");
+                        //viewDialog.hideDialog();
 
-                        //JSONArray products = response.getJSONArray();
-                        for (int i = 0; i < response.length(); i++) {
+                        //Log.d("j**response number",String.valueOf(iteration_number) + "***"+String.valueOf(response_number) );
+                        //get image urls and save in arraylist
+                        imageList.add(image_series_json);
 
-                            response_number = response.length();
+                        Log.d("response*****", response.getJSONObject(i).getString("name"));
+                        ListItem item = new ListItem(
+                                response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
+                                response.getJSONObject(i).getString("name"),
+                                /*image_series_json*/
+                                response.getJSONObject(i).getString("id"),
+                                response.getJSONObject(i).getString("short_description"),
+                                response.getJSONObject(i).getJSONArray("images"),
+                                new ArrayList()
+                        );
 
 
-                            image_series_json = response.getJSONObject(i).getJSONArray("images");
-                            //viewDialog.hideDialog();
-
-                            //Log.d("j**response number",String.valueOf(iteration_number) + "***"+String.valueOf(response_number) );
-                            //get image urls and save in arraylist
-                            imageList.add(image_series_json);
-
-                            Log.d("response*****", response.getJSONObject(i).getString("name"));
-                            ListItem item = new ListItem(
-                                    response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
-                                    response.getJSONObject(i).getString("name"),
-                                    /*image_series_json*/
-                                    response.getJSONObject(i).getString("id"),
-                                    response.getJSONObject(i).getString("short_description"),
-                                    response.getJSONObject(i).getJSONArray("images"),
-                                    new ArrayList()
-                            );
-
-                            for (int u = 0; u < response.getJSONObject(i).getJSONArray("images").length(); u++) {
-                                Log.d("imgsrc***", response.getJSONObject(i).getJSONArray("images").getJSONObject(u).getString("src"));
-                            }
-
-                            listItems.add(item);
-                            adapter.notifyDataSetChanged();
-                            pgsBar.setVisibility(view.GONE);
+                        for (int u = 0; u < response.getJSONObject(i).getJSONArray("images").length(); u++) {
+                            Log.d("imgsrc***", response.getJSONObject(i).getJSONArray("images").getJSONObject(u).getString("src"));
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+
+                        listItems.add(item);
+                        adapter.notifyDataSetChanged();
+                        pgsBar.setVisibility(view.GONE);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d("Error:", error.getMessage());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //VolleyLog.d("Error:", error.getMessage());
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Log.e("NoConnectionError", error.getMessage());
+                } else if (error instanceof AuthFailureError) {
+                    Log.e("AuthFailureError", error.getMessage());
+                } else if (error instanceof ServerError) {
+                    Log.e("ServerError", error.getMessage());
+                } else if (error instanceof NetworkError) {
+                    Log.e("NetworkError", error.getMessage());
+                } else if (error instanceof ParseError) {
+                    Log.e("ParseError", error.getMessage());
                 }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    String creds = String.format("%s:%s", "ck_f3a763d40a0444805b94290bca9390353118c29f", "cs_f0aeb4bdc3fe204e8591a12fa9270caabef2a1f9");
-                    String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
-                    auth.replace("\n", "");
-                    params.put("Authorization", auth);
-                    return params;
-                }
-            };
+            }
+        }){
+
+            //This is for Headers If You Needed
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                //params.put("Content-Type", "application/x-www-form-urlencoded");
+
+              //  String access_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTcxNTU5MTAxLCJuYmYiOjE1NzE1NTkxMDEsImV4cCI6MTU3MjE2MzkwMSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.9Cgl5ZrBMV_MZ-ojZWjlguxHwqT0IuB0MiMCSxIJX2k";
+               // String creds = String.format("%s", access_token);
+
+                // params.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTY3NTg4MDczLCJuYmYiOjE1Njc1ODgwNzMsImV4cCI6MTU2ODE5Mjg3MywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.pP2G2lZJys5USenPHpvKxhy5ugH1xxWCDX2tSAikwfw");
+
+                params.put("Authorization", "Bearer " + mAuthHelper.getIdToken());
+                //params.replace("\n", "");
+                return params;
+            }
+        };
 
 
-            jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(1000000000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(1000000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-            //requests.add(jsonArrayRequest);
-            queue.add(jsonArrayRequest);
+        //requests.add(jsonArrayRequest);
+        queue.add(jsonArrayRequest);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_signout){
+            mAuthHelper.clear();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            // profileBtn.setVisibility(View.VISIBLE );
+            //finish();
         }
-
-
+        return super.onOptionsItemSelected(item);
     }
 
-    public SSLSocketFactory getSSLSocketFactory(Context context)
-            throws CertificateException, KeyStoreException, IOException,
-            NoSuchAlgorithmException, KeyManagementException {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-// the certificate file will be stored in \app\src\main\res\raw folder path
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        InputStream caInput = context.getResources().openRawResource(R.raw.server2);
-
-        Certificate ca = cf.generateCertificate(caInput);
-        caInput.close();
-
-        KeyStore keyStore = KeyStore.getInstance("BKS");
-
-        keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", ca);
-
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-        tmf.init(keyStore);
-
-        TrustManager[] wrappedTrustManagers = getWrappedTrustManagers(tmf.getTrustManagers());
-
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, wrappedTrustManagers, null);
-
-        return sslContext.getSocketFactory();
+        getMenuInflater().inflate(R.menu.signout_menu, menu);
+        mOptionsMenu = menu;
+        return super.onCreateOptionsMenu(mOptionsMenu);
     }
 
-    private TrustManager[] getWrappedTrustManagers(TrustManager[] trustManagers) {
-
-        final X509TrustManager originalTrustManager = (X509TrustManager) trustManagers[0];
-
-        return new TrustManager[]{new X509TrustManager() {
-            public X509Certificate[] getAcceptedIssuers() {
-                return originalTrustManager.getAcceptedIssuers();
-            }
-
-            public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                try {
-                    if (certs != null && certs.length > 0) {
-                        certs[0].checkValidity();
-                    } else {
-                        originalTrustManager
-                                .checkClientTrusted(certs, authType);
-                    }
-                } catch (CertificateException e) {
-                    Log.w("checkClientTrusted", e.toString());
-                }
-            }
-
-            public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                try {
-                    if (certs != null && certs.length > 0) {
-                        certs[0].checkValidity();
-                    } else {
-                        originalTrustManager
-                                .checkServerTrusted(certs, authType);
-                    }
-                } catch (CertificateException e) {
-                    Log.w("checkServerTrusted", e.toString());
-                }
-            }
-        }};
-    }
-
-    private void handleBottomNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.Home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.AboutUs:
-                Intent intent1 = new Intent(this, AboutUs.class);
-                startActivity(intent1); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.Search:
-                Intent intent2 = new Intent(this, Search.class);
-                startActivity(intent2); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem register = menu.findItem(R.id.action_signout);
+        //register.setVisible(false);
+        if(mAuthHelper.isLoggedIn())
+        {
+            register.setVisible(true);
         }
+        else
+        {
+            register.setVisible(false);
+        }
+        //invalidateOptionsMenu();
+        return true;
+    }
+    private void updateOptionsMenu() {
+        if (mOptionsMenu != null) {
+            onPrepareOptionsMenu(mOptionsMenu);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        updateOptionsMenu();
+        super.onConfigurationChanged(newConfig);
     }
 
 }

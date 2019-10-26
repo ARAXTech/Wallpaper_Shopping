@@ -31,15 +31,11 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         //Toolbar
-       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
-       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");
-        TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
-        txtView_title.setTypeface(face);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        UIElement cls = new UIElement(SecondActivity.this,this);
+        cls.FontMethod();
+        //add back button in toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,56 +46,15 @@ public class SecondActivity extends AppCompatActivity {
         });
 
         //Navigation
-        BottomNavigationView bottomNavigation =
-                (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
-        for (int i = 0; i < menuView.getChildCount(); i++) {
-            final View iconView = menuView.getChildAt(i).findViewById(android.support.design.R.id.icon);
-            final ViewGroup.LayoutParams layoutParams = iconView.getLayoutParams();
-            final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_LARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_SMALL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-            }
-            iconView.setLayoutParams(layoutParams);
-        };
-
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                handleBottomNavigationItemSelected(item);
-                return true;
-            }
-        });
+        UIElement cls1 = new UIElement(SecondActivity.this,this);
+        cls1.NavigationMethod();
 
         ImageView image = (ImageView) findViewById(R.id.icon); // init a ImageView
         Intent intent = getIntent(); // get Intent which we set from Previous Activity
-        //selectedImage.setImageResource(intent.getIntExtra("image", 0)); // get image from Intent and set it in ImageView
-        //final ListView simpleList = (ListView) findViewById(R.id.simpleListView);
         final GridView simpleList = (GridView) findViewById(R.id.secondActivityGridView);
 
-        String[] myStrings = intent.getStringArrayExtra("name");
-        String[] imgStrings = intent.getStringArrayExtra("image");
+        String[] myStrings = intent.getStringArrayExtra("name");//name for sublist
+        String[] imgStrings = intent.getStringArrayExtra("image"); //image for sublist
         final String[] idStrings = intent.getStringArrayExtra("id");
         final String[] countStrings = intent.getStringArrayExtra("count");
         final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), myStrings,imgStrings,true);
@@ -113,35 +68,18 @@ public class SecondActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), RecyclerActivity.class);
                 //  intent.putExtra("child", selectedFromList);
-                Log.d("child",textView.getText().toString());
+//                Log.d("child",textView.getText().toString());
                 // Or / And
                 intent.putExtra("key", idStrings[position]);
                 intent.putExtra("count", countStrings[position]);
                 Log.d("keyChild",idStrings[position]);
                 startActivity(intent);
+                //add animation when clicked
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
 
 
         });
     }
-    private void handleBottomNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.Home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.AboutUs:
-                Intent intent1 = new Intent(this, AboutUs.class);
-                startActivity(intent1); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.Search:
-                Intent intent2 = new Intent(this, Search.class);
-                startActivity(intent2); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-        }
-    }
+
 }

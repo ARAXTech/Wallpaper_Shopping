@@ -37,6 +37,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.qhs.deydigital.MainActivity;
 import com.example.qhs.deydigital.R;
+import com.example.qhs.deydigital.UIElement;
+
 import Ui.SpannableGridLayoutManager;
 
 import org.json.JSONArray;
@@ -111,23 +113,25 @@ public class Search extends AppCompatActivity {
         firstLoad();
 
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");
-        TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
-        txtView_title.setTypeface(face);
-
+        UIElement cls = new UIElement(Search.this,this);
+        cls.FontMethod();
+        //add back button in toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+
+        //Navigation
+        UIElement cls1 = new UIElement(Search.this,this);
+        cls1.NavigationMethod();
 
         //NukeSSLCerts.nuke();
 
@@ -136,46 +140,6 @@ public class Search extends AppCompatActivity {
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        //Navigation
-
-        BottomNavigationView bottomNavigation =
-                (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
-        for (int i = 0; i < menuView.getChildCount(); i++) {
-            final View iconView = menuView.getChildAt(i).findViewById(android.support.design.R.id.icon);
-            final ViewGroup.LayoutParams layoutParams = iconView.getLayoutParams();
-            final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_LARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);}
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);}
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_SMALL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-            }
-            iconView.setLayoutParams(layoutParams);
-        };
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                handleBottomNavigationItemSelected(item);
-                return true;
-            }
-        });
 
         //**************************************************
         editText=(EditText)findViewById(R.id.EtSearch);
@@ -218,6 +182,11 @@ public class Search extends AppCompatActivity {
         adapter=new RecyclerAdapter( this,listItems);
         recyclerView.setAdapter(adapter);
         //
+
+        final Typeface face = Typeface.createFromAsset(getAssets(), "fonts/homa.ttf");
+        TextView txtView_title = (TextView) findViewById(R.id.txtTitle);
+        txtView_title.setTypeface(face);
+
 //////////////////
         Button button_search = (Button)findViewById(R.id.btn_search);
         button_search.setTypeface(face);
@@ -234,27 +203,6 @@ public class Search extends AppCompatActivity {
                 search();
             }
         });
-    }
-
-
-    private void handleBottomNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.Home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.AboutUs:
-                Intent intent1 = new Intent(this, AboutUs.class);
-                startActivity(intent1); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.Search:
-                Intent intent2 = new Intent(this,Search.class);
-                startActivity(intent2); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-        }
     }
 
 

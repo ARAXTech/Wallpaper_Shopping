@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:layout_marginTop="4dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:padding="6dip" android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgF"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/logo1" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            android:text="نام محصول:"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:layout_toLeftOf="@id/imgF" />
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="57dp"
+        android:text="10000 تومان"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:layout_toLeftOf="@id/imgF" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_toLeftOf="@id/imgF"
+            android:layout_marginTop="100dp">
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="حذف"
+                android:background="@drawable/spinner_border"/>
+
+
+            <Spinner
+                android:id="@+id/counter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/spinner_border"
+                />
+            <TextView
+                android:id="@+id/counterTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=" تعداد: "
+                android:textSize="17dp"
+                android:layout_marginRight="5dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

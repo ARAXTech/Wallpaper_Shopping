@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.qhs.deydigital.MainActivity;
 import com.example.qhs.deydigital.R;
+import com.example.qhs.deydigital.UIElement;
+
 import Recycler.Search;
 
 public class AboutUs extends AppCompatActivity {
@@ -32,16 +34,14 @@ public class AboutUs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
+
+
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");
-        TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
-        txtView_title.setTypeface(face);
-
+        UIElement cls = new UIElement(AboutUs.this,this);
+        cls.FontMethod();
+        //add back button in toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,52 +50,20 @@ public class AboutUs extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+
         //Navigation
-
-        BottomNavigationView bottomNavigation =
-                (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
-        for (int i = 0; i < menuView.getChildCount(); i++) {
-            final View iconView = menuView.getChildAt(i).findViewById(android.support.design.R.id.icon);
-            final ViewGroup.LayoutParams layoutParams = iconView.getLayoutParams();
-            final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_LARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, displayMetrics);
-            }
-            if ((getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
-                    Configuration.SCREENLAYOUT_SIZE_SMALL) {
-                layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-                layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
-            }
-            iconView.setLayoutParams(layoutParams);
-        }
-        ;
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                handleBottomNavigationItemSelected(item);
-                return true;
-            }
-        });
+        UIElement cls1 = new UIElement(AboutUs.this,this);
+        cls1.NavigationMethod();
 
 
-        //
+        //face
+        final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");
+        TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
+        txtView_title.setTypeface(face);
+
+
+
+        ///
         ImageView map = (ImageView)findViewById(R.id.imgView_map);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,36 +76,36 @@ public class AboutUs extends AppCompatActivity {
         TextView txtView_contact = (TextView)findViewById(R.id.txtView_contactUs);
         txtView_contact.setTypeface(face);
 
-        Button contact=(Button)findViewById(R.id.contact);
-        contact.setTypeface(face);
+      //  Button contact=(Button)findViewById(R.id.contact);
+//        contact.setTypeface(face);
 
-        Button email=(Button) findViewById(R.id.email);
-        email.setTypeface(face);
+    //    Button email=(Button) findViewById(R.id.email);
+    //    email.setTypeface(face);
 
-        contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "+982532931515", null));
-                startActivity(intent);
-            }
-        });
-
-        email.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Deydigital@gmail.com"});
-                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-                try {
-                    startActivity(Intent.createChooser(i, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        });
+//        contact.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "+982532931515", null));
+//                startActivity(intent);
+//            }
+//        });
+//
+//        email.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                Intent i = new Intent(Intent.ACTION_SEND);
+//                i.setType("message/rfc822");
+//                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Deydigital@gmail.com"});
+//                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+//                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+//                try {
+//                    startActivity(Intent.createChooser(i, "Send mail..."));
+//                } catch (android.content.ActivityNotFoundException ex) {
+//                    Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//        });
 
 //
 
@@ -146,10 +114,10 @@ public class AboutUs extends AppCompatActivity {
 
         final String[] myStrings = {
                 "025-32931515",
-                //"Deydigital@gmail.com",
                 "09127592318",
                 "dey_digital",
                 "Dey_digital@",
+                "Deydigital@gmail.com",
                 " قم/30 متری قائم/پلاک 150"};
 
         final int[] imgStrings = {
@@ -157,7 +125,7 @@ public class AboutUs extends AppCompatActivity {
                 R.mipmap.smartphone,
                 R.mipmap.instagram ,
                 R.mipmap.telegram,
-              //  R.mipmap.mail,
+                R.mipmap.mail,
                 R.mipmap.address};
 
                 /*R.drawable.phone,
@@ -213,7 +181,7 @@ public class AboutUs extends AppCompatActivity {
                         startActivity(intent3);
                         break;
 
-                    /*case 4:
+                    case 4:
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("message/rfc822");
                         i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Deydigital@gmail.com"});
@@ -228,12 +196,12 @@ public class AboutUs extends AppCompatActivity {
 
 
 
-                        break;*/
+                        break;
 
-                    case 4:
+                    case 5:
                         Uri uri = Uri.parse("geo:0,0?q=34.61608232923757,50.860158371844136(چاپ دیجیتال دی)");
-                        Intent intent4 = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent4);
+                        Intent intent5 = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent5);
 
 
 
@@ -248,23 +216,5 @@ public class AboutUs extends AppCompatActivity {
 
 
     }
-    private void handleBottomNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.Home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.AboutUs:
-                Intent intent1 = new Intent(this, AboutUs.class);
-                startActivity(intent1); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-            case R.id.Search:
-                Intent intent2 = new Intent(this,Search.class);
-                startActivity(intent2); // start Intent
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
-        }
-    }
+
 }

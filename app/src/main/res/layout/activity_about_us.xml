@@ -15,30 +15,33 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></include>
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardM"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="148dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/linear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
+
         <ImageView
             android:id="@+id/imgView_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/location"/>
+            android:layout_height="157dp"
+            android:src="@drawable/location" />
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="0dp"
-        android:layout_height="180dp"
+        android:layout_height="55dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/listA"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardM">
 
@@ -54,24 +57,6 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/contact"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:drawableRight="@drawable/phone"
-            android:gravity="center"
-            android:text="تماس مستقیم" />
-
-        <Button
-            android:id="@+id/email"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:drawableRight="@drawable/mail"
-            android:gravity="center"
-            android:text="ارسال ایمیل" />
-
     </LinearLayout>
 
     <ListView
@@ -83,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear"
-        android:fadeScrollbars="false"></ListView>
+        android:fadeScrollbars="true"></ListView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardN"

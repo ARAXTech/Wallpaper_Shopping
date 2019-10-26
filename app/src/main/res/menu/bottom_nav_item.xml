@@ -4,17 +4,25 @@
 
     <item
         android:id="@+id/Home"
-        android:icon="@drawable/home"
+
         tools:ignore="MenuTitle" />
 
     <item
+        android:id="@+id/Shop"
+
+        tools:ignore="MenuTitle" />
+    <item
         android:id="@+id/AboutUs"
-        android:icon="@drawable/phone"
+
         tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/Search"
-        android:icon="@drawable/search"
+
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/Favorite"
+
         tools:ignore="MenuTitle" />
 
 </menu>

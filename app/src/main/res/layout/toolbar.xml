@@ -15,7 +15,8 @@
         android:background="@color/SecondaryLight"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
         android:layout_gravity="right"
-        android:theme="@style/ToolbarTheme">
+        android:theme="@style/ToolbarTheme"
+        app:navigationIcon="?attr/homeAsUpIndicator">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,26 +27,42 @@
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="cursive"
-                android:text="چاپ دیجیتال دی"
+                android:layoutDirection="locale"
+                android:text="موبیفای"
                 android:textColor="@color/colorAccent"
                 android:textDirection="locale"
-                android:layoutDirection="locale"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.963"
+                app:layout_constraintHorizontal_bias="0.317"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.545" />
+                app:layout_constraintVertical_bias="0.272" />
 
+            <Button
+                android:id="@+id/ProfileBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/profile"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/txtTitle"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>

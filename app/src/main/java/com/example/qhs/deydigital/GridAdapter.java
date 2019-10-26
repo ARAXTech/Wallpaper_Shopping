@@ -20,6 +20,7 @@ public class GridAdapter  extends BaseAdapter {
     Boolean b;
 
     LayoutInflater inflter;
+    //constractor for drawable images
     public GridAdapter(Context applicationContext, int[] logos,String[] txt,Boolean b) {
         this.context = applicationContext;
         this.logos = logos;
@@ -28,6 +29,7 @@ public class GridAdapter  extends BaseAdapter {
         this.b=b;
         inflter = (LayoutInflater.from(applicationContext));
     }
+    //constractor for url images
     public GridAdapter(Context applicationContext, String[] logo_txt,String[] txt,Boolean b) {
         this.context = applicationContext;
         this.logo_txt = logo_txt;
@@ -60,6 +62,7 @@ public class GridAdapter  extends BaseAdapter {
             icon.setImageResource(logos[i]); // set logo images
         }
         if (b==true){
+            //set sublist images
             Glide.with(context)
                     .load(logo_txt[i])
                     .thumbnail(0.5f)
