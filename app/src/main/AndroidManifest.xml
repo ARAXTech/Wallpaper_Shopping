@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.qhs.deydigital">
+    package="com.example.qhs.wallpapershopping">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,28 +16,30 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="com.example.qhs.wallpapershopping.MainActivity"
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity" />
+        <activity android:name="com.example.qhs.wallpapershopping.SecondActivity" />
         <activity
             android:name="Gallery.gallery"
             android:screenOrientation="portrait" />
         <activity android:name="Recycler.RecyclerActivity" />
-        <activity android:name=".Splashscreen" />
+        <activity android:name="com.example.qhs.wallpapershopping.Splashscreen" />
         <activity android:name="About.AboutUs" />
         <activity android:name="Recycler.Search" />
-        <activity android:name=".FavoriteActivity" />
+        <activity android:name="com.example.qhs.wallpapershopping.FavoriteActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.example.qhs.wallpapershopping.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".QuotesActivity" />
-        <activity android:name=".ShoppingActivity">
+        <activity android:name="com.example.qhs.wallpapershopping.QuotesActivity" />
+        <activity android:name="com.example.qhs.wallpapershopping.ShoppingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -49,7 +51,7 @@
                     android:scheme="app" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterDialogActivity"></activity>
+        <activity android:name="com.example.qhs.wallpapershopping.RegisterDialogActivity"></activity>
     </application>
 
 </manifest>

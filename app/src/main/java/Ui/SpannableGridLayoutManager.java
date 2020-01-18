@@ -13,7 +13,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.qhs.deydigital.R;
+import com.example.qhs.wallpapershopping.R;
 
 import java.util.ArrayList;
 import java.util.List;

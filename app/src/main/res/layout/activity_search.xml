@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></include>
+        app:layout_constraintTop_toTopOf="parent"/>
     <ProgressBar
         android:id="@+id/SearchpBar"
         style="?android:attr/progressBarStyleLarge"
@@ -73,34 +81,76 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/cardN"
+        app:layout_constraintBottom_toTopOf="@+id/curved_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EtSearch"></android.support.v7.widget.RecyclerView>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardN"
+    <com.example.qhs.wallpapershopping.CurvedBottomNavigationView
+        android:id="@+id/curved_bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="62dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        app:layout_constraintEnd_toStartOf="parent"
+        app:menu="@menu/curved_bottom_nav_item">
+    </com.example.qhs.wallpapershopping.CurvedBottomNavigationView>
 
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/shadow"
-            app:itemBackground="@color/SecondaryLight"
-            app:itemIconTint="@color/colorAccent"
-            app:itemTextColor="@color/colorAccent"
-            app:menu="@menu/bottom_nav_item" />
-    </android.support.v7.widget.CardView>
+
 
 
 </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/lin_id"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="34dp"
+        android:background="@drawable/oval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_shopping_cart"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_shopping_cart_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_search"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_search_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_home"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:elevation="6dp"
+            android:visibility="gone"
+            app:vector_src="@drawable/ic_home_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_favorite"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_favorite_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_call"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_call_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

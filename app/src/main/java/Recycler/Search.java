@@ -1,24 +1,15 @@
 package Recycler;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -35,9 +26,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.qhs.deydigital.MainActivity;
-import com.example.qhs.deydigital.R;
-import com.example.qhs.deydigital.UIElement;
+import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.UIElement;
 
 import Ui.SpannableGridLayoutManager;
 
@@ -68,7 +58,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import About.AboutUs;
 import Model.ListItem;
 
 import static com.android.volley.toolbox.Volley.newRequestQueue;
@@ -131,7 +120,8 @@ public class Search extends AppCompatActivity {
 
         //Navigation
         UIElement cls1 = new UIElement(Search.this,this);
-        cls1.NavigationMethod();
+        //cls1.NavigationMethod();
+        cls1.curvedNavigationMethod();
 
         //NukeSSLCerts.nuke();
 

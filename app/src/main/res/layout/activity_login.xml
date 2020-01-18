@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
     <LinearLayout
         android:id="@+id/activity_login"
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
         android:orientation="vertical"
         tools:context="com.segunfamisa.sample.jwt.LoginActivity">
 
+
         <TextView
             android:id="@+id/text_title"
             android:layout_width="match_parent"
@@ -23,14 +24,25 @@
             android:gravity="center"
             android:text="@string/text_login"
             android:textSize="@dimen/text_title"/>
-
+        <com.github.florent37.materialtextfield.MaterialTextField
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:mtf_labelColor="#666"
+            app:mtf_image="@drawable/ic_mail_black_24dp"
+            >
         <EditText
             android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="@string/hint_email"/>
-
+        </com.github.florent37.materialtextfield.MaterialTextField>
+        <com.github.florent37.materialtextfield.MaterialTextField
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:mtf_labelColor="#666"
+            app:mtf_image="@drawable/ic_person_black_24dp"
+            >
         <EditText
             android:id="@+id/edit_username"
             android:layout_width="match_parent"
@@ -39,19 +51,29 @@
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions"
             android:maxLines="1" />
-
+        </com.github.florent37.materialtextfield.MaterialTextField>
+        <com.github.florent37.materialtextfield.MaterialTextField
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:mtf_labelColor="#666"
+            app:mtf_image="@drawable/ic_vpn_key_black_24dp"
+            >
         <EditText
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/hint_password"/>
+        </com.github.florent37.materialtextfield.MaterialTextField>
+
+
 
         <Button
             android:id="@+id/button_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_login"/>
+            android:text="@string/text_login"
+            android:background="@drawable/button_ripple_effect"/>
 
         <TextView
             android:id="@+id/prompt_action"

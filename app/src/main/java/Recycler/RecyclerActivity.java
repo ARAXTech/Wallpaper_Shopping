@@ -1,33 +1,23 @@
 package Recycler;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
+import android.transition.Explode;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -42,11 +32,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.qhs.deydigital.AuthHelper;
-import com.example.qhs.deydigital.LoginActivity;
-import com.example.qhs.deydigital.MainActivity;
-import com.example.qhs.deydigital.R;
-import com.example.qhs.deydigital.UIElement;
+import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.LoginActivity;
+import com.example.qhs.wallpapershopping.MainActivity;
+import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.UIElement;
 
 
 import org.json.JSONArray;
@@ -62,7 +52,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
 
-import About.AboutUs;
 import Model.ListItem;
 import Model.RecyclerHorizentalItem;
 import Ui.SpannableGridLayoutManager;
@@ -112,6 +101,7 @@ public class RecyclerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setAnimation();
         setContentView(R.layout.activity_recycler);
 
 
@@ -133,7 +123,7 @@ public class RecyclerActivity extends AppCompatActivity {
 
         //Navigation
         UIElement cls1 = new UIElement(RecyclerActivity.this,this);
-        cls1.NavigationMethod();
+        //cls1.NavigationMethod();
 
 
         //Profile
@@ -194,6 +184,7 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerViewHorizental.setAdapter(adapterHorizental);
 
 
+
         //Retrieve Bundle value
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
@@ -224,7 +215,9 @@ public class RecyclerActivity extends AppCompatActivity {
             }
         }, 3, 1f); // 3 is the number of coloumn , how nay to display is 1f
 
+
         recyclerView.setLayoutManager(gridLayoutManager);
+
 
         //*******************
      // recyclerView.setLayoutManager( new GridLayoutManager(this,3));
@@ -251,6 +244,9 @@ public class RecyclerActivity extends AppCompatActivity {
             }
         }, 1000);
         // pgsBar.setVisibility(view.GONE);
+
+
+
 
     }
 
@@ -419,5 +415,7 @@ public class RecyclerActivity extends AppCompatActivity {
         updateOptionsMenu();
         super.onConfigurationChanged(newConfig);
     }
+
+
 
 }

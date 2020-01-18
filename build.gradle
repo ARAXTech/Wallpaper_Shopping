@@ -3,13 +3,15 @@
 buildscript {
     
     repositories {
+
         google()
+        //maven()
         jcenter()
         //maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.5.2'
 
 
         

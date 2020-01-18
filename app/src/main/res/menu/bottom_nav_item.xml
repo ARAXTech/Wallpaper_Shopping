@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
+<menu
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:title="@string/Home"
         android:id="@+id/Home"
-
-        tools:ignore="MenuTitle" />
+        android:icon="@drawable/home"
+        tools:ignore="MenuTitle"
+        />
 
     <item
+        android:title="@string/Cart"
         android:id="@+id/Shop"
-
+        android:icon="@drawable/shopping"
         tools:ignore="MenuTitle" />
     <item
+        android:title="@string/AboutUS"
         android:id="@+id/AboutUs"
-
+        android:icon="@drawable/phone"
         tools:ignore="MenuTitle" />
 
     <item
+        android:title="@string/search"
         android:id="@+id/Search"
-
+        android:icon="@drawable/search"
         tools:ignore="MenuTitle" />
     <item
+        android:title="@string/Favorite"
         android:id="@+id/Favorite"
-
+        android:icon="@drawable/favorite_no"
         tools:ignore="MenuTitle" />
 
 </menu>

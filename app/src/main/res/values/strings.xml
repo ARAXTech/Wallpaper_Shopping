@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Dey Digital</string>
-    <string name="search">جستجو</string>
+    <string name="app_name">WallPaper_Shopping</string>
+    <string name="search">search</string>
     <string name="btn_search">بگرد</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
@@ -36,4 +36,12 @@
 
     <string name="button_text_protected_quote">Get Quote</string>
     <string name="button_text_logout">Logout</string>
+
+    <string name="Home">Home</string>
+    <string name="Cart">Cart</string>
+    <string name="AboutUS">AboutUS</string>
+    <string name="Favorite">Favorite</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

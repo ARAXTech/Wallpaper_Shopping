@@ -9,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.example.qhs.deydigital.MainActivity;
-import com.example.qhs.deydigital.R;
-import com.example.qhs.deydigital.SecondActivity;
+import com.example.qhs.wallpapershopping.R;
 
 import java.util.List;
 

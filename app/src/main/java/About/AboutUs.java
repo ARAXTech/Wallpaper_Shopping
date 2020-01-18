@@ -1,32 +1,20 @@
 package About;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qhs.deydigital.MainActivity;
-import com.example.qhs.deydigital.R;
-import com.example.qhs.deydigital.UIElement;
-
-import Recycler.Search;
+import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.UIElement;
 
 public class AboutUs extends AppCompatActivity {
 
@@ -53,7 +41,8 @@ public class AboutUs extends AppCompatActivity {
 
         //Navigation
         UIElement cls1 = new UIElement(AboutUs.this,this);
-        cls1.NavigationMethod();
+        //cls1.NavigationMethod();
+        cls1.curvedNavigationMethod();
 
 
         //face
@@ -113,12 +102,12 @@ public class AboutUs extends AppCompatActivity {
         final ListView simpleList1 = (ListView) findViewById(R.id.listA);
 
         final String[] myStrings = {
-                "025-32931515",
-                "09127592318",
-                "dey_digital",
-                "Dey_digital@",
-                "Deydigital@gmail.com",
-                " قم/30 متری قائم/پلاک 150"};
+                "025-0000000",
+                "0910000000",
+                "Wallpaper_Shopping",
+                "Wallpaper_Shopping@",
+                "Wallpaper_Shoping@gmail.com",
+                " قم/30 متری قائم/..."};
 
         final int[] imgStrings = {
                 R.mipmap.phone,

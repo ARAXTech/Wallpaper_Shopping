@@ -8,47 +8,35 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 
-import About.AboutUs;
-
-import com.example.qhs.deydigital.AuthHelper;
-import com.example.qhs.deydigital.LoginActivity;
-import com.example.qhs.deydigital.MainActivity;
-import com.example.qhs.deydigital.R;
+import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.LoginActivity;
+import com.example.qhs.wallpapershopping.MainActivity;
+import com.example.qhs.wallpapershopping.R;
 
 import Data.DatabaseHandler;
 import Model.ListItem;
-import Recycler.RecyclerActivity;
-import Recycler.Search;
 
-import com.example.qhs.deydigital.RegisterDialogActivity;
-import com.example.qhs.deydigital.UIElement;
+import com.example.qhs.wallpapershopping.RegisterDialogActivity;
+import com.example.qhs.wallpapershopping.UIElement;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -99,7 +87,8 @@ public class gallery extends AppCompatActivity {
 
         //Navigation
         UIElement cls1 = new UIElement(gallery.this,this);
-        cls1.NavigationMethod();
+        //cls1.NavigationMethod();
+        cls1.curvedNavigationMethod();
 
         ///Face
         final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");

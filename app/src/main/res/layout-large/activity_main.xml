@@ -1,59 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
->
-
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar"
+    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/simpleGridView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></include>
-
-    <GridView
-        android:id="@+id/simpleGridView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:footerDividersEnabled="false"
-        android:listSelector="@drawable/selector"
-        android:numColumns="2"
-        android:padding="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintBottom_toTopOf="@+id/cardN"/>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardN"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/simpleGridView"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            app:layout_constraintBottom_toTopOf="@+id/simpleGridView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></include>
+        <GridView
+            android:id="@+id/simpleGridView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:footerDividersEnabled="false"
+            android:listSelector="@drawable/selector"
+            android:numColumns="2"
+            android:padding="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/curved_bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include"/>
+        <com.example.qhs.wallpapershopping.CurvedBottomNavigationView
+            android:id="@+id/curved_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="parent">
+        </com.example.qhs.wallpapershopping.CurvedBottomNavigationView>
 
-            android:layoutDirection="locale"
-            app:itemBackground="@color/SecondaryLight"
-            app:itemIconTint="@color/colorAccent"
-            app:itemTextColor="@color/colorAccent"
-            app:menu="@menu/bottom_nav_item"
-            />
-    </android.support.v7.widget.CardView>
-</android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/lin_id"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="40dp"
+        android:background="@drawable/oval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_shopping_cart"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_shopping_cart_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_search"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_search_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_home"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_home_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_favorite"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_favorite_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+        <com.sdsmdg.harjot.vectormaster.VectorMasterView
+            android:id="@+id/fab_call"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:elevation="6dp"
+            app:vector_src="@drawable/ic_call_black_24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
+
+
+
+    </RelativeLayout>
+
+
+
+
+    <!--
+<android.support.v7.widget.CardView
+    android:id="@+id/cardN"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/simpleGridView"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/shadow"
+        app:itemBackground="@color/SecondaryLight"
+        app:labelVisibilityMode="selected"
+        android:layoutDirection="locale"
+        app:menu="@menu/bottom_nav_item"
+        />-->
+    <!--app:itemIconTint="@drawable/bottom_navigation_item_colors"
+    app:itemTextColor="@color/colorAccent"
+
+</android.support.v7.widget.CardView> -->
+</android.support.design.widget.CoordinatorLayout>
