@@ -3,6 +3,7 @@ package com.example.qhs.wallpapershopping;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 //        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
 //        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
         //bgApp.startAnimation(bgAnim);
-        bgApp.animate().translationY(-1900).setDuration(800).setStartDelay(300);
+        bgApp.animate().translationY(-1900).setDuration(2000).setStartDelay(300);
         clover.animate().alpha(0).setDuration(800).setStartDelay(600);
         textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
         textHome.startAnimation(frombottom);
@@ -112,8 +113,9 @@ public class MainActivity extends AppCompatActivity {
 //        //Toolbar
 //         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //         setSupportActionBar(toolbar);
-//         UIElement cls = new UIElement(MainActivity.this,this);
-//         cls.FontMethod();
+
+         UIElement cls = new UIElement(MainActivity.this,this);
+         //cls.FontMethod();
 //        //add back button in toolbar
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -161,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
         cls1.defineVariable();
         cls1.curvedNavigationMethod();
          //cls1.NavigationMethod();
+
+
 
 
 

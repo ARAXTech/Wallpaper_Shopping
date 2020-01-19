@@ -173,7 +173,7 @@ public class Search extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         //
 
-        final Typeface face = Typeface.createFromAsset(getAssets(), "fonts/homa.ttf");
+        final Typeface face = Typeface.createFromAsset(getAssets(), "yekan/homa.ttf");
         TextView txtView_title = (TextView) findViewById(R.id.txtTitle);
         txtView_title.setTypeface(face);
 

@@ -46,7 +46,7 @@ public class AboutUs extends AppCompatActivity {
 
 
         //face
-        final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");
+        final Typeface face=Typeface.createFromAsset(getAssets(), "yekan/homa.ttf");
         TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
         txtView_title.setTypeface(face);
 

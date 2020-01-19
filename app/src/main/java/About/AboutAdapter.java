@@ -44,7 +44,7 @@ public class AboutAdapter extends BaseAdapter {
 
 
     public View getView(int i, View view, ViewGroup viewGroup) {
-        Typeface face=Typeface.createFromAsset(context.getAssets(),"fonts/homa.ttf");
+        Typeface face=Typeface.createFromAsset(context.getAssets(), "yekan/homa.ttf");
         view = inflter.inflate(R.layout.about_list, null);
         TextView name = (TextView) view.findViewById(R.id.txtA);
         name.setText(nameList[i]);

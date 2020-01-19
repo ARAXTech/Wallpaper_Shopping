@@ -28,7 +28,6 @@ import android.widget.ToggleButton;
 
 
 import com.example.qhs.wallpapershopping.AuthHelper;
-import com.example.qhs.wallpapershopping.LoginActivity;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 
@@ -91,7 +90,7 @@ public class gallery extends AppCompatActivity {
         cls1.curvedNavigationMethod();
 
         ///Face
-        final Typeface face=Typeface.createFromAsset(getAssets(),"fonts/homa.ttf");
+        final Typeface face=Typeface.createFromAsset(getAssets(), "yekan/homa.ttf");
         TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
         txtView_title.setTypeface(face);
 

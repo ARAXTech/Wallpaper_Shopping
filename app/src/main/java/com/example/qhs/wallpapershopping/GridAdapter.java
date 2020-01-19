@@ -2,7 +2,6 @@ package com.example.qhs.wallpapershopping;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,11 +77,11 @@ public class GridAdapter  extends BaseAdapter {
                     ///.override(400,200)
                     .into(icon);
         }
-        Typeface face=Typeface.createFromAsset(context.getAssets(),"fonts/homa.ttf");
+        //Typeface face=Typeface.createFromAsset(context.getAssets(), "font/byekan.ttf");
 
         TextView Txt=(TextView)view.findViewById(R.id.txtView);
         Txt.setText(txt[i].toString());
-        Txt.setTypeface(face);
+        //Txt.setTypeface(face);
         return view;
     }
 }

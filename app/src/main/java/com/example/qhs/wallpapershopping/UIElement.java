@@ -4,24 +4,17 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.sdsmdg.harjot.vectormaster.VectorMasterView;
 import com.sdsmdg.harjot.vectormaster.models.PathModel;
@@ -66,9 +59,9 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
         //  toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
         // ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         // setSupportActionBar(toolbar);
-        Typeface face = Typeface.createFromAsset(activity.getAssets(), "fonts/homa.ttf");
-        TextView txtView_title = (TextView) activity.findViewById(R.id.txtTitle);
-        txtView_title.setTypeface(face);
+        //Typeface face = Typeface.createFromAsset(activity.getAssets(), "yekan/BYekan.ttf");
+//        TextView txtView_title = (TextView) activity.findViewById(R.id.txtTitle);
+//        txtView_title.setTypeface(face);
     }
 
 //    public void NavigationMethod() {
