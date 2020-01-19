@@ -96,22 +96,22 @@ public class gallery extends AppCompatActivity {
         txtView_title.setTypeface(face);
 
 //Profile
-        profileBtn=(Button) findViewById(R.id.ProfileBtn);
+        //profileBtn=(Button) findViewById(R.id.ProfileBtn);
         mAuthHelper = AuthHelper.getInstance(this);
 
-        profileBtn = (Button) findViewById(R.id.ProfileBtn);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-
-            }
-        });
+//        profileBtn = (Button) findViewById(R.id.ProfileBtn);
+//        profileBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//
+//            }
+//        });
 
         //updateOptionsMenu();
         if (mAuthHelper.isLoggedIn()) {
             Log.d("USERNAME: ", "isloggedin");
-            profileBtn.setVisibility(View.GONE);
+            //profileBtn.setVisibility(View.GONE);
             // setupView();
         } else {
 

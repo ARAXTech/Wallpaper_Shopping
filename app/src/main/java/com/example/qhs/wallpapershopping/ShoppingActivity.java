@@ -61,8 +61,8 @@ public class ShoppingActivity extends AppCompatActivity {
         cls1.curvedNavigationMethod();
 //
         mAuthHelper = AuthHelper.getInstance(this);
-        Button profileBtn=(Button)findViewById(R.id.ProfileBtn);
-        profileBtn.setVisibility(View.GONE);
+//        Button profileBtn=(Button)findViewById(R.id.ProfileBtn);
+//        profileBtn.setVisibility(View.GONE);
         //
 
         recyclerView = (RecyclerView) findViewById(R.id.ShoppingRecycler);

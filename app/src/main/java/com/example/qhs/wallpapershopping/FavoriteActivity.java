@@ -56,8 +56,8 @@ public class FavoriteActivity extends AppCompatActivity {
 
       //
         mAuthHelper = AuthHelper.getInstance(this);
-        Button profileBtn=(Button)findViewById(R.id.ProfileBtn);
-        profileBtn.setVisibility(View.GONE);
+        //Button profileBtn=(Button)findViewById(R.id.ProfileBtn);
+        //profileBtn.setVisibility(View.GONE);
         //
         recyclerView = (RecyclerView) findViewById(R.id.FavoriteRecycler);
         recyclerView.setHasFixedSize(true);

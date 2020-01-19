@@ -178,6 +178,8 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
 
     public void defineVariable(){
 
+           }
+    public void curvedNavigationMethod() {
         curvedBottomNavigationView = (CurvedBottomNavigationView) activity.findViewById(R.id.curved_bottom_navigation);
         //BottomNavigationMenuView menuView = (BottomNavigationMenuView) curvedBottomNavigationView.getChildAt(0);
 
@@ -186,16 +188,11 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
         fab_favorite = (VectorMasterView) activity.findViewById(R.id.fab_favorite);
         fab_search = (VectorMasterView) activity.findViewById(R.id.fab_search);
         fab_shopping_cart = (VectorMasterView) activity.findViewById(R.id.fab_shopping_cart);
-    }
-    public void curvedNavigationMethod() {
-
-
-
 
 
         lin_id = (RelativeLayout) activity.findViewById(R.id.lin_id);
 
-       // curvedBottomNavigationView.inflateMenu(R.menu.curved_bottom_nav_item);
+        //curvedBottomNavigationView.inflateMenu(R.menu.curved_bottom_nav_item);
         //test code for getting icons manually not in menu file in order to avoid double show icons in nav
 //        iconView.setLayoutParams(layoutParams);
 //

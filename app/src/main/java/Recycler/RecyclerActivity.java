@@ -127,19 +127,19 @@ public class RecyclerActivity extends AppCompatActivity {
 
 
         //Profile
-        profileBtn=(Button) findViewById(R.id.ProfileBtn);
+        //profileBtn=(Button) findViewById(R.id.ProfileBtn);
         mProgressDialog = new ProgressDialog(this);
         mAuthHelper = AuthHelper.getInstance(this);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-
-            }
-        });
+//        profileBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//
+//            }
+//        });
         if (mAuthHelper.isLoggedIn()) {
             Log.d("USERNAME: ", "isloggedin");
-            profileBtn.setVisibility(View.GONE);
+            //profileBtn.setVisibility(View.GONE);
             // setupView();
         } else {
 

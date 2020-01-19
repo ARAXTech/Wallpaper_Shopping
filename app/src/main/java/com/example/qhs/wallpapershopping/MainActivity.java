@@ -37,14 +37,26 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtView_signUp;
     ImageView bgApp, clover;
     Animation bgAnim, cloverAnim;
-    LinearLayout textSplash;
+    LinearLayout textSplash, textHome;
+    Animation frombottom;
 
     //CurvedBottomNavigationView curvedBottomNavigationView;
 
     //GridView images
     int logos[] = {
-            R.drawable.logo1, R.drawable.logo12, R.drawable.logo3, R.drawable.logo6,
-            R.drawable.logo8,R.drawable.logo5};
+            R.drawable.logo1,
+            R.drawable.logo12,
+            R.drawable.logo3,
+            R.drawable.logo6,
+            R.drawable.logo8,
+            R.drawable.logo5};
+    int vector[] = {
+            R.drawable.livingroom,
+            R.drawable.kids,
+            R.drawable.tvroom2,
+            R.drawable.bedroom,
+            R.drawable.threed,
+            R.drawable.artistic};
 
    //Gridview Text
     String txt[]={
@@ -59,31 +71,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Splash Screen
-        if (Splashscreen.Splash==0){
-            Intent intent = new Intent(this,Splashscreen.class);
-            startActivity(intent);
-            super.onCreate(savedInstanceState);
-            finish();
-            return;
-        }
-        //End Splash
+//        //Splash Screen
+//        if (Splashscreen.Splash==0){
+//            Intent intent = new Intent(this,Splashscreen.class);
+//            startActivity(intent);
+//            super.onCreate(savedInstanceState);
+//            finish();
+//            return;
+//        }
+//        //End Splash
 
         super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
         setContentView(R.layout.activity_main);
+        frombottom = AnimationUtils.loadAnimation(this, R.anim.frombottom);
 
         textSplash = findViewById(R.id.textsplash);
+        textHome = findViewById(R.id.texthome);
+
         bgApp = findViewById(R.id.bgapp);
         clover = findViewById(R.id.clover);
+
+        // init GridView
+        simpleGrid = (GridView) findViewById(R.id.simpleGridView);
 
 //        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
 //        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
         //bgApp.startAnimation(bgAnim);
-        bgApp.animate().translationY(-1700).setDuration(800).setStartDelay(300);
+        bgApp.animate().translationY(-1900).setDuration(800).setStartDelay(300);
         clover.animate().alpha(0).setDuration(800).setStartDelay(600);
         textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
+        textHome.startAnimation(frombottom);
+
+        simpleGrid.startAnimation(frombottom);
+
+
 
 
 //        //Toolbar
@@ -140,10 +163,9 @@ public class MainActivity extends AppCompatActivity {
          //cls1.NavigationMethod();
 
 
-        // init GridView
-        simpleGrid = (GridView) findViewById(R.id.simpleGridView);
+
         // Create an object of GridAdapter and set Adapter to GirdView
-        GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), logos,txt,false);
+        GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), vector,txt,false);
         simpleGrid.setAdapter(gridAdapter);
 
         // implement setOnItemClickListener event on GridView

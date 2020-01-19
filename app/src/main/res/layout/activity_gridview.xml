@@ -1,43 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="?android:attr/activatedBackgroundIndicator">
+    android:gravity="center"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        card_view:cardCornerRadius="4dp"
-        android:foreground="?android:attr/selectableItemBackground">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="75dp"
+        card_view:cardPreventCornerOverlap="false">
+
             <ImageView
                 android:id="@+id/icon"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitXY"
                 android:src="@drawable/logo1"
-                android:background="@drawable/selector"/>
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="2dp"/>
+    </android.support.v7.widget.CardView>
             <TextView
                 android:id="@+id/txtView"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="#AA000000"
-                android:textColor="#ffffffff"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-</RelativeLayout>
+                android:textColor="#0E1843"
+                android:textSize="18sp"/>
+</LinearLayout>
