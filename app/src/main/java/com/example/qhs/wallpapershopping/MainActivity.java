@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
 //         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //         setSupportActionBar(toolbar);
 
+        //comment here
+
          UIElement cls = new UIElement(MainActivity.this,this);
          //cls.FontMethod();
 //        //add back button in toolbar

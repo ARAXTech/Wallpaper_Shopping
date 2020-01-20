@@ -425,8 +425,6 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
 
         return (bitmap);
     }
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -443,6 +441,7 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
                 fab_favorite.setVisibility(View.GONE);
                 fab_call.setVisibility(View.GONE);
                 drawAnimation(fab_shopping_cart);
+
                 if (mAuthHelper.isLoggedIn()) {
                     Intent intent3= new Intent(context, ShoppingActivity.class);
                     context.startActivity(intent3); // start Intent
