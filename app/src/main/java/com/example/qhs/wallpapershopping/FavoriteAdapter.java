@@ -1,5 +1,6 @@
 package com.example.qhs.wallpapershopping;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.StrictMode;
@@ -28,10 +29,16 @@ import Gallery.gallery;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
     private Context context;
+    private Activity ctx;
     private List<ListItem> listItems;
 
-    public  FavoriteAdapter(FavoriteActivity context, List listitem){
-        this.context=context;
+//    public  FavoriteAdapter(Context context, List listitem){
+//        this.context=context;
+//        this.listItems=listitem;
+//    }
+
+    public FavoriteAdapter(Activity activity, List listitem){
+        this.ctx=activity;
         this.listItems=listitem;
     }
 
@@ -41,16 +48,16 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View rootView = inflater.inflate(R.layout.favorite_item, parent, false);
         return new FavoriteAdapter.ViewHolder(rootView);
-     //   View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item,parent,false);
-       // return new FavoriteAdapter.ViewHolder(view);
+        //   View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item,parent,false);
+        // return new FavoriteAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final FavoriteAdapter.ViewHolder holder, final int position) {
         final DatabaseHandler db = new DatabaseHandler(context);
-         ListItem item = listItems.get(position);
+        ListItem item = listItems.get(position);
         List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
-         String temp = image_link.get(0);
+        String temp = image_link.get(0);
 
 
         if(URLUtil.isValidUrl(temp)) {
@@ -88,21 +95,21 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         }
         @Override
         public void onClick(View view) {
-          //  List<String> image_link = null;
-           int Position=getAdapterPosition();
-           ListItem item=listItems.get(Position);
+            //  List<String> image_link = null;
+            int Position=getAdapterPosition();
+            ListItem item=listItems.get(Position);
             Intent intent =new Intent(context, gallery.class);
 //            // putExtra(key,value);
             intent.putExtra("id",item.getId());
             intent.putExtra("name",item.getName());
             intent.putExtra("description",item.getDescription());
-          //convert string to array with , seperator
+            //convert string to array with , seperator
             List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
 
             intent.putStringArrayListExtra("imageJsonObj", (ArrayList <String>) image_link);
-         //   intent.putExtra("num_link",item.getNum_link());
+            //   intent.putExtra("num_link",item.getNum_link());
 //            intent.putExtra("position",Position);
-           context.startActivity(intent);
+            context.startActivity(intent);
 
         }
 

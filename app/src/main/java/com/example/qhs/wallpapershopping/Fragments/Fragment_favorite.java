@@ -1,14 +1,31 @@
 package com.example.qhs.wallpapershopping.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.FavoriteAdapter;
+import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import Data.DatabaseHandler;
+import Model.ListItem;
 
 //import com.example.qhs.deydigital.com.example.qhs.wallpapershopping.R;
 
@@ -25,6 +42,13 @@ public class Fragment_favorite extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private RecyclerView recyclerView;
+    private FavoriteAdapter adapter;
+    private List<ListItem> listItems;
+    private AuthHelper mAuthHelper;
+    private DatabaseHandler db;
+    private Menu mOptionsMenu;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -63,12 +87,52 @@ public class Fragment_favorite extends Fragment {
         }
     }
 
-    @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+
+        db = new DatabaseHandler(getContext());
+
+        mAuthHelper = AuthHelper.getInstance(getContext());
+        //Button profileBtn=(Button) view.findViewById(R.id.ProfileBtn);
+        //profileBtn.setVisibility(View.GONE);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.FavoriteRecycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        listItems = new ArrayList<>();
+
+
+        // db.deleteAll();
+        listItems = db.getAllListItem();
+
+        int num = db.getListItemCount();
+        // ListItem[] myArray=new ListItem[num];
+        ListItem[] myArray = listItems.toArray(new ListItem[listItems.size()]);
+        Log.d("sizee", String.valueOf(num));
+        for (int i = 0; i < num; i++) {
+            //  if(db.Exists(i)==true){
+
+            Log.d(" contact:", " " + myArray[i].getId());
+
+            // listItems.add(item);
+            //  }
+        }
+        adapter = new FavoriteAdapter(getActivity(), listItems);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // you can add listener of elements here
+          /*Button mButton = (Button) view.findViewById(R.id.button);
+            mButton.setOnClickListener(this); */
+
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -107,5 +171,51 @@ public class Fragment_favorite extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_signout){
+            mAuthHelper.clear();
+            startActivity(new Intent(getActivity(), MainActivity.class));
+            // profileBtn.setVisibility(View.VISIBLE );
+            //finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.signout_menu, menu);
+        mOptionsMenu = menu;
+        super.onCreateOptionsMenu(mOptionsMenu, inflater);
+    }
+
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem register = menu.findItem(R.id.action_signout);
+        //register.setVisible(false);
+        if(mAuthHelper.isLoggedIn())
+        {
+            register.setVisible(true);
+        }
+        else
+        {
+            register.setVisible(false);
+        }
+        //invalidateOptionsMenu();
+        //return true;
+    }
+    private void updateOptionsMenu() {
+        if (mOptionsMenu != null) {
+            onPrepareOptionsMenu(mOptionsMenu);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        updateOptionsMenu();
+        super.onConfigurationChanged(newConfig);
     }
 }
