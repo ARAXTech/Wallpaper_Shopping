@@ -1,27 +1,27 @@
-
 package Recycler;
 
-import android.app.Activity;
-        import android.content.Context;
-        import android.content.Intent;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-        import android.util.Log;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.example.qhs.wallpapershopping.Fragments.Fragment_gallery;
 
 import com.example.qhs.wallpapershopping.R;
 import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONArray;
-        import org.json.JSONException;
+import org.json.JSONException;
 
 import java.util.ArrayList;
-        import java.util.List;
+import java.util.List;
 
-import Gallery.gallery;
 import Model.ListItem;
 
 public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
@@ -33,9 +33,6 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     public  RecyclerAdapter(  Context context, List listitem){
         this.context= context;
         this.listItems=listitem;
-        //this.imageList=imageList;
-        //this.image_obj = image_obj;
-        // Log.d("cunstructor**", image_obj.toString());
     }
 
     @Override
@@ -43,40 +40,17 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
 
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item,parent,false);
         return new ViewHolder(view);
-
-
-
     }
 
     @Override
     public void onBindViewHolder(final RecyclerAdapter.ViewHolder holder, int position) {
 
         final ListItem item = listItems.get(position);
-
-        //image_obj = image_obj;
         holder.id = item.getId();
         holder.name = item.getName();
         holder.description = item.getDescription();
 
-        //holder.txtdescriptionR.setText(item.getDescription());
-        //  holder.imgR.setImageURI(Uri.parse(item.getImgLink()));
-
         String temp = item.getImgLink();
-
-      //  temp = temp.replace("https", "http");
-
-        //Glide.get(context).clearMemory();
-//        Glide.with(context)
-//                .load(temp)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                //.skipMemoryCache(true)
-//                //.signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
-//                .thumbnail(0.5f)
-//                //.crossFade()
-//                //.diskCacheStrategy(DiskCacheStrategy.ALL)
-//             //   .override(400,200)
-//                .into(holder.imgR);
-
         Picasso.with(context)
                 .load(temp)
                 .into(holder.imgR);
@@ -89,8 +63,6 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     }
 
     public void addItem(ListItem item){
-
-
 
         listItems.add(item);
         notifyDataSetChanged();
@@ -110,23 +82,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-//            GridLayoutManager.LayoutParams layoutParams = new
-//                    GridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.MATCH_PARENT);
-//            float margin = DimensionUtils.convertDpToPixel(5,context);
-//            layoutParams.setMargins((int) margin, (int) margin, (int) margin,
-//                    (int) margin);
-//            itemView.setLayoutParams(layoutParams);
-
-
             imgR=itemView.findViewById(R.id.imgR);
-
-            //txtdescriptionR=(TextView) itemView.findViewById(R.id.txtdescriptionR);
-
-
-
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
@@ -134,57 +90,33 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                     image_obj = new JSONArray();
                     ListItem item = listItems.get(getAdapterPosition());
 
-                   if(item.get_img_src_size() == 0){
+                    if(item.get_img_src_size() == 0){
 
-                       for(int i=0; i < item.getImage_json().length(); i++) {
-                           try {
-                           /* image_obj.put(item.getImage_json().get(i));
-                            imageList.add(image_obj.getJSONObject(i).getString("src"));
-                            Log.d("adapter***",image_obj.getJSONObject(i).getString("src"));*/
+                        for(int i=0; i < item.getImage_json().length(); i++) {
+                            try {
 
-                               String temp = item.getImage_json().getJSONObject(i).getString("src");
+                                String temp = item.getImage_json().getJSONObject(i).getString("src");
 
-                               temp = temp.replace("https", "http");
-                             Log.d("Temppp",temp);
-                                 item.setImg_src(temp);
+                                temp = temp.replace("https", "http");
+                                item.setImg_src(temp);
 
 
-                           } catch (JSONException e) {
-                               e.printStackTrace();
-                           }
-                       }
-                   }
-
-
-                    Log.d("out of for","*******");
-
-                    Intent intent =new Intent(context, gallery.class);
-                    /*intent.putStringArrayListExtra("image_list",(ArrayList<String>) imageList);
-                    for(int i=0; i < imageList.size();i++){
-                        Log.d("ADAPTER",imageList.get(i));
-                    }*/
-
-                    Log.d("tedad dar json obj***",String.valueOf(item.getImage_json().length()));
-                    //.putExtra("image_list",imageList);
-
-                   /* for(int i = 0; i < image_obj.length(); i++){
-                        try {
-                            imageList.add(image_obj.getJSONObject(i).getString("src"));
-                            Log.d("src**",image_obj.getJSONObject(i).getString("src"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                    */
-                    // String jsonArray = image_obj.toString();
-                    //Log.d("JSON*",jsonArray);
-                    intent.putStringArrayListExtra("imageJsonObj",item.img_src);
-                    intent.putExtra("name",item.getName());
-                    intent.putExtra("id",item.getId());
-                    intent.putExtra("description",item.getDescription());
-                    context.startActivity(intent);
-                    Activity activity = (Activity) context;
-                    activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("imageJsonObj",item.img_src);
+                    bundle.putString("name",item.getName());
+                    bundle.putString("id",item.getId());
+                    bundle.putString("description",item.getDescription());
+
+                    Fragment fragment = new Fragment_gallery();
+                    fragment.setArguments(bundle);
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+
                 }
             });
 

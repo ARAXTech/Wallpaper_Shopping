@@ -9,22 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListItem {
-
-
-
-    int id1;
     public ArrayList<String> img_src;
-    String description;
-    String name;
-    String id;
-    String favorite;
-    String imgLink;
-    int price;
-    int count;
+    private String description;
+    private String name;
+    private String id;
+    private String favorite;
+    private String imgLink;
+    private int price;
+    private int count;
 
-    int num_link;
-    JSONArray image_json;
-    List<JSONArray> image_series;
+    private int num_link;
+    private JSONArray image_json;
+    private List<JSONArray> image_series;
 
     public int getPrice() {
         return price;
@@ -78,17 +74,6 @@ public class ListItem {
     public ListItem() {
 
     }
-
-
-    public int getId1() {
-        return id1;
-    }
-
-    public void setId1(int id1) {
-        this.id1 = id1;
-    }
-
-
     public String getName() {
         return name;
     }
@@ -134,7 +119,7 @@ public class ListItem {
     }
 
     public int get_img_src_size(){
-         return img_src.size();
+        return img_src.size();
     }
 
     public String getImgLink() {

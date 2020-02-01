@@ -7,25 +7,31 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.example.qhs.wallpapershopping.Fragments.Fragment_Shopping;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_about;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_home;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_search;
 import com.sdsmdg.harjot.vectormaster.VectorMasterView;
 import com.sdsmdg.harjot.vectormaster.models.PathModel;
-
-import About.AboutUs;
-import Recycler.Search;
 
 public class UIElement extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private Context context;
     private Activity activity;
+    private Fragment fragment;
     private AuthHelper mAuthHelper;
     public BottomNavigationView bottomNavigation;
     //burved bottom navigation
@@ -428,7 +434,7 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        mAuthHelper = AuthHelper.getInstance(this);
+        mAuthHelper = AuthHelper.getInstance(context);
 
         switch (menuItem.getItemId()){
             case R.id.menu_shopping_cart:
@@ -443,14 +449,16 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
                 drawAnimation(fab_shopping_cart);
 
                 if (mAuthHelper.isLoggedIn()) {
-                    Intent intent3= new Intent(context, ShoppingActivity.class);
-                    context.startActivity(intent3); // start Intent
+                    Fragment fragment = new Fragment_Shopping();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+
+
                     //item.setIcon(R.drawable.shopping_fill);
                 } else {
                     Bitmap map = takeScreenShot(activity);
                     Bitmap fast = fastblur(map, 10);
                     this.fastblur = fast;
-                    context.startActivity(new Intent(context, RegisterDialogActivity.class));
+                   // context.startActivity(new Intent(context, RegisterDialogActivity.class));
                 }
                 break;
             case R.id.menu_search:
@@ -464,8 +472,9 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
                 fab_favorite.setVisibility(View.GONE);
                 fab_call.setVisibility(View.GONE);
                 drawAnimation(fab_search);
-                Intent intent2 = new Intent(context, Search.class);
-                context.startActivity(intent2); // start Intent
+                fragment = new Fragment_search();
+                ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+
                 break;
 
             case R.id.menu_home:
@@ -479,7 +488,14 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
                 fab_favorite.setVisibility(View.GONE);
                 fab_call.setVisibility(View.GONE);
                 drawAnimation(fab_home);
-                context.startActivity(new Intent(context, MainActivity.class));
+             //   context.startActivity(new Intent(context, MainActivity.class));
+                fragment = new Fragment_home();
+                final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame, fragment);
+                transaction.addToBackStack(null);
+//                transaction.commit();
+                //getSupportFragmentManager().beginTransaction()
+                  //      .add(frameLayout, fragment).commit();
                 break;
 
             case R.id.menu_favorite:
@@ -495,14 +511,15 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
                 drawAnimation(fab_favorite);
 
                 if (mAuthHelper.isLoggedIn()) {
-                    Intent intent4 = new Intent(context, FavoriteActivity.class);
-                    context.startActivity(intent4); // start Intent
+                    fragment = new Fragment_favorite();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+
                     // item.setIcon(R.drawable.favorite_fill);
                 } else {
 //                    Bitmap map = takeScreenShot(activity);
 //                    Bitmap fast = fastblur(map, 10);
 //                    this.fastblur = fast;
-                    context.startActivity(new Intent(context, RegisterDialogActivity.class));
+                   // context.startActivity(new Intent(context, RegisterDialogActivity.class));
                 }
                 break;
 
@@ -517,7 +534,9 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
                 fab_search.setVisibility(View.GONE);
                 fab_favorite.setVisibility(View.GONE);
                 drawAnimation(fab_call);
-                context.startActivity(new Intent(context, AboutUs.class)); // start Intent
+                fragment = new Fragment_about();
+                ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+
                 break;
 
               // 1/6           2/6               3/6          4/6           5/6
