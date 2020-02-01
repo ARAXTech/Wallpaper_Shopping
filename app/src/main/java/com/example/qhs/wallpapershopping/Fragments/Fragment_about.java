@@ -1,59 +1,34 @@
-package About;
+package com.example.qhs.wallpapershopping.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.qhs.wallpapershopping.R;
-import com.example.qhs.wallpapershopping.UIElement;
 
-public class AboutUs extends AppCompatActivity {
+import About.AboutAdapter;
+
+
+public class Fragment_about extends Fragment {
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_us);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
 
 
-        //Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        UIElement cls = new UIElement(AboutUs.this,this);
-        cls.FontMethod();
-        //add back button in toolbar
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
-
-        //Navigation
-        UIElement cls1 = new UIElement(AboutUs.this,this);
-        //cls1.NavigationMethod();
-        cls1.curvedNavigationMethod();
-
-
-        //face
-        final Typeface face=Typeface.createFromAsset(getAssets(), "yekan/homa.ttf");
-        TextView txtView_title = (TextView)findViewById(R.id.txtTitle);
-        txtView_title.setTypeface(face);
-
-
-
-        ///
-        ImageView map = (ImageView)findViewById(R.id.imgView_map);
+        ImageView map = (ImageView) view.findViewById(R.id.imgView_map);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,14 +37,14 @@ public class AboutUs extends AppCompatActivity {
                 startActivity(intent4);
             }
         });
-        TextView txtView_contact = (TextView)findViewById(R.id.txtView_contactUs);
-        txtView_contact.setTypeface(face);
+        TextView txtView_contact = (TextView) view.findViewById(R.id.txtView_contactUs);
+        //    txtView_contact.setTypeface(face);
 
-      //  Button contact=(Button)findViewById(R.id.contact);
+        //  Button contact=(Button)findViewById(R.id.contact);
 //        contact.setTypeface(face);
 
-    //    Button email=(Button) findViewById(R.id.email);
-    //    email.setTypeface(face);
+        //    Button email=(Button) findViewById(R.id.email);
+        //    email.setTypeface(face);
 
 //        contact.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -99,7 +74,7 @@ public class AboutUs extends AppCompatActivity {
 //
 
 
-        final ListView simpleList1 = (ListView) findViewById(R.id.listA);
+        final ListView simpleList1 = (ListView) view.findViewById(R.id.listA);
 
         final String[] myStrings = {
                 "025-0000000",
@@ -123,7 +98,7 @@ public class AboutUs extends AppCompatActivity {
                 R.drawable.telegram,
                 R.drawable.address};*/
 
-        final AboutAdapter aboutAdapter = new AboutAdapter(getApplicationContext(), myStrings, imgStrings);
+        final AboutAdapter aboutAdapter = new AboutAdapter(getContext(), myStrings, imgStrings);
         simpleList1.setAdapter(aboutAdapter);
 
 
@@ -132,7 +107,7 @@ public class AboutUs extends AppCompatActivity {
             public void onItemClick(AdapterView <?> adapterView, View view, int position, long l) {
 
                 TextView textView = (TextView) view.findViewById(R.id.txtA);
-                textView.setTypeface(face);
+                //          textView.setTypeface(face);
 
                 switch (position) {
                     case 0:
@@ -156,7 +131,7 @@ public class AboutUs extends AppCompatActivity {
                         Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(scheme));
 
                         try {
-                            getApplicationContext().getPackageManager().getPackageInfo(nomPackageInfo, 0);
+                            getContext().getPackageManager().getPackageInfo(nomPackageInfo, 0);
                         } catch (Exception e) {
                             intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
                         }
@@ -179,7 +154,7 @@ public class AboutUs extends AppCompatActivity {
                         try {
                             startActivity(Intent.createChooser(i, "Send mail..."));
                         } catch (android.content.ActivityNotFoundException ex) {
-                            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -204,6 +179,8 @@ public class AboutUs extends AppCompatActivity {
         });
 
 
+        return view;
     }
+
 
 }

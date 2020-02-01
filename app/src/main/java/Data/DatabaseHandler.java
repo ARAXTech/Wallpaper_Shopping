@@ -34,7 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + util.KEY_FAVORITE + " TEXT DEFAULT 'false', "
                 + util.KEY_NUM_LINK + " INTEGER DEFAULT 0, "
                 + util.KEY_PRICE + " INTEGER DEFAULT 1, "
-                + util.KEY_COUNT + " INTEGER DEFAULT 1 " +")";
+                + util.KEY_COUNT + " INTEGER DEFAULT 0 " +")";
         sqLiteDatabase.execSQL(CREATE_GL_TABLE);
 
     }
@@ -84,12 +84,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return null;
     }
 
-    public List <ListItem> getAllListItem() {
+    public List <ListItem> getAllFavoriteItem() {
         SQLiteDatabase db = this.getReadableDatabase();
         //  List<Contact> contactList = new ArrayList<>();
         List <ListItem> ItemList = new ArrayList <>();
         //select all contacts
-        String selectAll = "SELECT * FROM " + util.TABLE_NAME;
+        Cursor cursor = null;
+        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_FAVORITE+"='" + true + "'";
+        cursor = db.rawQuery(selectAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ListItem item = new ListItem();
+                item.setId(cursor.getString(0));
+                Log.d("id in db", ""+item.getId());
+                item.setName(cursor.getString(1));
+                item.setDescription(cursor.getString(2));
+                item.setImgLink(cursor.getString(3));
+                item.setFavorite(cursor.getString(4));
+                item.setNum_link(cursor.getInt(5));
+                item.setPrice(cursor.getInt(6));
+                item.setCount(cursor.getInt(7));
+                //add contact object to our contact list
+                ItemList.add(item);
+                //  ListItem item=new ListItem(cursor.getString(1),cursor.getString(2));
+                //ItemList.add(item);
+            }
+            while (cursor.moveToNext());
+        }
+        return ItemList;
+    }
+
+
+    public List <ListItem> getAllShoppingItem() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //  List<Contact> contactList = new ArrayList<>();
+        List <ListItem> ItemList = new ArrayList <>();
+        //select all contacts
+        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_COUNT+"!=0";
         Cursor cursor = db.rawQuery(selectAll, null);
         if (cursor.moveToFirst()) {
             do {
@@ -170,8 +201,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //    }
 
     //get contacts count
-    public int getListItemCount() {
-        String countQuery = "SELECT * FROM " + util.TABLE_NAME;
+    public int getFavoriteItemCount() {
+        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_FAVORITE+"='" + true + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        // int count=cursor.getCount();
+        //  cursor.close();
+        //return  count;
+        return cursor.getCount();
+
+    }
+
+    //get contacts count
+    public int getShoppingItemCount() {
+        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_COUNT+"!=0";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
 

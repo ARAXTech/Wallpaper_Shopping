@@ -1,110 +1,259 @@
 package com.example.qhs.wallpapershopping.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-//import com.example.qhs.deydigital.com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.network.NetworkRequest;
+import com.example.qhs.wallpapershopping.network.Token;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Fragment_login.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Fragment_login#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Fragment_login extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView mTitleAction;
+    private TextView mPromptAction;
+    private EditText mEditEmail;
+    private EditText mEditPassword;
+    private EditText mEditUsername;
+    private Button mButtonAction;
 
-    private OnFragmentInteractionListener mListener;
+    private ProgressDialog mProgressDialog;
+    private AuthHelper mAuthHelper;
 
-    public Fragment_login() {
-        // Required empty public constructor
-    }
+    private Fragment fragment;
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_login.
+     * Flag to show whether it is sign up field that's showing
      */
-    // TODO: Rename and change types and number of parameters
-    public static Fragment_login newInstance(String param1, String param2) {
-        Fragment_login fragment = new Fragment_login();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private boolean mIsSignUpShowing;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        mAuthHelper = AuthHelper.getInstance(getContext());
+        mProgressDialog = new ProgressDialog(getContext());
+
+        mTitleAction = (TextView) view.findViewById(R.id.text_title);
+        mPromptAction = (TextView) view.findViewById(R.id.prompt_action);
+        mEditEmail = (EditText) view.findViewById(R.id.edit_email);
+        mEditPassword = (EditText) view.findViewById(R.id.edit_password);
+        mEditUsername = (EditText) view.findViewById(R.id.edit_username);
+        mButtonAction = (Button) view.findViewById(R.id.button_action);
+
+        setupView(mIsSignUpShowing);
+
+        if (mAuthHelper.isLoggedIn()) {
+            startActivity(new Intent(getContext(), Fragment_home.class) );
+//            fragment = new Fragment_home();
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.frame, fragment).commit();
         }
+
+        return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    /**
+     * Sets up the view based on whether or not the sign up screen is showing
+     *
+     * @param isSignUpShowing - flag indicating whether the sign up form is showing
+     */
+    private void setupView(boolean isSignUpShowing) {
+        mIsSignUpShowing = isSignUpShowing;
+        mTitleAction.setText(isSignUpShowing ? R.string.text_sign_up : R.string.text_login);
+        mButtonAction.setText(isSignUpShowing ? R.string.text_sign_up : R.string.text_login);
+        mPromptAction.setText(isSignUpShowing ? R.string.prompt_login: R.string.prompt_signup);
+
+        mEditUsername.setVisibility(isSignUpShowing ? View.VISIBLE : View.GONE);
+        mButtonAction.setOnClickListener(isSignUpShowing ? doSignUpClickListener : doLoginClickListener);
+        mPromptAction.setOnClickListener(isSignUpShowing ? showLoginFormClickListener :
+                showSignUpFormClickListener);
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Log the user in and navigate to profile screen when successful
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private void doLogin() {
+        String username = getEmailText();
+        String password = getPasswordText();
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+            Toast.makeText(getContext(), R.string.toast_no_empty_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mProgressDialog.setMessage(getString(R.string.progress_login));
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.show();
+        NetworkRequest request = new NetworkRequest();
+        request.doLogin(username, password, mLoginCallback);
     }
+
+    /**
+     * Sign up the user and navigate to profile screen
+     */
+    private void doSignUp() {
+        String email = getEmailText();
+        String password = getPasswordText();
+        String username = getUsernameText();
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) ||
+                TextUtils.isEmpty(email)) {
+            Toast.makeText(getContext(), R.string.toast_no_empty_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mProgressDialog.setMessage(getString(R.string.progress_signup));
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.show();
+        NetworkRequest request = new NetworkRequest();
+        request.doSignUp(email, username, password, mSignUpCallback);
+    }
+
+    private String getEmailText() {
+        return mEditEmail.getText().toString().trim();
+    }
+
+    private String getPasswordText() {
+        return mEditPassword.getText().toString().trim();
+    }
+
+    private String getUsernameText() {
+        return mEditUsername.getText().toString().trim();
+    }
+
+    /**
+     * Save session details and navigates to the quotes activity
+     * @param token - {@link Token} received on login or signup
+     */
+    private void saveSessionDetails(@NonNull Token token) {
+        mAuthHelper.setIdToken(token);
+
+//        Log.d("saveSessionDetails", token.getIdToken());
+        // start profile activity
+        //   startActivity(MainActivity.getCallingIntent(this));
+//        startActivity(new Intent(getContext(), Fragment_home.class));
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame, new Fragment_home());
+        fragmentTransaction.commit();
+
+
+    }
+
+    /**
+     * Callback for login
+     */
+    private NetworkRequest.Callback<Token> mLoginCallback = new NetworkRequest.Callback<Token>() {
+        @Override
+        public void onResponse(@NonNull Token response) {
+            dismissDialog();
+            // save token and go to profile page
+            saveSessionDetails(response);
+        }
+
+        @Override
+        public void onError(String error) {
+            dismissDialog();
+            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            Log.d("mLoginCallback", error);
+        }
+
+        @Override
+        public Class<Token> type() {
+            return Token.class;
+        }
+
+    };
+
+    /**
+     * Callback for sign up
+     */
+    private NetworkRequest.Callback<Token> mSignUpCallback = new NetworkRequest.Callback<Token>() {
+        @Override
+        public void onResponse(@NonNull Token response) {
+            dismissDialog();
+            // save token and go to profile page
+            saveSessionDetails(response);
+        }
+
+        @Override
+        public void onError(String error) {
+            dismissDialog();
+            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public Class<Token> type() {
+            return Token.class;
+        }
+    };
+
+    /**
+     * Dismiss the dialog if it's showing
+     */
+    private void dismissDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    /**
+     * Click listener to show sign up form
+     */
+    private final View.OnClickListener showSignUpFormClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setupView(true);
+        }
+    };
+
+    /**
+     * Click listener to show login form
+     */
+    private final View.OnClickListener showLoginFormClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setupView(false);
+        }
+    };
+
+    /**
+     * Click listener to invoke login
+     */
+    private final View.OnClickListener doLoginClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            doLogin();
+        }
+    };
+
+    /**
+     * Click listener to invoke sign up
+     */
+    private final View.OnClickListener doSignUpClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            doSignUp();
+        }
+    };
 }

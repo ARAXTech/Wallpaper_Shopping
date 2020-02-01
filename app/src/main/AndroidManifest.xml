@@ -26,32 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.qhs.wallpapershopping.SecondActivity" />
-        <activity
-            android:name="Gallery.gallery"
-            android:screenOrientation="portrait" />
-        <activity android:name="Recycler.RecyclerActivity" />
         <activity android:name="com.example.qhs.wallpapershopping.Splashscreen" />
-        <activity android:name="About.AboutUs" />
-        <activity android:name="Recycler.Search" />
-        <activity android:name="com.example.qhs.wallpapershopping.FavoriteActivity" />
-        <activity
-            android:name="com.example.qhs.wallpapershopping.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name="com.example.qhs.wallpapershopping.QuotesActivity" />
-        <activity android:name="com.example.qhs.wallpapershopping.ShoppingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="zarinpalpayment"
-                    android:scheme="app" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.example.qhs.wallpapershopping.RegisterDialogActivity"></activity>
     </application>
 
 </manifest>

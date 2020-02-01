@@ -1,6 +1,12 @@
 package Recycler;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,72 +71,101 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                 public void onClick(View v) {
                     int position = getAdapterPosition();
 
+                    Bundle bundle = new Bundle();
+                    Fragment fragment;
+
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     switch (position){
                         case 0:
                             //salon paziraee
-                            Intent intent = new Intent(context, RecyclerActivity.class);
-                            intent.putExtra("key", "18"); // put image data in Intent
-                            //intent.putExtra("count", "275"); // put number of image data in Intent
-                            intent.putExtra("count", "15");
-                            context.startActivity(intent); // start Intent
-                          //  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                            bundle.putString("key", "18");
+                            bundle.putString("count", "15");
+//                        Intent intent = new Intent(getContext(), Fragment_recycler.class);
+//                        intent.putExtra("key", "18"); // put image data in Intent
+//                        //intent.putExtra("count", "275"); // put number of image data in Intent
+//                        intent.putExtra("count", "15");
+                            //animation
+                            if(Build.VERSION.SDK_INT>20){
+//                            ActivityOptions options =
+//                                    ActivityOptions.makeSceneTransitionAnimation(getActivity());
+//                            startActivity(intent,options.toBundle());
+
+                                fragment = new Fragment_recycler();
+                                fragment.setArguments(bundle);
+                                // Fragment myFragment = new TaskApprovalFragmentDetails();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            }else {
+
+                                //startActivity(intent);
+                                fragment = new Fragment_recycler();
+                                fragment.setArguments(bundle);
+                                // Fragment myFragment = new TaskApprovalFragmentDetails();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            }
+                            //End animation
+                            //the below line commented because of animation
+                            //startActivity(intent); // start Intent
+                            //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             break;
                         case 1:
                             //otagh koodak
-                            //salon paziraee
-                            Intent intent1 = new Intent(context, RecyclerActivity.class);
-                            intent1.putExtra("key", "111"); // put image data in Intent
+                            bundle.putString("key", "111");// put image data in Intent
+                            bundle.putString ("count", "5");
                             //intent.putExtra("count", "275"); // put number of image data in Intent
-                            intent1.putExtra("count", "5");
-                            context.startActivity(intent1); // start Intent
-                           // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            fragment = new Fragment_recycler();
+                            fragment.setArguments(bundle);
+                            // Fragment myFragment = new TaskApprovalFragmentDetails();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             break;
 
                         case 2:
                             //posht e TV
-                            Intent intent2 = new Intent(context, RecyclerActivity.class);
-                            intent2.putExtra("key", "20"); // put image data in Intent
-                            //intent2.putExtra("count", "99"); // put number of image data in Intent
-                            intent2.putExtra("count", "5");
-                            context.startActivity(intent2); // start Intent
-                           // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            bundle.putString("key", "20");// put image data in Intent
+                            bundle.putString ("count", "5");
+                            //intent.putExtra("count", "275"); // put number of image data in Intent
+                            fragment = new Fragment_recycler();
+                            fragment.setArguments(bundle);
+                            // Fragment myFragment = new TaskApprovalFragmentDetails();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
                             break;
                         case 3:
                             //otagh khab
-                            Intent intent3 = new Intent(context, RecyclerActivity.class);
-                            intent3.putExtra("key", "112"); // put image data in Intent
+                            bundle.putString("key", "112");// put image data in Intent
+                            bundle.putString ("count", "5");
                             //intent.putExtra("count", "275"); // put number of image data in Intent
-                            intent3.putExtra("count", "5");
-                            context.startActivity(intent3); // start Intent
-                          //  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            fragment = new Fragment_recycler();
+                            fragment.setArguments(bundle);
+                            // Fragment myFragment = new TaskApprovalFragmentDetails();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
                             break;
 
                         case 4:
                             //3 boodi
-                            Intent intent4 = new Intent(context, RecyclerActivity.class);
-                            intent4.putExtra("key", "113"); // put image data in Intent
+                            bundle.putString("key", "113");// put image data in Intent
+                            bundle.putString ("count", "5");
                             //intent.putExtra("count", "275"); // put number of image data in Intent
-                            intent4.putExtra("count", "5");
-                            context.startActivity(intent4); // start Intent
-                            //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            fragment = new Fragment_recycler();
+                            fragment.setArguments(bundle);
+                            // Fragment myFragment = new TaskApprovalFragmentDetails();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
                             break;
                         case 5:
                             //honari
-                            Intent intent5 = new Intent(context, RecyclerActivity.class);
-                            intent5.putExtra("key", "21"); // put image data in Intent
+                            bundle.putString("key", "21");// put image data in Intent
+                            bundle.putString ("count", "5");
                             //intent.putExtra("count", "275"); // put number of image data in Intent
-                            intent5.putExtra("count", "5");
-                            context.startActivity(intent5); // start Intent
-                            //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            fragment = new Fragment_recycler();
+                            fragment.setArguments(bundle);
+                            // Fragment myFragment = new TaskApprovalFragmentDetails();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
                             break;
+
 
 
 
                     }
-                    // set an Intent to Another Activity
-                    // Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                    //intent.putExtra("image", logos[position]); // put image data in Intent
-                    //startActivity(intent); // start Intent
                 }
             });
 
