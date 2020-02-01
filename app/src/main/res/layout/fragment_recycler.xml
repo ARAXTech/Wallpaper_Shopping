@@ -2,15 +2,27 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="160dp"
+        app:layout_constraintBottom_toTopOf="@+id/reciclerViewID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints"/>
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reciclerViewHorizental"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +42,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="gone"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,16 +50,42 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reciclerViewID"
         android:layout_width="0dp"
-        android:layout_height="374dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:fadeScrollbars="false"
-        android:paddingTop="5dp"
         android:scrollbarSize="5dp"
         android:scrollbars="vertical"
+        android:paddingTop="5dp"
         app:layout_constraintBottom_toTopOf="@+id/cardN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reciclerViewHorizental" />
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reciclerViewID">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/shadow"
+
+            app:itemBackground="@color/SecondaryLight"
+            app:itemIconTint="@color/colorAccent"
+            app:itemTextColor="@color/colorAccent"
+            app:menu="@menu/bottom_nav_item"
+            />
+    </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

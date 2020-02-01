@@ -1,17 +1,23 @@
 package Recycler;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
@@ -28,7 +34,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.LoginActivity;
+import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.UIElement;
 
 
 import org.json.JSONArray;
@@ -51,8 +60,7 @@ import Ui.SpannableGridLayoutManager;
 
 import static com.android.volley.toolbox.Volley.newRequestQueue;
 
-
-public class Fragment_recycler extends Fragment {
+public class RecyclerActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     public RecyclerAdapter adapter;
@@ -63,7 +71,7 @@ public class Fragment_recycler extends Fragment {
     //log in
     private AuthHelper mAuthHelper;
     private Menu mOptionsMenu;
-    private Button profileBtn;
+    private ImageButton profileBtn;
 
     //com.example.qhs.deydigital.Json parametr
     private final static String URL_products = "https://mobifytech.ir/wc-api/v3/products?filter[limit] =-1";
@@ -87,48 +95,56 @@ public class Fragment_recycler extends Fragment {
     private List<RecyclerHorizentalItem> HorizentalItems = new ArrayList<>();
 
     public ProgressBar pgsBar;
-    // public Context context;
+   // public Context context;
     public String URL_complete;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recycler, container, false);
-
-//        //Splash Screen
-//        if (Splashscreen.Splash==0){
-//            Intent intent = new Intent(this,Splashscreen.class);
-//            startActivity(intent);
-//            super.onCreate(savedInstanceState);
-//            finish();
-//            return;
-//        }
-//        //End Splash
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setAnimation();
+        setContentView(R.layout.activity_recycler);
 
 
+        queue = newRequestQueue(this);
+        //Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        UIElement cls = new UIElement(RecyclerActivity.this,this);
+        cls.FontMethod();
+        //add back button in toolbar
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        queue = newRequestQueue(getContext());
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
 
-
+        //Navigation
+        UIElement cls1 = new UIElement(RecyclerActivity.this,this);
+        //cls1.NavigationMethod();
 
 
         //Profile
-      //  profileBtn=(Button) findViewById(R.id.ProfileBtn);
-        mProgressDialog = new ProgressDialog(getContext());
-        mAuthHelper = AuthHelper.getInstance(getContext());
-//       // profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//
-//            }
-//        });
+        profileBtn=(ImageButton) findViewById(R.id.ProfileBtn);
+        mProgressDialog = new ProgressDialog(this);
+        mAuthHelper = AuthHelper.getInstance(this);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+            }
+        });
         if (mAuthHelper.isLoggedIn()) {
             Log.d("USERNAME: ", "isloggedin");
-//            profileBtn.setVisibility(View.GONE);
+            profileBtn.setVisibility(View.GONE);
             // setupView();
+        } else {
+
+            //  finish();
         }
 
         //Horizental RecyclerView
@@ -146,14 +162,14 @@ public class Fragment_recycler extends Fragment {
                 "هنری",
         };
 
-        recyclerViewHorizental = (RecyclerView) view.findViewById(R.id.reciclerViewHorizental);
+        recyclerViewHorizental = (RecyclerView) findViewById(R.id.reciclerViewHorizental);
 
         // add a divider after each item for more clarity
         //recyclerViewHorizental.addItemDecoration(new DividerItemDecoration(
         //      RecyclerActivity.this, LinearLayoutManager.HORIZONTAL));
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(
-                getContext(), LinearLayoutManager.HORIZONTAL, false);
+                RecyclerActivity.this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerViewHorizental.setLayoutManager(horizontalLayoutManager);
 
@@ -165,12 +181,13 @@ public class Fragment_recycler extends Fragment {
             //  adapterHorizental.notifyDataSetChanged();
 
         }
-        adapterHorizental = new RecyclerViewHorizontalListAdapter(HorizentalItems, getContext());
+        adapterHorizental = new RecyclerViewHorizontalListAdapter(HorizentalItems, getApplicationContext());
         recyclerViewHorizental.setAdapter(adapterHorizental);
 
 
+
         //Retrieve Bundle value
-        Bundle extras = this.getArguments();
+        Bundle extras = getIntent().getExtras();
         if (extras == null) {
             category_id = null;
             Log.d("key:", category_id);
@@ -182,7 +199,7 @@ public class Fragment_recycler extends Fragment {
         image_series_json = new JSONArray();
 
         ///com.example.qhs.deydigital.Recycler
-        recyclerView = (RecyclerView) view.findViewById(R.id.reciclerViewID);
+        recyclerView = (RecyclerView) findViewById(R.id.reciclerViewID);
         recyclerView.setHasFixedSize(true);
         //********************
         SpannableGridLayoutManager gridLayoutManager = new
@@ -199,14 +216,16 @@ public class Fragment_recycler extends Fragment {
             }
         }, 3, 1f); // 3 is the number of coloumn , how nay to display is 1f
 
+
         recyclerView.setLayoutManager(gridLayoutManager);
 
+
         //*******************
-        // recyclerView.setLayoutManager( new GridLayoutManager(this,3));
+     // recyclerView.setLayoutManager( new GridLayoutManager(this,3));
         // SnapHelper snapHelper = new PagerSnapHelper();
-        // snapHelper.attachToRecyclerView(recyclerView);
+          // snapHelper.attachToRecyclerView(recyclerView);
         listItems = new ArrayList<>();
-        adapter = new RecyclerAdapter(getContext(), listItems);
+        adapter = new RecyclerAdapter(this, listItems);
         recyclerView.setAdapter(adapter);
 
         try {
@@ -215,7 +234,7 @@ public class Fragment_recycler extends Fragment {
             e.printStackTrace();
         }
         // newMyResponse(URL_products);
-        pgsBar = (ProgressBar) view.findViewById(R.id.pBar);
+        pgsBar = (ProgressBar) findViewById(R.id.pBar);
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -226,7 +245,10 @@ public class Fragment_recycler extends Fragment {
             }
         }, 1000);
         // pgsBar.setVisibility(view.GONE);
-return view;
+
+
+
+
     }
 
     private HostnameVerifier getHostnameVerifier() {
@@ -250,7 +272,7 @@ return view;
     public void category_Response_edited(String url) throws MalformedURLException {
 
         imageList.clear();
-        Bundle extras = this.getArguments();
+        Bundle extras = getIntent().getExtras();
         String count_string = extras.getString("count");
         String key_string = extras.getString("key");
 //        int count_int = Integer.valueOf(count_string);
@@ -329,8 +351,8 @@ return view;
                 params.put("Content-Type", "application/json");
                 //params.put("Content-Type", "application/x-www-form-urlencoded");
 
-                //  String access_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTcxNTU5MTAxLCJuYmYiOjE1NzE1NTkxMDEsImV4cCI6MTU3MjE2MzkwMSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.9Cgl5ZrBMV_MZ-ojZWjlguxHwqT0IuB0MiMCSxIJX2k";
-                // String creds = String.format("%s", access_token);
+              //  String access_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTcxNTU5MTAxLCJuYmYiOjE1NzE1NTkxMDEsImV4cCI6MTU3MjE2MzkwMSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.9Cgl5ZrBMV_MZ-ojZWjlguxHwqT0IuB0MiMCSxIJX2k";
+               // String creds = String.format("%s", access_token);
 
                 // params.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTY3NTg4MDczLCJuYmYiOjE1Njc1ODgwNzMsImV4cCI6MTU2ODE5Mjg3MywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.pP2G2lZJys5USenPHpvKxhy5ugH1xxWCDX2tSAikwfw");
 
@@ -348,6 +370,51 @@ return view;
         //requests.add(jsonArrayRequest);
         queue.add(jsonArrayRequest);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_signout){
+            mAuthHelper.clear();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+             profileBtn.setVisibility(View.VISIBLE );
+            //finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.signout_menu, menu);
+        mOptionsMenu = menu;
+        return super.onCreateOptionsMenu(mOptionsMenu);
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem register = menu.findItem(R.id.action_signout);
+        //register.setVisible(false);
+        if(mAuthHelper.isLoggedIn())
+        {
+            register.setVisible(true);
+        }
+        else
+        {
+            register.setVisible(false);
+        }
+        //invalidateOptionsMenu();
+        return true;
+    }
+    private void updateOptionsMenu() {
+        if (mOptionsMenu != null) {
+            onPrepareOptionsMenu(mOptionsMenu);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        updateOptionsMenu();
+        super.onConfigurationChanged(newConfig);
     }
 
 
