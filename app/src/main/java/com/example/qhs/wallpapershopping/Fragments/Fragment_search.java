@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,26 +78,11 @@ public class Fragment_search extends Fragment {
     private ProgressBar pgsBar;
     private EditText editText;
     public HurlStack hurlStack;
-    private Toolbar toolbar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        //Toolbar
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
-
-        //add back button in toolbar
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-               // getActivity().finish();
-                //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
         hurlStack = new HurlStack() {
             @Override
             protected HttpURLConnection createConnection(java.net.URL url)

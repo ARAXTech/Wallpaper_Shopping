@@ -9,46 +9,46 @@
         android:layout_height="match_parent"
         android:background="#F9FBFF">
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/textsplash"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="300dp"-->
-<!--            android:elevation="6dp"-->
-<!--            android:gravity="center"-->
-<!--            android:orientation="vertical"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
+        <LinearLayout
+            android:id="@+id/textsplash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="300dp"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Good Morning"-->
-<!--                android:textColor="#FFF"-->
-<!--                android:textSize="24sp" />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Good Morning"
+                android:textColor="#FFF"
+                android:textSize="24sp" />
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Mr Panda Risky"-->
-<!--                android:textColor="#FFF"-->
-<!--                android:textSize="16sp" />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mr Panda Risky"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
 
-<!--        </LinearLayout>-->
+        </LinearLayout>
 
-<!--        <ImageView-->
-<!--            android:id="@+id/clover"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="272dp"-->
-<!--            android:elevation="6dp"-->
-<!--            android:src="@drawable/clover"-->
-<!--            android:contentDescription="@string/text_login"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <ImageView
+            android:id="@+id/clover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="272dp"
+            android:elevation="6dp"
+            android:src="@drawable/clover"
+            android:contentDescription="@string/text_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <ImageView
             android:id="@+id/imageView_user"
             android:layout_width="71dp"
@@ -90,9 +90,8 @@
                 android:textColor="#FFF"
                 android:textSize="24sp"
                 android:text="@string/text_login"
+                app:layout_constraintStart_toEndOf="@+id/imageView_user"
                 app:layout_constraintTop_toTopOf="parent" />
-<!--                app:layout_constraintStart_toEndOf="@+id/imageView_user"-->
-
             <TextView
                 android:id="@+id/walletuser"
                 android:layout_width="wrap_content"
@@ -126,18 +125,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/bgapp"-->
-<!--            android:layout_width="526dp"-->
-<!--            android:layout_height="900dp"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:src="@drawable/bgapp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.936"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <ImageView
+            android:id="@+id/bgapp"
+            android:layout_width="526dp"
+            android:layout_height="900dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bgapp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.936"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
