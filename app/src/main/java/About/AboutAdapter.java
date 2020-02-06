@@ -14,10 +14,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.qhs.wallpapershopping.R;
 
 public class AboutAdapter extends BaseAdapter {
-    Context context;
-    String nameList[];
-    int imgList[];
-    LayoutInflater inflter;
+    private Context context;
+    private String nameList[];
+    private int imgList[];
+    private LayoutInflater inflter;
 
     public AboutAdapter(Context context, String[] nameList,int[] imgList) {
         this.context = context;
@@ -44,11 +44,11 @@ public class AboutAdapter extends BaseAdapter {
 
 
     public View getView(int i, View view, ViewGroup viewGroup) {
-       // Typeface face=Typeface.createFromAsset(context.getAssets(), "yekan/homa.ttf");
+//        Typeface face=Typeface.createFromAsset(context.getAssets(), "yekan/homa.ttf");
         view = inflter.inflate(R.layout.about_list, null);
         TextView name = (TextView) view.findViewById(R.id.txtA);
         name.setText(nameList[i]);
-        //name.setTypeface(face);
+    //    name.setTypeface(face);
         ImageView image=(ImageView)view.findViewById(R.id.imgA);
         //Picasso.with(context).load(imgList[i])
         //   .into(image);

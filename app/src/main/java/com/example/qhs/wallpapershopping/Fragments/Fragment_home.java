@@ -57,17 +57,17 @@ public class Fragment_home extends Fragment {
     //CurvedBottomNavigationView curvedBottomNavigationView;
 
     //GridView images
-    int logos[] = {
-            R.drawable.logo1,
-            R.drawable.logo12,
-            R.drawable.logo3,
-            R.drawable.logo6,
-            R.drawable.logo8,
-            R.drawable.logo5};
+//    int logos[] = {
+//            R.drawable.logo1,
+//            R.drawable.logo12,
+//            R.drawable.logo3,
+//            R.drawable.logo6,
+//            R.drawable.logo8,
+//            R.drawable.logo5};
     int vector[] = {
             R.drawable.livingroom,
             R.drawable.kids,
-            R.drawable.tvroom2,
+            R.drawable.tvroom,
             R.drawable.bedroom,
             R.drawable.threed,
             R.drawable.artistic};
@@ -101,27 +101,27 @@ public class Fragment_home extends Fragment {
 //        }
 //        //End Splash
 
-      //  super.onCreate(savedInstanceState);
+        //  super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
         frombottom = AnimationUtils.loadAnimation(getContext(), R.anim.frombottom);
-
-        textSplash = view.findViewById(R.id.textsplash);
-        textHome = view.findViewById(R.id.texthome);
-
-        bgApp = view.findViewById(R.id.bgapp);
-        clover = view.findViewById(R.id.clover);
+//
+//        textSplash = view.findViewById(R.id.textsplash);
+//        textHome = view.findViewById(R.id.texthome);
+//
+//        bgApp = view.findViewById(R.id.bgapp);
+//        clover = view.findViewById(R.id.clover);
 
         // init GridView
         simpleGrid = (GridView) view.findViewById(R.id.simpleGridView);
 
-//        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
-//        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
-        //bgApp.startAnimation(bgAnim);
-        bgApp.animate().translationY(-1900).setDuration(2000).setStartDelay(300);
-        clover.animate().alpha(0).setDuration(800).setStartDelay(600);
-        textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
-        textHome.startAnimation(frombottom);
+////        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
+////        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
+//        //bgApp.startAnimation(bgAnim);
+//        bgApp.animate().translationY(-1900).setDuration(2000).setStartDelay(300);
+//        clover.animate().alpha(0).setDuration(800).setStartDelay(600);
+//        textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
+//        textHome.startAnimation(frombottom);
 
         simpleGrid.startAnimation(frombottom);
 

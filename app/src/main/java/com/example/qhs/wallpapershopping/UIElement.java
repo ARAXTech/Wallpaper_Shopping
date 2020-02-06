@@ -120,61 +120,7 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
 //        });
 //    }
 //
-//    private void handleBottomNavigationItemSelected(MenuItem item) {
 //
-//        AnimationDrawable bottomNavigationAnimation;
-//        //log in
-//        mAuthHelper = AuthHelper.getInstance(this);
-//        switch (item.getItemId()) {
-//            case R.id.Home:
-//                // start Intent
-//                //  activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//
-//                //item.setIcon(R.drawable.animation_navigation_home);
-//                bottomNavigationAnimation = (AnimationDrawable) item.getIcon();
-//                bottomNavigationAnimation.start();
-//                context.startActivity(new Intent(context, MainActivity.class));
-//                break;
-//            case R.id.AboutUs:
-//                context.startActivity(new Intent(context, AboutUs.class)); // start Intent
-//                item.setIcon(R.drawable.phone_fill);
-//
-//                break;
-//            case R.id.Search:
-//                Intent intent2 = new Intent(context, Search.class);
-//                item.setIcon(R.drawable.animation_navigation_search);
-//                bottomNavigationAnimation = (AnimationDrawable) item.getIcon();
-//                bottomNavigationAnimation.start();
-//                context.startActivity(intent2); // start Intent
-//
-//                break;
-//            case R.id.Shop:
-//                if (mAuthHelper.isLoggedIn()) {
-//                    Intent intent3= new Intent(context, ShoppingActivity.class);
-//                    context.startActivity(intent3); // start Intent
-//                    item.setIcon(R.drawable.shopping_fill);
-//                } else {
-//                    Bitmap map = takeScreenShot(activity);
-//                    Bitmap fast = fastblur(map, 10);
-//                    this.fastblur = fast;
-//                    context.startActivity(new Intent(context, RegisterDialogActivity.class));
-//                }
-//
-//                break;
-//            case R.id.Favorite:
-//                if (mAuthHelper.isLoggedIn()) {
-//                    Intent intent4 = new Intent(context, FavoriteActivity.class);
-//                    context.startActivity(intent4); // start Intent
-//                    item.setIcon(R.drawable.favorite_fill);
-//                } else {
-//                    Bitmap map = takeScreenShot(activity);
-//                    Bitmap fast = fastblur(map, 10);
-//                    this.fastblur = fast;
-//                    context.startActivity(new Intent(context, RegisterDialogActivity.class));
-//                }
-//        }
-//    }
-
     public void defineVariable(){
 
            }

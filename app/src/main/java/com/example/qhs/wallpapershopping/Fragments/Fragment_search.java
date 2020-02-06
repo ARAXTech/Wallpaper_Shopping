@@ -1,15 +1,17 @@
-package Recycler;
+package com.example.qhs.wallpapershopping.Fragments;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -27,9 +29,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.qhs.wallpapershopping.R;
-import com.example.qhs.wallpapershopping.UIElement;
-
-import Ui.SpannableGridLayoutManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,27 +58,48 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import Model.ListItem;
+import Recycler.RecyclerAdapter;
+import Ui.SpannableGridLayoutManager;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.android.volley.toolbox.Volley.newRequestQueue;
 
-public class Search extends AppCompatActivity {
+//import com.example.qhs.deydigital.com.example.qhs.wallpapershopping.R;
+
+
+public class Fragment_search extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItems;
     private List<JSONArray> imageList;
     private RequestQueue queue;
-    public  View view;
+    //public  View view;
     public  JSONArray image_series_json;
     public String txt;
     private ProgressBar pgsBar;
     private EditText editText;
     public HurlStack hurlStack;
-
+    private Toolbar toolbar;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        //Toolbar
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
+
+        //add back button in toolbar
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+               // getActivity().finish();
+                //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
         hurlStack = new HurlStack() {
             @Override
             protected HttpURLConnection createConnection(java.net.URL url)
@@ -88,7 +108,7 @@ public class Search extends AppCompatActivity {
                         .createConnection(url);
                 try {
                     httpsURLConnection
-                            .setSSLSocketFactory(getSSLSocketFactory(getApplicationContext()));
+                            .setSSLSocketFactory(getSSLSocketFactory(getContext()));
                     //httpsURLConnection.setHostnameVerifier(getHostnameVerifier());
                     //Log.d("HostnameVerifier****", getHostnameVerifier().toString());
                 } catch (Exception e) {
@@ -98,42 +118,26 @@ public class Search extends AppCompatActivity {
             }
         };
 
-        queue = newRequestQueue(this, hurlStack);
+        queue = newRequestQueue(getContext(), hurlStack);
+        pgsBar = (ProgressBar) view.findViewById(R.id.SearchpBar);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.searchRecycler);
         firstLoad();
 
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 
-        //Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        UIElement cls = new UIElement(Search.this,this);
-        cls.FontMethod();
-        //add back button in toolbar
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
-
-        //Navigation
-        UIElement cls1 = new UIElement(Search.this,this);
-        //cls1.NavigationMethod();
-        cls1.curvedNavigationMethod();
 
         //NukeSSLCerts.nuke();
 
 
         //hide keyboard when activity start
-        getWindow().setSoftInputMode(
+        getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
         //**************************************************
-        editText=(EditText)findViewById(R.id.EtSearch);
+        editText=(EditText) view.findViewById(R.id.EtSearch);
 
         //  category_id=editText.getText().toString();
 
@@ -142,68 +146,7 @@ public class Search extends AppCompatActivity {
         image_series_json = new JSONArray();
 
         ///Recycler
-        recyclerView=(RecyclerView) findViewById(R.id.searchRecycler);
-        //recyclerView.setHasFixedSize(true);
-        //********************
-        SpannableGridLayoutManager gridLayoutManager = new
-                SpannableGridLayoutManager(new SpannableGridLayoutManager.GridSpanLookup() {
-            @Override
-            public SpannableGridLayoutManager.SpanInfo getSpanInfo(int position)
-            {
-                if (position == 0) {
-                    return new SpannableGridLayoutManager.SpanInfo(2, 2);
-                    //this will count of row and column you want to replace
-                } else {
-                    return new SpannableGridLayoutManager.SpanInfo(1, 1);
-                }
-            }
-        }, 3, 1f); // 3 is the number of coloumn , how nay to display is 1f
-
-        //*******************
-        recyclerView.setLayoutManager(gridLayoutManager);
-        // SnapHelper snapHelper = new PagerSnapHelper();
-        //   snapHelper.attachToRecyclerView(recyclerView);
-        listItems=new ArrayList<>();
-
-       // queue = Volley.newRequestQueue(this);
-
-
-        //
-        //adapter=new RecyclerAdapter( this,listItems, image_series_json);
-        adapter=new RecyclerAdapter( this,listItems);
-        recyclerView.setAdapter(adapter);
-        //
-
-       // final Typeface face = Typeface.createFromAsset(getAssets(), "yekan/homa.ttf");
-        TextView txtView_title = (TextView) findViewById(R.id.txtTitle);
-        //txtView_title.setTypeface(face);
-
-//////////////////
-        Button button_search = (Button)findViewById(R.id.btn_search);
-        //button_search.setTypeface(face);
-        button_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-
-                search();
-            }
-        });
-    }
-
-
-    public void search(){
-
-        imageList = new ArrayList<JSONArray>();
-        image_series_json = new JSONArray();
-
-        ///Recycler
-        recyclerView=(RecyclerView) findViewById(R.id.searchRecycler);
+        recyclerView=(RecyclerView) view.findViewById(R.id.searchRecycler);
         //recyclerView.setHasFixedSize(true);
         //********************
         SpannableGridLayoutManager gridLayoutManager = new
@@ -231,13 +174,75 @@ public class Search extends AppCompatActivity {
 
         //
         //adapter=new RecyclerAdapter( this,listItems, image_series_json);
-        adapter=new RecyclerAdapter( this,listItems);
+        adapter=new RecyclerAdapter( getContext(),listItems);
         recyclerView.setAdapter(adapter);
-        queue = newRequestQueue(this, hurlStack);
+        //
+
+//        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "yekan/homa.ttf");
+        TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
+//        txtView_title.setTypeface(face);
+
+//////////////////
+        Button button_search = (Button) view.findViewById(R.id.btn_search);
+//        button_search.setTypeface(face);
+        button_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+                search();
+            }
+        });
+
+        return view;
+    }
+
+    public void search(){
+
+        imageList = new ArrayList<JSONArray>();
+        image_series_json = new JSONArray();
+
+        ///Recycler
+        //recyclerView=(RecyclerView) view.findViewById(R.id.searchRecycler);
+        //recyclerView.setHasFixedSize(true);
+        //********************
+        SpannableGridLayoutManager gridLayoutManager = new
+                SpannableGridLayoutManager(new SpannableGridLayoutManager.GridSpanLookup() {
+            @Override
+            public SpannableGridLayoutManager.SpanInfo getSpanInfo(int position)
+            {
+                if (position == 0) {
+                    return new SpannableGridLayoutManager.SpanInfo(2, 2);
+                    //this will count of row and column you want to replace
+                } else {
+                    return new SpannableGridLayoutManager.SpanInfo(1, 1);
+                }
+            }
+        }, 3, 1f); // 3 is the number of coloumn , how nay to display is 1f
+
+        //*******************
+        recyclerView.setLayoutManager(gridLayoutManager);
+        // SnapHelper snapHelper = new PagerSnapHelper();
+        //   snapHelper.attachToRecyclerView(recyclerView);
+        listItems=new ArrayList<>();
+
+        // queue = Volley.newRequestQueue(this);
+
+
+        //
+        //adapter=new RecyclerAdapter( this,listItems, image_series_json);
+        adapter=new RecyclerAdapter( getContext(),listItems);
+        recyclerView.setAdapter(adapter);
+        queue = newRequestQueue(getContext(), hurlStack);
         String txt_search = txt=editText.getText().toString();
         // newMyResponse(URL_products);
-        pgsBar = (ProgressBar) findViewById(R.id.SearchpBar);
-        pgsBar.setVisibility(view.VISIBLE);
+
+        pgsBar.setVisibility(VISIBLE);
 
        /* final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -255,10 +260,10 @@ public class Search extends AppCompatActivity {
         Log.d("txt**",txt_search);
         String search_key_encode = Uri.encode(txt_search) ;
         url = "https://deydigital.ir/wc-api/v3/products?filter[q]=" +
-       // url = "https://deydigital.ir/wp-json/wc/v3/products?filter[q]=" +
-        //url="https://deydigital.ir/wp-json/wc/v1/products?filter[q]=" +
+                // url = "https://deydigital.ir/wp-json/wc/v3/products?filter[q]=" +
+                //url="https://deydigital.ir/wp-json/wc/v1/products?filter[q]=" +
                 search_key_encode +
-              //  "&per_page=100";
+                //  "&per_page=100";
                 "&page=";
 
 
@@ -305,7 +310,7 @@ public class Search extends AppCompatActivity {
                                     new ArrayList()
                             );
 
-                            pgsBar.setVisibility(view.GONE);
+                            pgsBar.setVisibility(GONE);
                             listItems.add(item);
                             adapter.notifyDataSetChanged();
                         }
@@ -343,8 +348,8 @@ public class Search extends AppCompatActivity {
     }
     public void firstLoad(){
 
-        pgsBar = (ProgressBar) findViewById(R.id.SearchpBar);
-        pgsBar.setVisibility(view.VISIBLE);
+
+        pgsBar.setVisibility(VISIBLE);
 
        /* final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -370,31 +375,31 @@ public class Search extends AppCompatActivity {
                     //JSONArray products = response.getJSONArray();
 
                     JSONArray products = response.getJSONArray("products");
-                        for (int i=0; i<products.length();i++){
+                    for (int i=0; i<products.length();i++){
 
-                            // response.getJSONArray()
-                            image_series_json =products.getJSONObject(i).getJSONArray("images");
-                            //viewDialog.hideDialog();
+                        // response.getJSONArray()
+                        image_series_json =products.getJSONObject(i).getJSONArray("images");
+                        //viewDialog.hideDialog();
 
-                            Log.d("hello","hiiii");
-                            //get image urls and save in arraylist
-                            imageList.add(image_series_json);
+                        Log.d("hello","hiiii");
+                        //get image urls and save in arraylist
+                        imageList.add(image_series_json);
 
-                            ListItem item=new ListItem(
-                                    products.getJSONObject(i).getJSONArray("images").
-                                            getJSONObject(0).getString("src"),
-                                    products.getJSONObject(i).getString("title"),
-                                    /*image_series_json*/
-                                    products.getJSONObject(i).getString("id"),
-                                    products.getJSONObject(i).getString("description"),
-                                    products.getJSONObject(i).getJSONArray("images"),
-                                    new ArrayList()
-                            );
+                        ListItem item=new ListItem(
+                                products.getJSONObject(i).getJSONArray("images").
+                                        getJSONObject(0).getString("src"),
+                                products.getJSONObject(i).getString("title"),
+                                /*image_series_json*/
+                                products.getJSONObject(i).getString("id"),
+                                products.getJSONObject(i).getString("description"),
+                                products.getJSONObject(i).getJSONArray("images"),
+                                new ArrayList()
+                        );
 
-                            pgsBar.setVisibility(view.GONE);
-                            listItems.add(item);
-                            adapter.notifyDataSetChanged();
-                        }
+                        pgsBar.setVisibility(GONE);
+                        listItems.add(item);
+                        adapter.notifyDataSetChanged();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -490,4 +495,5 @@ public class Search extends AppCompatActivity {
             }
         }};
     }
+
 }
