@@ -67,7 +67,7 @@ public class Fragment_home extends Fragment {
     int vector[] = {
             R.drawable.livingroom,
             R.drawable.kids,
-            R.drawable.tvroom2,
+            R.drawable.tvroom,
             R.drawable.bedroom,
             R.drawable.threed,
             R.drawable.artistic};

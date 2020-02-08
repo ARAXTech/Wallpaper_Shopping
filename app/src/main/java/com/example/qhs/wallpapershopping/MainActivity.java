@@ -156,25 +156,27 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
  cls1.curvedNavigationMethod();
  //cls1.NavigationMethod();
  **************************************/
-        curvedNavigationMethod();
+        //curvedNavigationMethod();
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
 
     }
 
     public void curvedNavigationMethod() {
-        curvedBottomNavigationView = (CurvedBottomNavigationView) findViewById(R.id.curved_bottom_navigation);
-        //BottomNavigationMenuView menuView = (BottomNavigationMenuView) curvedBottomNavigationView.getChildAt(0);
-
-        fab_home = (VectorMasterView) findViewById(R.id.fab_home);
-        fab_call = (VectorMasterView) findViewById(R.id.fab_call);
-        fab_favorite = (VectorMasterView) findViewById(R.id.fab_favorite);
-        fab_search = (VectorMasterView) findViewById(R.id.fab_search);
-        fab_shopping_cart = (VectorMasterView) findViewById(R.id.fab_shopping_cart);
-
-
-        lin_id = (RelativeLayout) findViewById(R.id.lin_id);
-
-        //set event for botton navigation
-        curvedBottomNavigationView.setOnNavigationItemSelectedListener(this);
+//        curvedBottomNavigationView = (CurvedBottomNavigationView) findViewById(R.id.curved_bottom_navigation);
+//        //BottomNavigationMenuView menuView = (BottomNavigationMenuView) curvedBottomNavigationView.getChildAt(0);
+//
+//        fab_home = (VectorMasterView) findViewById(R.id.fab_home);
+//        fab_call = (VectorMasterView) findViewById(R.id.fab_call);
+//        fab_favorite = (VectorMasterView) findViewById(R.id.fab_favorite);
+//        fab_search = (VectorMasterView) findViewById(R.id.fab_search);
+//        fab_shopping_cart = (VectorMasterView) findViewById(R.id.fab_shopping_cart);
+//
+//
+//        lin_id = (RelativeLayout) findViewById(R.id.lin_id);
+//
+//        //set event for botton navigation
+//        curvedBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     public static Bitmap takeScreenShot(Activity activity) {
@@ -402,15 +404,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (menuItem.getItemId()){
             case R.id.menu_shopping_cart:
-                draw(6);
-                //find the correct path using name
-                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
-                fab_shopping_cart.setVisibility(View.VISIBLE);
-                fab_home.setVisibility(View.GONE);
-                fab_search.setVisibility(View.GONE);
-                fab_favorite.setVisibility(View.GONE);
-                fab_call.setVisibility(View.GONE);
-                drawAnimation(fab_shopping_cart);
+//                draw(6);
+//                //find the correct path using name
+//                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
+//                fab_shopping_cart.setVisibility(View.VISIBLE);
+//                fab_home.setVisibility(View.GONE);
+//                fab_search.setVisibility(View.GONE);
+//                fab_favorite.setVisibility(View.GONE);
+//                fab_call.setVisibility(View.GONE);
+//                drawAnimation(fab_shopping_cart);
 
                 if (mAuthHelper.isLoggedIn()) {
                     fragment = new Fragment_Shopping();
@@ -425,15 +427,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.menu_search:
                 //Animation
-                draw(3);
-                //find the correct path using name
-                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
-                fab_home.setVisibility(View.GONE);
-                fab_shopping_cart.setVisibility(View.GONE);
-                fab_search.setVisibility(View.VISIBLE);
-                fab_favorite.setVisibility(View.GONE);
-                fab_call.setVisibility(View.GONE);
-                drawAnimation(fab_search);
+//                draw(3);
+//                //find the correct path using name
+//                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
+//                fab_home.setVisibility(View.GONE);
+//                fab_shopping_cart.setVisibility(View.GONE);
+//                fab_search.setVisibility(View.VISIBLE);
+//                fab_favorite.setVisibility(View.GONE);
+//                fab_call.setVisibility(View.GONE);
+//                drawAnimation(fab_search);
                 fragment = new Fragment_search();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame, fragment).commit();
@@ -441,15 +443,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.menu_home:
                 //Animation
-                draw(2);
-                //find the correct path using name
-                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
-                fab_home.setVisibility(View.VISIBLE);
-                fab_shopping_cart.setVisibility(View.GONE);
-                fab_search.setVisibility(View.GONE);
-                fab_favorite.setVisibility(View.GONE);
-                fab_call.setVisibility(View.GONE);
-                drawAnimation(fab_home);
+//                draw(2);
+//                //find the correct path using name
+//                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
+//                fab_home.setVisibility(View.VISIBLE);
+//                fab_shopping_cart.setVisibility(View.GONE);
+//                fab_search.setVisibility(View.GONE);
+//                fab_favorite.setVisibility(View.GONE);
+//                fab_call.setVisibility(View.GONE);
+//                drawAnimation(fab_home);
                 //   context.startActivity(new Intent(context, MainActivity.class));
 
                 fragment = new Fragment_home();
@@ -459,15 +461,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.menu_favorite:
                 //Animation
-                draw2();
-                //find the correct path using name
-                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
-                fab_home.setVisibility(View.GONE);
-                fab_shopping_cart.setVisibility(View.GONE);
-                fab_search.setVisibility(View.GONE);
-                fab_favorite.setVisibility(View.VISIBLE);
-                fab_call.setVisibility(View.GONE);
-                drawAnimation(fab_favorite);
+//                draw2();
+//                //find the correct path using name
+//                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
+//                fab_home.setVisibility(View.GONE);
+//                fab_shopping_cart.setVisibility(View.GONE);
+//                fab_search.setVisibility(View.GONE);
+//                fab_favorite.setVisibility(View.VISIBLE);
+//                fab_call.setVisibility(View.GONE);
+//                drawAnimation(fab_favorite);
 
                 if (mAuthHelper.isLoggedIn()) {
                     fragment = new Fragment_favorite();
@@ -483,15 +485,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.menu_call:
                 //Animation
-                draw();
-                //find the correct path using name
-                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
-                fab_call.setVisibility(View.VISIBLE);
-                fab_home.setVisibility(View.GONE);
-                fab_shopping_cart.setVisibility(View.GONE);
-                fab_search.setVisibility(View.GONE);
-                fab_favorite.setVisibility(View.GONE);
-                drawAnimation(fab_call);
+//                draw();
+//                //find the correct path using name
+//                lin_id.setX(curvedBottomNavigationView.mFirstCurveControlPoint1.x-22);
+//                fab_call.setVisibility(View.VISIBLE);
+//                fab_home.setVisibility(View.GONE);
+//                fab_shopping_cart.setVisibility(View.GONE);
+//                fab_search.setVisibility(View.GONE);
+//                fab_favorite.setVisibility(View.GONE);
+//                drawAnimation(fab_call);
                 // context.startActivity(new Intent(context, AboutUs.class)); // start Intent
                 fragment = new Fragment_about();
                 getSupportFragmentManager().beginTransaction()
