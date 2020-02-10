@@ -21,9 +21,14 @@
     </style>
     <style name="toggleButton"  >
 
-        <item name="android:textOn"></item>
-        <item name="android:textOff"></item>
+        <item name="android:textOn"/>
+        <item name="android:textOff"/>
     </style>
+
+
+
+
+
 
 
 

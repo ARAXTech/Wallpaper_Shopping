@@ -78,28 +78,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         context= this;
 
 //        //Splash Screen
-//        if (Splashscreen.Splash==0){
-//            Intent intent = new Intent(this,Splashscreen.class);
-//            startActivity(intent);
-//            super.onCreate(savedInstanceState);
-//            finish();
-//            return;
-//        }
+        if (Splashscreen.Splash == 0){
+            Intent intent = new Intent(this,Splashscreen.class);
+            startActivity(intent);
+            super.onCreate(savedInstanceState);
+            finish();
+            return;
+        }
 //        //End Splash
 
         super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
         setContentView(R.layout.activity_main);
-        frombottom = AnimationUtils.loadAnimation(this, R.anim.frombottom);
+        //frombottom = AnimationUtils.loadAnimation(this, R.anim.frombottom);
 
-        textSplash = findViewById(R.id.textsplash);
-        textHome = findViewById(R.id.texthome);
+//        textSplash = findViewById(R.id.textsplash);
+//        textHome = findViewById(R.id.texthome);
+//
+//        bgApp = findViewById(R.id.bgapp);
+//        clover = findViewById(R.id.clover);
 
-        bgApp = findViewById(R.id.bgapp);
-        clover = findViewById(R.id.clover);
-
-
+        fragment = new Fragment_home();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.frame, fragment).commit();
 //        //Toolbar
 //         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //         setSupportActionBar(toolbar);
