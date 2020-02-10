@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,7 +103,7 @@ public class Fragment_home extends Fragment {
 //        }
 //        //End Splash
 
-      //  super.onCreate(savedInstanceState);
+        //  super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
         frombottom = AnimationUtils.loadAnimation(getContext(), R.anim.frombottom);
@@ -125,48 +127,22 @@ public class Fragment_home extends Fragment {
 
         simpleGrid.startAnimation(frombottom);
 
+        //Toolbar
 
-
-
-//        //Toolbar
-//         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//         setSupportActionBar(toolbar);
-
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("خانه");
         //comment here
 
         UIElement cls = new UIElement(getContext(), getActivity());
-        //cls.FontMethod();
-//        //add back button in toolbar
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                finish();
-//                //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-//            }
-//        });
-        //Profile
-        //profileBtn=(ImageButton) findViewById(R.id.ProfileBtn);
+
         mAuthHelper = AuthHelper.getInstance(getContext());
-
-//        profileBtn = (ImageButton) findViewById(R.id.ProfileBtn);
-//        profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//
-//            }
-//        });
-//
-
-
         txtView_login = view.findViewById(R.id.nameuser);
         txtView_signUp= view.findViewById(R.id.walletuser);
 
         //updateOptionsMenu();
         if (mAuthHelper.isLoggedIn()) {
             Log.d("USERNAME: ", "isloggedin");
-            //profileBtn.setVisibility(View.GONE);
             txtView_login.setText("Hello");
             txtView_signUp.setText(mAuthHelper.getUsername());
             // setupView();
@@ -180,16 +156,6 @@ public class Fragment_home extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
-        //Navigation
-//        UIElement cls1 = new UIElement(MainActivity.this,this);
-//        cls1.defineVariable();
-//        cls1.curvedNavigationMethod();
-        //cls1.NavigationMethod();
-
-
-
-
 
         // Create an object of GridAdapter and set Adapter to GirdView
         GridAdapter gridAdapter = new GridAdapter(getContext(), vector,txt,false);
@@ -210,6 +176,7 @@ public class Fragment_home extends Fragment {
 
                         bundle.putString("key", "18");
                         bundle.putString("count", "15");
+                        bundle.putString("name","سالن پذیرایی");
 //                        Intent intent = new Intent(getContext(), Fragment_recycler.class);
 //                        intent.putExtra("key", "18"); // put image data in Intent
 //                        //intent.putExtra("count", "275"); // put number of image data in Intent
@@ -245,6 +212,7 @@ public class Fragment_home extends Fragment {
                         //otagh koodak
                         bundle.putString("key", "111");// put image data in Intent
                         bundle.putString ("count", "5");
+                        bundle.putString("name","اتاق کودک");
                         //intent.putExtra("count", "275"); // put number of image data in Intent
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
@@ -259,6 +227,7 @@ public class Fragment_home extends Fragment {
                         //posht e TV
                         bundle.putString("key", "20");// put image data in Intent
                         bundle.putString ("count", "5");
+                        bundle.putString("name","پشت TV");
                         //intent.putExtra("count", "275"); // put number of image data in Intent
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
@@ -271,6 +240,7 @@ public class Fragment_home extends Fragment {
                         //otagh khab
                         bundle.putString("key", "112");// put image data in Intent
                         bundle.putString ("count", "5");
+                        bundle.putString("name","اتاق خواب");
                         //intent.putExtra("count", "275"); // put number of image data in Intent
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
@@ -284,6 +254,7 @@ public class Fragment_home extends Fragment {
                         //3 boodi
                         bundle.putString("key", "113");// put image data in Intent
                         bundle.putString ("count", "5");
+                        bundle.putString("name","سه بعدی");
                         //intent.putExtra("count", "275"); // put number of image data in Intent
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
@@ -296,6 +267,7 @@ public class Fragment_home extends Fragment {
                         //honari
                         bundle.putString("key", "21");// put image data in Intent
                         bundle.putString ("count", "5");
+                        bundle.putString("name","هنری");
                         //intent.putExtra("count", "275"); // put number of image data in Intent
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
@@ -308,20 +280,6 @@ public class Fragment_home extends Fragment {
                 }
             }
         });
-        Button button = (Button) view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuthHelper.clear();
-                Fragment fragment2 = new Fragment_home();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment2);
-                fragmentTransaction.commit();
-
-            }
-        });
-
 
         return view;
     }
@@ -343,57 +301,6 @@ public class Fragment_home extends Fragment {
     private void setWelcomeText(String username) {
         // Log.d("USERNAME: ", username);
         //  mTextWelcome.setText(String.format(getString(R.string.text_welcome), username));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_signout){
-            mAuthHelper.clear();
-            Fragment fragment2 = new Fragment_home();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment2);
-            fragmentTransaction.commit();
-            // profileBtn.setVisibility(View.VISIBLE );
-            //finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.signout_menu, menu);
-        mOptionsMenu = menu;
-        super.onCreateOptionsMenu(mOptionsMenu, inflater);
-    }
-
-
-    public void onPrepareOptionsMenu(Menu menu)
-    {
-        MenuItem register = menu.findItem(R.id.action_signout);
-        //register.setVisible(false);
-        if(mAuthHelper.isLoggedIn())
-        {
-            register.setVisible(true);
-        }
-        else
-        {
-            register.setVisible(false);
-        }
-        //invalidateOptionsMenu();
-
-    }
-    private void updateOptionsMenu() {
-        if (mOptionsMenu != null) {
-            onPrepareOptionsMenu(mOptionsMenu);
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        updateOptionsMenu();
-        super.onConfigurationChanged(newConfig);
     }
 
 }

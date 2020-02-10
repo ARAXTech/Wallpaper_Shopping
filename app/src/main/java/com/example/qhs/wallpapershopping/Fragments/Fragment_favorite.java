@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.example.qhs.wallpapershopping.AuthHelper;
@@ -54,12 +56,16 @@ public class Fragment_favorite extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
 
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("علاقه مندی ها");
 
         db = new DatabaseHandler(getContext());
 
         mAuthHelper = AuthHelper.getInstance(getContext());
-        //Button profileBtn=(Button) view.findViewById(R.id.ProfileBtn);
-        //profileBtn.setVisibility(View.GONE);
+
 
         recyclerView = (RecyclerView) view.findViewById(R.id.FavoriteRecycler);
         recyclerView.setHasFixedSize(true);
