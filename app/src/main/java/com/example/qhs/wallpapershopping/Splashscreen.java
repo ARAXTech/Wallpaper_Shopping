@@ -38,39 +38,45 @@ public class Splashscreen extends Activity {
         setContentView(R.layout.activity_splashscreen);
 
         StartAnimations();
-//        frombottom = AnimationUtils.loadAnimation(getContext(), R.anim.frombottom);
-//
-//        textSplash = findViewById(R.id.textsplash);
-//        textHome = findViewById(R.id.texthome);
-//
-//        bgApp = findViewById(R.id.bgapp);
-//        clover = findViewById(R.id.clover);
-//
-//        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
-////        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
-//        //bgApp.startAnimation(bgAnim);
-//        bgApp.animate().translationY(-1900).setDuration(2000).setStartDelay(300);
-//        clover.animate().alpha(0).setDuration(800).setStartDelay(600);
-//        textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
-//        textHome.startAnimation(frombottom);
+
+
+
+        //Splashscreen.this.finish();
+
     }
     //add animation
     private void StartAnimations() {
 
 
 
-        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
-        anim.reset();
-        ImageView i = (ImageView) findViewById(R.id.clover);
-        i.clearAnimation();
-        i.startAnimation(anim);
+//        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+//        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
+//        anim.reset();
+//        ImageView i = (ImageView) findViewById(R.id.clover);
+//        i.clearAnimation();
+//        i.startAnimation(anim);
+//
+//        anim = AnimationUtils.loadAnimation(this, R.anim.translate2);
+//        anim.reset();
+//        ImageView iv = (ImageView) findViewById(R.id.clover);
+//        iv.clearAnimation();
+//        iv.startAnimation(anim);
 
-        anim = AnimationUtils.loadAnimation(this, R.anim.translate2);
-        anim.reset();
-        ImageView iv = (ImageView) findViewById(R.id.clover);
-        iv.clearAnimation();
-        iv.startAnimation(anim);
+        frombottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.frombottom);
+//
+        textSplash = findViewById(R.id.textsplash);
+        textHome = findViewById(R.id.texthome);
+
+        bgApp = findViewById(R.id.bgapp);
+        clover = findViewById(R.id.clover);
+
+        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
+//        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
+        //bgApp.startAnimation(bgAnim);
+        bgApp.animate().translationY(-1900).setDuration(2000).setStartDelay(300);
+        clover.animate().alpha(0).setDuration(800).setStartDelay(600);
+        textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
+        textHome.startAnimation(frombottom);
 
         splashTread = new Thread() {
             @Override
