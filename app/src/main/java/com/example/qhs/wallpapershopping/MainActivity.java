@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -12,6 +13,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.example.qhs.wallpapershopping.Fragments.Fragment_Shopping;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_about;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_home;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_login;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_search;
 import com.sdsmdg.harjot.vectormaster.VectorMasterView;
 import com.sdsmdg.harjot.vectormaster.models.PathModel;
@@ -103,34 +106,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frame, fragment).commit();
 //        //Toolbar
-//         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//         setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //comment here
-
-//         UIElement cls = new UIElement(MainActivity.this,this);
-        //cls.FontMethod();
-//        //add back button in toolbar
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                finish();
-//                //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-//            }
-//        });
         //Profile
-        //profileBtn=(ImageButton) findViewById(R.id.ProfileBtn);
-        //       mAuthHelper = AuthHelper.getInstance(this);
+        mAuthHelper = AuthHelper.getInstance(this);
 
-//        profileBtn = (ImageButton) findViewById(R.id.ProfileBtn);
-//        profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//
-//            }
-//        });
+        profileBtn = (ImageButton) findViewById(R.id.ProfileBtn);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment = new Fragment_login();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame, fragment).commit();;
+
+            }
+        });
 //
 
 
@@ -138,27 +129,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //        txtView_signUp= findViewById(R.id.walletuser);
 //
 //        //updateOptionsMenu();
-//        if (mAuthHelper.isLoggedIn()) {
-//            Log.d("USERNAME: ", "isloggedin");
-//            //profileBtn.setVisibility(View.GONE);
-//            txtView_login.setText("Hello");
-//            txtView_signUp.setText(mAuthHelper.getUsername());
-//            // setupView();
-//        }
-//        txtView_login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-//            }
-//        });
-/*******************************
- //Navigation
- UIElement cls1 = new UIElement(MainActivity.this,this);
- cls1.defineVariable();
- cls1.curvedNavigationMethod();
- //cls1.NavigationMethod();
- **************************************/
-        //curvedNavigationMethod();
+        if (mAuthHelper.isLoggedIn()) {
+            Log.d("USERNAME: ", "isloggedin");
+            profileBtn.setVisibility(View.GONE);
+
+        }
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
@@ -402,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        mAuthHelper = AuthHelper.getInstance(this);
+        //  mAuthHelper = AuthHelper.getInstance(this);
 
         switch (menuItem.getItemId()){
             case R.id.menu_shopping_cart:
@@ -623,5 +599,51 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         });
         valueAnimator.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_signout){
+            mAuthHelper.clear();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            profileBtn.setVisibility(View.VISIBLE );
+            //finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.signout_menu, menu);
+        mOptionsMenu = menu;
+        return super.onCreateOptionsMenu(mOptionsMenu);
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem register = menu.findItem(R.id.action_signout);
+        //register.setVisible(false);
+        if(mAuthHelper.isLoggedIn())
+        {
+            register.setVisible(true);
+        }
+        else
+        {
+            register.setVisible(false);
+        }
+        //invalidateOptionsMenu();
+        return true;
+    }
+    private void updateOptionsMenu() {
+        if (mOptionsMenu != null) {
+            onPrepareOptionsMenu(mOptionsMenu);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        updateOptionsMenu();
+        super.onConfigurationChanged(newConfig);
     }
 }
