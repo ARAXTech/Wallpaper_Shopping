@@ -82,7 +82,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                     notifyItemRemoved(position); // notify the adapter about the removed item
                     notifyItemRangeChanged(position, getItemCount());
 
-                    deleteFromServer();
+                   // deleteFromServer();
 
                 }
             });
@@ -117,7 +117,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 //                            e.printStackTrace();
 //                        }
 
-                        request.JsonObjectNetRequest("POST", "cocart/v1/item", null, null);
+                    //    request.JsonObjectNetRequest("POST", "cocart/v1/item", null, null);
 //                        String item = parent.getItemAtPosition(position).toString();
 //                        Log.d("SPINNER ", item);
                     }
@@ -173,7 +173,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
                         int productId = response.getJSONObject(key).getInt("product_id");
                         if (productId == deleteId){
-                            request.JsonStringNetRequest("DELETE", "cocart/v1/item", key);
+                            //request.JsonStringNetRequest("DELETE", "cocart/v1/item", key);
                             break;
                         }
 

@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.example.qhs.wallpapershopping.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -29,7 +31,9 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
+import com.example.qhs.wallpapershopping.network.ErrorHandler;
 import com.example.qhs.wallpapershopping.network.NetRequest;
+import com.google.gson.Gson;
 import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener;
 import com.zarinpal.ewallets.purchase.OnCallbackVerificationPaymentListener;
 import com.zarinpal.ewallets.purchase.PaymentRequest;
@@ -304,78 +308,41 @@ public class Fragment_Shopping extends Fragment {
 
     public void addProduct(final int productId, final int quantity){
 
-        Log.d("ProductID Quantity ", String.valueOf(productId)+quantity);
+        Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
 
-//        final JSONObject postparams = new JSONObject();
 //
-//        try {
-//            postparams.put("product_id", productId);
-//            postparams.put("quantity", quantity);
+//        Map<String, String> params = new HashMap();
+//        params.put("product_id", "1444");
+//        params.put("quantity", "1");
 //
-//        } catch (JSONException e) {
-//            Log.d("JSONException_add", e.getMessage());
-//            e.printStackTrace();
-//        }
-//        NetRequest request = new NetRequest(this);
-//        request.JsonObjectNetRequest("POST", "cocart/v1/add-item" , mAddProductCallback, postparams);
-
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://mobifytech.ir/wp-json/cocart/v1/add-item";
+//        JSONObject parameters = new JSONObject(params);
 
 
-        JsonObjectRequest strRequest = new JsonObjectRequest(Request.Method.POST, url, null,
-                new com.android.volley.Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response)
-                    {
-                        //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new com.android.volley.Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-        {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("Authorization", "Bearer " + mAuthHelper.getIdToken());
-                return params;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError
-            {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("product_id", String.valueOf(productId));
-                params.put("quantity", String.valueOf(quantity));
-                return params;
-            }
-        };
-        final int socketTimeout = 100000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        strRequest.setRetryPolicy(policy);
-
-        queue.add(strRequest);
+        NetRequest request = new NetRequest(getContext());
+        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback, null);
 
     }
+
 
     private NetRequest.Callback<JSONObject> mAddProductCallback = new NetRequest.Callback<JSONObject>() {
         @Override
         public void onResponse(@NonNull JSONObject response) {
+            try {
+
+                Log.d("KEYYY ", response.getString("key"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onError(String error) {
+
+            Gson g = new Gson();
+            ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
+
+            Log.d("errorHandler ", errorHandler.getCode());
         }
     };
-
-
 
 }

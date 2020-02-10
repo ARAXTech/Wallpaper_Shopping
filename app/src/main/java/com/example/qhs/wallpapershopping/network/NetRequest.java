@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -63,14 +64,15 @@ public class NetRequest {
         }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 //VolleyLog.d("Error:", error.getMessage());
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Log.e("NoConnectionError", error.getMessage());
                 } else if (error instanceof AuthFailureError) {
                     Log.e("AuthFailureError", error.getMessage());
                 } else if (error instanceof ServerError) {
-                    callback.onError(error.getMessage());
-                    Log.e("ServerError", error.getMessage());
+                    callback.onError(error.networkResponse.toString());
+                    Log.e("VOLLEY_ServerError", error.toString());
                 } else if (error instanceof NetworkError) {
                     Log.e("NetworkError", error.getMessage());
                 } else if (error instanceof ParseError) {
@@ -95,6 +97,7 @@ public class NetRequest {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add(objectRequest);
+
 
     }
 
@@ -217,6 +220,13 @@ public class NetRequest {
     public interface Callback<T> {
         void onResponse(@NonNull T response);
         void onError(String error);
+    }
+
+    /**
+     * ApiResponse interface
+     */
+    public interface ApiResponse {
+        String string();
     }
 }
 
