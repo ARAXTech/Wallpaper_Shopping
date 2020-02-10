@@ -2,10 +2,13 @@ package Recycler;
 
 import android.app.ProgressDialog;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -111,23 +115,10 @@ public class Fragment_recycler extends Fragment {
 
         queue = newRequestQueue(getContext());
 
-
-
-
-        //Profile
-      //  profileBtn=(Button) findViewById(R.id.ProfileBtn);
         mProgressDialog = new ProgressDialog(getContext());
         mAuthHelper = AuthHelper.getInstance(getContext());
-//       // profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//
-//            }
-//        });
         if (mAuthHelper.isLoggedIn()) {
             Log.d("USERNAME: ", "isloggedin");
-//            profileBtn.setVisibility(View.GONE);
             // setupView();
         }
 
@@ -226,7 +217,29 @@ public class Fragment_recycler extends Fragment {
             }
         }, 1000);
         // pgsBar.setVisibility(view.GONE);
-return view;
+        return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
+        Bundle extras = this.getArguments();
+        String name_string = extras.getString("name");
+        //Toolbar
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText(name_string);
+
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     private HostnameVerifier getHostnameVerifier() {

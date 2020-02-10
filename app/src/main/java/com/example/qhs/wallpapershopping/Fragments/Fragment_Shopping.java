@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -69,6 +71,12 @@ public class Fragment_Shopping extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
+
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("سبد خرید");
 
         db = new DatabaseHandler(getContext());
 

@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +50,12 @@ public class Fragment_login extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("ورود");
 
         mAuthHelper = AuthHelper.getInstance(getContext());
         mProgressDialog = new ProgressDialog(getContext());

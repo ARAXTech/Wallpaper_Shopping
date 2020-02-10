@@ -8,11 +8,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,23 +92,8 @@ public class Fragment_gallery extends Fragment {
 
         TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
 
-
-//Profile
-//        profileBtn=(Button) findViewById(R.id.ProfileBtn);
-//        mAuthHelper = AuthHelper.getInstance(this);
-//
-//        profileBtn = (Button) findViewById(R.id.ProfileBtn);
-//        profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//
-//            }
-//        });
-
         //updateOptionsMenu();
         if (mAuthHelper.isLoggedIn()) {
-           // profileBtn.setVisibility(View.GONE);
             // setupView();
         }
 
@@ -213,7 +201,7 @@ public class Fragment_gallery extends Fragment {
 //                    fragmentTransaction = fragmentManager.beginTransaction();
 //                    fragmentTransaction.replace(R.id.frame, fragment);
 //                    fragmentTransaction.commit();
-                  //  startActivity(new Intent(getContext(),RegisterDialogActivity.class));
+                    //  startActivity(new Intent(getContext(),RegisterDialogActivity.class));
 
                 }
 
@@ -239,6 +227,25 @@ public class Fragment_gallery extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        //Toolbar
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("گالری");
+
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
+        super.onActivityCreated(savedInstanceState);
     }
 
 

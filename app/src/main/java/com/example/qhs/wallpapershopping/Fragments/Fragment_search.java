@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,6 +85,13 @@ public class Fragment_search extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("جستجو");
+
         hurlStack = new HurlStack() {
             @Override
             protected HttpURLConnection createConnection(java.net.URL url)
