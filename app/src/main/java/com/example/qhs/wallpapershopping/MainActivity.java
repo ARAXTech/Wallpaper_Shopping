@@ -12,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,20 +43,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ImageButton profileBtn;
     private TextView txtView_login;
     private TextView txtView_signUp;
-    ImageView bgApp, clover;
-    Animation bgAnim, cloverAnim;
-    LinearLayout textSplash, textHome;
-    Animation frombottom;
+    private Toolbar toolbar;
+    private ImageView bgApp, clover;
+    private Animation bgAnim, cloverAnim;
+    private LinearLayout textSplash, textHome;
+    private Animation frombottom;
 
 
     private Context context;
     private Fragment fragment;
     private FragmentManager fragmentManager;
     public BottomNavigationView bottomNavigation;
-    //burved bottom navigation
+    //curved bottom navigation
     public CurvedBottomNavigationView curvedBottomNavigationView ;
-    //    =
-//            (CurvedBottomNavigationView) activity.findViewById(R.id.curved_bottom_navigation);
     public VectorMasterView fab_home ,
             fab_search ,
             fab_favorite ,
@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public static Bitmap fastblur;
     public MenuItem menuItem;
-
-    //CurvedBottomNavigationView curvedBottomNavigationView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +97,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
 //        //Toolbar
-//         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//         setSupportActionBar(toolbar);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+         getSupportActionBar().setTitle("");
 
-        //comment here
 
 //         UIElement cls = new UIElement(MainActivity.this,this);
         //cls.FontMethod();
-//        //add back button in toolbar
+        //add back button in toolbar
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -160,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-            public void curvedNavigationMethod() {
+    public void curvedNavigationMethod() {
                 curvedBottomNavigationView = (CurvedBottomNavigationView) findViewById(R.id.curved_bottom_navigation);
                 //BottomNavigationMenuView menuView = (BottomNavigationMenuView) curvedBottomNavigationView.getChildAt(0);
 
@@ -399,7 +395,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 mAuthHelper = AuthHelper.getInstance(this);
-
+                //add back button in toolbar
+//                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        finish();
+//                        // overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//                    }
+//                });
                 switch (menuItem.getItemId()){
                     case R.id.menu_shopping_cart:
                         draw(6);

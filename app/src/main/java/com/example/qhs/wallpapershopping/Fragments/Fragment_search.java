@@ -3,8 +3,12 @@ package com.example.qhs.wallpapershopping.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +18,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -73,16 +78,22 @@ public class Fragment_search extends Fragment {
     private List<JSONArray> imageList;
     private RequestQueue queue;
     //public  View view;
-    public  JSONArray image_series_json;
+    public JSONArray image_series_json;
     public String txt;
     private ProgressBar pgsBar;
     private EditText editText;
     public HurlStack hurlStack;
+    private Toolbar toolbar;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+
         hurlStack = new HurlStack() {
             @Override
             protected HttpURLConnection createConnection(java.net.URL url)
@@ -183,6 +194,19 @@ public class Fragment_search extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("جستجو");
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("جستجو");
+
+
+
+
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     public void search(){

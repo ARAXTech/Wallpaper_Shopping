@@ -26,6 +26,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+
         <EditText
             android:id="@+id/EtSearch"
             android:layout_width="254dp"
@@ -36,34 +38,36 @@
             android:inputType="text"
             android:textColorLink="@color/colorAccent"
             android:textDirection="locale"
+            app:layout_constraintTop_toBottomOf="@+id/include"
             app:layout_constraintBottom_toTopOf="@+id/searchRecycler"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/selector_btn"
-            android:gravity="start|center_vertical"
-            android:text="@string/btn_search"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@+id/EtSearch"
-            app:layout_constraintEnd_toStartOf="@+id/EtSearch"
-            app:layout_constraintHorizontal_bias="0.333"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/EtSearch"
-            app:layout_constraintVertical_bias="0.272" />
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/selector_btn"
+        android:gravity="start|center_vertical"
+        android:text="@string/btn_search"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/EtSearch"
+        app:layout_constraintEnd_toStartOf="@+id/EtSearch"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/EtSearch"
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/searchRecycler"
         android:layout_width="0dp"
-        android:layout_height="519dp"
+        android:layout_height="418dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EtSearch"></android.support.v7.widget.RecyclerView>
     </android.support.constraint.ConstraintLayout>
