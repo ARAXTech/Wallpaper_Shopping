@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,12 @@ public class Fragment_about extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("درباره ما");
+
 
         ImageView map = (ImageView) view.findViewById(R.id.imgView_map);
         map.setOnClickListener(new View.OnClickListener() {
@@ -38,41 +46,6 @@ public class Fragment_about extends Fragment {
             }
         });
         TextView txtView_contact = (TextView) view.findViewById(R.id.txtView_contactUs);
-        //    txtView_contact.setTypeface(face);
-
-        //  Button contact=(Button)findViewById(R.id.contact);
-//        contact.setTypeface(face);
-
-        //    Button email=(Button) findViewById(R.id.email);
-        //    email.setTypeface(face);
-
-//        contact.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "+982532931515", null));
-//                startActivity(intent);
-//            }
-//        });
-//
-//        email.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                Intent i = new Intent(Intent.ACTION_SEND);
-//                i.setType("message/rfc822");
-//                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Deydigital@gmail.com"});
-//                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-//                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-//                try {
-//                    startActivity(Intent.createChooser(i, "Send mail..."));
-//                } catch (android.content.ActivityNotFoundException ex) {
-//                    Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//        });
-
-//
-
 
         final ListView simpleList1 = (ListView) view.findViewById(R.id.listA);
 
@@ -166,10 +139,6 @@ public class Fragment_about extends Fragment {
                         Uri uri = Uri.parse("geo:0,0?q=34.61608232923757,50.860158371844136(چاپ دیجیتال دی)");
                         Intent intent5 = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent5);
-
-
-
-
 
                 }
 
