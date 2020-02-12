@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.example.qhs.wallpapershopping.Fragments.Dialog;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_Shopping;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_about;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
@@ -400,7 +401,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     Bitmap map = takeScreenShot(this);
                     Bitmap fast = fastblur(map, 10);
                     this.fastblur = fast;
-                    //context.startActivity(new Intent(context, RegisterDialogActivity.class));
+                    fragment = new Dialog();
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.frame, fragment).commit();
                 }
                 break;
             case R.id.menu_search:
@@ -454,10 +457,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame, fragment).commit();
                 } else {
-//                    Bitmap map = takeScreenShot(activity);
-//                    Bitmap fast = fastblur(map, 10);
-//                    this.fastblur = fast;
-                    //  context.startActivity(new Intent(context, RegisterDialogActivity.class));
+                   Bitmap map = takeScreenShot(this);
+                    Bitmap fast = fastblur(map, 10);
+                    this.fastblur = fast;
+                    fragment = new Dialog();
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.frame, fragment).commit();
                 }
                 break;
 

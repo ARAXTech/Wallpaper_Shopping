@@ -196,12 +196,9 @@ public class Fragment_gallery extends Fragment {
                     Bitmap map = UIElement.takeScreenShot(getActivity());
                     Bitmap fast = UIElement.fastblur(map, 10);
                     UIElement.fastblur = fast;
-//                    fragment = new Fragment_recycler();
-//                    fragmentManager = getFragmentManager();
-//                    fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.frame, fragment);
-//                    fragmentTransaction.commit();
-                    //  startActivity(new Intent(getContext(),RegisterDialogActivity.class));
+                    fragment = new Dialog();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.frame, fragment).commit();
 
                 }
 
