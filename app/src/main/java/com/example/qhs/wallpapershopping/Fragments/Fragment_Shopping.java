@@ -33,7 +33,6 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
-import com.example.qhs.wallpapershopping.network.ErrorHandler;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.google.gson.Gson;
 import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener;
@@ -346,10 +345,10 @@ public class Fragment_Shopping extends Fragment {
         @Override
         public void onError(String error) {
 
-            Gson g = new Gson();
-            ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
+         //   Gson g = new Gson();
+           // ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
 
-            Log.d("errorHandler ", errorHandler.getCode());
+            //Log.d("errorHandler ", errorHandler.getCode());
         }
     };
 
