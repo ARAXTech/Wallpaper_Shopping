@@ -60,7 +60,6 @@
                 app:layout_constraintStart_toEndOf="@+id/txtTitle"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
 </android.support.v7.widget.CardView>

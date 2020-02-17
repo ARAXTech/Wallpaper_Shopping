@@ -46,20 +46,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ImageButton profileBtn;
     private TextView txtView_login;
     private TextView txtView_signUp;
-    ImageView bgApp, clover;
-    Animation bgAnim, cloverAnim;
-    LinearLayout textSplash, textHome;
-    Animation frombottom;
+    private Toolbar toolbar;
+    private ImageView bgApp, clover;
+    private Animation bgAnim, cloverAnim;
+    private LinearLayout textSplash, textHome;
+    private Animation frombottom;
 
 
     private Context context;
     private Fragment fragment;
     private FragmentManager fragmentManager;
     public BottomNavigationView bottomNavigation;
-    //burved bottom navigation
+    //curved bottom navigation
     public CurvedBottomNavigationView curvedBottomNavigationView ;
-    //    =
-//            (CurvedBottomNavigationView) activity.findViewById(R.id.curved_bottom_navigation);
     public VectorMasterView fab_home ,
             fab_search ,
             fab_favorite ,
@@ -72,10 +71,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public static Bitmap fastblur;
     public MenuItem menuItem;
-
-    //CurvedBottomNavigationView curvedBottomNavigationView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +102,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frame, fragment).commit();
 //        //Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+         getSupportActionBar().setTitle("");
+
 
         //Profile
         mAuthHelper = AuthHelper.getInstance(this);
@@ -136,8 +134,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         }
 
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
+
 
     }
 
@@ -369,10 +369,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 yi += w;
             }
+
         }
 
         Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+
 
         return (bitmap);
     }

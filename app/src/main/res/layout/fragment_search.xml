@@ -38,6 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent">
 
+
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
@@ -48,9 +49,10 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/searchRecycler"
         android:layout_width="0dp"
-        android:layout_height="519dp"
+        android:layout_height="418dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_layout"/>
 
