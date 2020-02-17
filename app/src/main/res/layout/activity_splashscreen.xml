@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F9FBFF"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <LinearLayout
         android:id="@+id/textsplash"
         android:layout_width="wrap_content"
@@ -19,14 +17,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Good Morning"
             android:textColor="#FFF"
             android:textSize="24sp" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,6 +81,4 @@
             android:text="@string/prompt_signup"
             app:layout_constraintTop_toBottomOf="@+id/nameuser" />
     </LinearLayout>
-
-
 </android.support.constraint.ConstraintLayout>

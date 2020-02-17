@@ -9,9 +9,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Animation bgAnim, cloverAnim;
     LinearLayout textSplash, textHome;
     Animation frombottom;
+    public ConstraintLayout constraintLayout;
+
 
 
     private Context context;
@@ -91,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 //        //End Splash
 
+        constraintLayout = (ConstraintLayout)findViewById(R.id.constraintLayout);
+
         super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
@@ -108,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .add(R.id.frame, fragment).commit();
 //        //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         //Profile
@@ -438,6 +445,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.frame, fragment).commit();
+
+                //constraintLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.bgheader));
                 break;
 
             case R.id.menu_favorite:
