@@ -55,6 +55,7 @@ public class Fragment_home extends Fragment {
     Animation bgAnim, cloverAnim;
     LinearLayout textSplash, textHome;
     Animation frombottom;
+    private Toolbar toolbar;
 
     //CurvedBottomNavigationView curvedBottomNavigationView;
 
@@ -91,6 +92,8 @@ public class Fragment_home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
 
 
 //        //Splash Screen
