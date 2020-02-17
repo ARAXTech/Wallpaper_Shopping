@@ -15,6 +15,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
+import android.support.v7.widget.Toolbar;
+
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,23 +97,8 @@ public class Fragment_gallery extends Fragment {
 
         TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
 
-
-//Profile
-//        profileBtn=(Button) findViewById(R.id.ProfileBtn);
-//        mAuthHelper = AuthHelper.getInstance(this);
-//
-//        profileBtn = (Button) findViewById(R.id.ProfileBtn);
-//        profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//
-//            }
-//        });
-
         //updateOptionsMenu();
         if (mAuthHelper.isLoggedIn()) {
-           // profileBtn.setVisibility(View.GONE);
             // setupView();
         }
 
@@ -214,12 +202,9 @@ public class Fragment_gallery extends Fragment {
                     Bitmap map = UIElement.takeScreenShot(getActivity());
                     Bitmap fast = UIElement.fastblur(map, 10);
                     UIElement.fastblur = fast;
-//                    fragment = new Fragment_recycler();
-//                    fragmentManager = getFragmentManager();
-//                    fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.frame, fragment);
-//                    fragmentTransaction.commit();
-                  //  startActivity(new Intent(getContext(),RegisterDialogActivity.class));
+                    fragment = new Dialog();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.frame, fragment).commit();
 
                 }
 
@@ -250,6 +235,25 @@ public class Fragment_gallery extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("گالری");
+
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
+        super.onActivityCreated(savedInstanceState);
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        //Toolbar
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("گالری");

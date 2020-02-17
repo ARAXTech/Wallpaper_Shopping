@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,7 +60,7 @@ public class GridAdapter  extends BaseAdapter {
 
        // AnimationDrawable imageAnimation;
 
-        ImageView icon = (ImageView) view.findViewById(R.id.icon); // get the reference of ImageView
+        ImageView icon =  view.findViewById(R.id.icon); // get the reference of ImageView
         //icon.setBackgroundResource(R.drawable.animation_navigation_home);
         //imageAnimation = (AnimationDrawable) icon.getBackground();
 

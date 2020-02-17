@@ -41,6 +41,9 @@
     <string name="Cart">Cart</string>
     <string name="AboutUS">AboutUS</string>
     <string name="Favorite">Favorite</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="price">قیمت: 100000 تومان</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +33,6 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
-import com.example.qhs.wallpapershopping.network.ErrorHandler;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.google.gson.Gson;
 import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener;
@@ -73,6 +74,12 @@ public class Fragment_Shopping extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
+
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("سبد خرید");
 
         db = new DatabaseHandler(getContext());
 
@@ -338,10 +345,10 @@ public class Fragment_Shopping extends Fragment {
         @Override
         public void onError(String error) {
 
-            Gson g = new Gson();
-            ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
+         //   Gson g = new Gson();
+           // ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
 
-            Log.d("errorHandler ", errorHandler.getCode());
+            //Log.d("errorHandler ", errorHandler.getCode());
         }
     };
 

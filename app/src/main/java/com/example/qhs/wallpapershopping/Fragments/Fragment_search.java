@@ -7,8 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
 import android.text.TextUtils;
+
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +75,7 @@ import static com.android.volley.toolbox.Volley.newRequestQueue;
 //import com.example.qhs.deydigital.com.example.qhs.wallpapershopping.R;
 
 
-public class Fragment_search extends Fragment {
+public class Fragment_search extends Fragment implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItems;
@@ -83,15 +87,21 @@ public class Fragment_search extends Fragment {
     private ProgressBar pgsBar;
     private EditText editText;
     public HurlStack hurlStack;
+
     private Toolbar toolbar;
 
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+
+        //Toolbar
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("جستجو");
 
 
         hurlStack = new HurlStack() {
@@ -131,7 +141,7 @@ public class Fragment_search extends Fragment {
 
 
         //**************************************************
-        editText=(EditText) view.findViewById(R.id.EtSearch);
+       // editText=(EditText) view.findViewById(R.id.EtSearch);
 
         //  category_id=editText.getText().toString();
 
@@ -171,30 +181,37 @@ public class Fragment_search extends Fragment {
         adapter=new RecyclerAdapter( getContext(),listItems);
         recyclerView.setAdapter(adapter);
         //
+        SearchView simpleSearchView = (SearchView) view.findViewById(R.id.search_view); // inititate a search view
+
+        CharSequence query = simpleSearchView.getQuery(); // get the query string currently in the text field
+
+        simpleSearchView.setOnQueryTextListener( this);
+
 
 //        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "yekan/homa.ttf");
-        TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
+        //TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
 //        txtView_title.setTypeface(face);
 
 //////////////////
-        Button button_search = (Button) view.findViewById(R.id.btn_search);
-//        button_search.setTypeface(face);
-        button_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                InputMethodManager inputManager = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-
-                search();
-            }
-        });
+//        Button button_search = (Button) view.findViewById(R.id.btn_search);
+////        button_search.setTypeface(face);
+//        button_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                InputMethodManager inputManager = (InputMethodManager)
+//                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+//                        InputMethodManager.HIDE_NOT_ALWAYS);
+//
+//                search();
+//            }
+//        });
 
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -209,7 +226,9 @@ public class Fragment_search extends Fragment {
 
     }
 
-    public void search(){
+
+    public void search( String query){
+
 
         imageList = new ArrayList<JSONArray>();
         image_series_json = new JSONArray();
@@ -264,8 +283,8 @@ public class Fragment_search extends Fragment {
         //  TextView txtView_search /*= (TextView)findViewById(R.id.txtView_search)*/;
         String url;
 
-        Log.d("txt**",txt_search);
-        String search_key_encode = Uri.encode(txt_search) ;
+        //Log.d("txt**",txt_search);
+        String search_key_encode = Uri.encode(query) ;
         url = "https://deydigital.ir/wc-api/v3/products?filter[q]=" +
                 // url = "https://deydigital.ir/wp-json/wc/v3/products?filter[q]=" +
                 //url="https://deydigital.ir/wp-json/wc/v1/products?filter[q]=" +
@@ -503,4 +522,15 @@ public class Fragment_search extends Fragment {
         }};
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        search(s);
+        return false;
+    }
 }
