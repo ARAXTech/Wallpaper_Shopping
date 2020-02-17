@@ -5,17 +5,21 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
 import android.support.v7.widget.Toolbar;
+
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +33,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import android.support.v7.widget.Toolbar;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -36,6 +41,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.Blur;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.UIElement;
 import com.example.qhs.wallpapershopping.network.CustomJsonRequest;
@@ -74,6 +80,8 @@ public class Fragment_gallery extends Fragment {
     private Fragment fragment;
     private float density;
     private CirclePageIndicator indicator;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,17 +196,21 @@ public class Fragment_gallery extends Fragment {
 
                 if (mAuthHelper.isLoggedIn()) {
                     ListItem item1 = new ListItem(id,name,description, finalS,"false",image_list.size(),1000,1);
+
                     db.addListItem(item1);
                     shoppingBtn.setEnabled(true);
                     shoppingBtn.setClickable(false);
                     shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
                 } else {
-                    Bitmap map = UIElement.takeScreenShot(getActivity());
-                    Bitmap fast = UIElement.fastblur(map, 10);
-                    UIElement.fastblur = fast;
+                    Blur blur=new Blur();
+                    Bitmap map = blur.takeScreenShot(getActivity());
+                    Bitmap fast = blur.fastblur(map, 10);
                     fragment = new Dialog();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .add(R.id.frame, fragment).commit();
+                    View layout = getActivity().findViewById(R.id.constraintLayout);
+                    BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
+                    layout.setBackground(ob);
+                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("tag")
+                            .replace(R.id.frame, fragment).commit();
 
                 }
 
