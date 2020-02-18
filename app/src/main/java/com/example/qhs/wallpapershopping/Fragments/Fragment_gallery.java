@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,6 +41,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.Blur;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.UIElement;
 import com.example.qhs.wallpapershopping.network.CustomJsonRequest;
@@ -199,12 +202,15 @@ public class Fragment_gallery extends Fragment {
                     shoppingBtn.setClickable(false);
                     shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
                 } else {
-                    Bitmap map = UIElement.takeScreenShot(getActivity());
-                    Bitmap fast = UIElement.fastblur(map, 10);
-                    UIElement.fastblur = fast;
+                    Blur blur=new Blur();
+                    Bitmap map = blur.takeScreenShot(getActivity());
+                    Bitmap fast = blur.fastblur(map, 10);
                     fragment = new Dialog();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .add(R.id.frame, fragment).commit();
+                    View layout = getActivity().findViewById(R.id.constraintLayout);
+                    BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
+                    layout.setBackground(ob);
+                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("tag")
+                            .replace(R.id.frame, fragment).commit();
 
                 }
 
