@@ -4,25 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true">
-
+    app:cardBackgroundColor="@android:color/white">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/SecondaryLight"
+        android:layout_height="wrap_content"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        android:layout_gravity="right"
-        android:theme="@style/ToolbarTheme">
-
+        android:layout_gravity="start"
+        android:theme="@style/ToolbarTheme"
+        app:itemIconTint="@color/colorBackgroundGrey"
+        app:itemTextColor="@color/colorBackgroundGrey"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@drawable/bginclud"
+        >
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layoutDirection="locale">
-
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
@@ -32,7 +31,7 @@
                 android:layout_margin="8dp"
                 android:fontFamily="cursive"
                 android:layoutDirection="locale"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorBackgroundGrey"
                 android:textDirection="locale"
                 android:textSize="20sp"
                 android:textStyle="bold"
