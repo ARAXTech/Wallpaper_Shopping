@@ -238,24 +238,6 @@ public class Fragment_gallery extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-        title.setText("گالری");
-
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((AppCompatActivity)getActivity()).onBackPressed();
-            }
-        });
-
-        super.onActivityCreated(savedInstanceState);
-    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
