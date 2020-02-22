@@ -142,25 +142,25 @@ public class Fragment_home extends Fragment {
         UIElement cls = new UIElement(getContext(), getActivity());
 
         mAuthHelper = AuthHelper.getInstance(getContext());
-        txtView_login = view.findViewById(R.id.nameuser);
-        txtView_signUp= view.findViewById(R.id.walletuser);
+//        txtView_login = view.findViewById(R.id.nameuser);
+//        txtView_signUp= view.findViewById(R.id.walletuser);
 
         //updateOptionsMenu();
-        if (mAuthHelper.isLoggedIn()) {
-            Log.d("USERNAME: ", "isloggedin");
-            txtView_login.setText("Hello");
-            txtView_signUp.setText(mAuthHelper.getUsername());
-            // setupView();
-        }
-        txtView_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame, new Fragment_login());
-                fragmentTransaction.commit();
-            }
-        });
+//        if (mAuthHelper.isLoggedIn()) {
+//            Log.d("USERNAME: ", "isloggedin");
+////            txtView_login.setText("Hello");
+////            txtView_signUp.setText(mAuthHelper.getUsername());
+//            // setupView();
+//        }
+//        txtView_login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentManager fragmentManager = getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.frame, new Fragment_login());
+//                fragmentTransaction.commit();
+//            }
+//        });
 
         // Create an object of GridAdapter and set Adapter to GirdView
         GridAdapter gridAdapter = new GridAdapter(getContext(), vector,txt,false);
