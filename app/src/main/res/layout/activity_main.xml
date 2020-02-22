@@ -6,15 +6,15 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundGrey"
     app:layout_anchor="@+id/constraintLayout"
-    app:layout_anchorGravity="center"
     android:layout_marginTop="0dp">
+    app:layout_anchorGravity="center">
     <include
         android:id="@+id/include"
         layout="@layout/toolbar"
         android:maxHeight="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginTop="0dp"
@@ -22,6 +22,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintBottom_toTopOf="@+id/frame"
+        />
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="0dp"
@@ -41,9 +44,15 @@
         android:layout_height="60dp"
         android:background="@drawable/bginclud"
         android:maxHeight="?attr/actionBarSize"
+        app:itemIconTint="@color/colorBackgroundGrey"
+        app:itemTextColor="@color/colorBackgroundGrey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
+        app:layout_constraintTop_toBottomOf="@+id/frame"
+        app:menu="@menu/navigation"
+        android:maxHeight="?attr/actionBarSize"
+        />
 </android.support.constraint.ConstraintLayout>
