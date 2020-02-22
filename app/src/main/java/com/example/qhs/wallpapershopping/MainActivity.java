@@ -45,7 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity<navigation> extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     //Decleration
     private AuthHelper mAuthHelper;
