@@ -8,6 +8,22 @@
         tools:context=".Fragments.Fragment_search"
         android:layoutDirection="locale">
 
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="166dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Type something..."
+        android:background="@drawable/bginclud"
+        android:focusable="true"
+        app:iconifiedByDefault="false"
+        android:focusableInTouchMode="true"/>
+
         <ProgressBar
             android:id="@+id/SearchpBar"
             style="?android:attr/progressBarStyleLarge"
@@ -39,12 +55,7 @@
         app:layout_constraintTop_toBottomOf="parent">
 
 
-        <android.support.v7.widget.SearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            app:queryHint="Type something..." />
+
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

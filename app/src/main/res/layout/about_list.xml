@@ -2,54 +2,23 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:background="@android:color/white">
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+    <ImageView
+        android:background="@android:color/transparent"
+        android:id="@+id/imgA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="2dp"
-        android:elevation="4dp"
-        >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:textDirection="rtl"
-            android:gravity="center"
-            android:layout_gravity="right"
-            >
-
-            <TextView
-                android:id="@+id/txtA"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:ellipsize="end"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layoutDirection="ltr"
-                android:layout_toStartOf="@+id/imgA"
-                android:layout_toLeftOf="@+id/imgA"
-                android:layout_marginRight="5dp"
-                android:textSize="15dp"/>
-
-            <ImageView
-                android:id="@+id/imgA"
-
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true" />
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
