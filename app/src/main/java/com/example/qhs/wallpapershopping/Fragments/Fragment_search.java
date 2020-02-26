@@ -130,11 +130,21 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         firstLoad();
 
         SearchView simpleSearchView = (SearchView) view.findViewById(R.id.search_view); // inititate a search view
+        simpleSearchView.onActionViewExpanded();
+        simpleSearchView.setIconified(true);
 
         CharSequence query = simpleSearchView.getQuery(); // get the query string currently in the text field
 
         Log.d("Query", String.valueOf(query));
         simpleSearchView.setOnQueryTextListener( this);
+//        simpleSearchView.setOnQueryTextFocusChangeListener(){
+//            @Override
+//            public void onFocusChange(View view, boolean hasFocus) {
+//                if (hasFocus) {
+//                    showInputMethod(view.findFocus());
+//                }
+//            }
+//        });
 
 
 //        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "yekan/homa.ttf");
@@ -145,6 +155,13 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
         return view;
     }
+
+//    private void showInputMethod(View view) {
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        if (imm != null) {
+//            imm.showSoftInput(view, 0);
+//        }
+//    }
 
 
     @Override
@@ -277,11 +294,11 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public boolean onQueryTextChange(String s) {
-                InputMethodManager inputManager = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+//                InputMethodManager inputManager = (InputMethodManager)
+//                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+//                        InputMethodManager.HIDE_NOT_ALWAYS);
 
                 search(s);
         return false;

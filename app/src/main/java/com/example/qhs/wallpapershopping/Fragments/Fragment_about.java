@@ -26,11 +26,11 @@ public class Fragment_about extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
         //Toolbar
-
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("درباره ما");
@@ -45,6 +45,7 @@ public class Fragment_about extends Fragment {
                 startActivity(intent4);
             }
         });
+
         TextView txtView_contact = (TextView) view.findViewById(R.id.txtView_contactUs);
 
         final ListView simpleList1 = (ListView) view.findViewById(R.id.listA);
@@ -65,13 +66,21 @@ public class Fragment_about extends Fragment {
                 R.mipmap.mail,
                 R.mipmap.address};
 
+        final int[] imageButton_about = {
+                R.drawable.button_aboutlist,
+                R.drawable.button_aboutlist_whatsapp,
+                R.drawable.button_aboutlist_pressed_instagram ,
+                R.drawable.button_aboutlist_telegram,
+                R.drawable.button_aboutlist_mail,
+                R.drawable.button_aboutlist_location};
+
                 /*R.drawable.phone,
                 R.drawable.smartphone,
                 R.drawable.instagram ,
                 R.drawable.telegram,
                 R.drawable.address};*/
 
-        final AboutAdapter aboutAdapter = new AboutAdapter(getContext(), myStrings, imgStrings);
+        final AboutAdapter aboutAdapter = new AboutAdapter(getContext(), myStrings, imageButton_about);
         simpleList1.setAdapter(aboutAdapter);
 
 
@@ -79,7 +88,7 @@ public class Fragment_about extends Fragment {
             @Override
             public void onItemClick(AdapterView <?> adapterView, View view, int position, long l) {
 
-                TextView textView = (TextView) view.findViewById(R.id.txtA);
+                //TextView textView = (TextView) view.findViewById(R.id.txtA);
                 //          textView.setTypeface(face);
 
                 switch (position) {

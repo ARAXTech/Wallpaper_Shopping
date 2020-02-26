@@ -51,53 +51,11 @@
 
 <!--        </LinearLayout>-->
 
-
-        <ImageView
-            android:id="@+id/imageView_user"
-            android:layout_width="71dp"
-            android:layout_height="71dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="26dp"
-            android:src="@drawable/ic_person_black_24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <LinearLayout
-            android:id="@+id/texthome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="28dp"
-            android:elevation="6dp"
-            android:gravity="start"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/nameuser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFF"
-                android:textSize="24sp"
-                android:text="@string/text_login"
-                app:layout_constraintStart_toEndOf="@+id/imageView_user"
-                app:layout_constraintTop_toTopOf="parent" />
-            <TextView
-                android:id="@+id/walletuser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFF"
-                android:textSize="16sp"
-                android:text="@string/prompt_signup"
-                app:layout_constraintStart_toEndOf="@+id/imageView_user"
-                app:layout_constraintTop_toBottomOf="@+id/nameuser" />
-        </LinearLayout>
-
         <GridView
             android:id="@+id/simpleGridView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="110dp"
             android:layout_marginEnd="8dp"
             android:elevation="6dp"
             android:footerDividersEnabled="false"
@@ -109,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.726"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clover"
+
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 

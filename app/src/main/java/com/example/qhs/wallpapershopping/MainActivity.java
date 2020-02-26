@@ -16,7 +16,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -46,7 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity<navigation> extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     //Decleration
     private AuthHelper mAuthHelper;
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Toolbar toolbar;
     private BottomNavigationView navigation;
     private Fragment fragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 //        //End Splash
 
-        constraintLayout = (ConstraintLayout)findViewById(R.id.constraintLayout);
-
         super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
@@ -81,11 +79,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragment = new Fragment_home();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frame, fragment).commit();
-
-//        //Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
+     //Toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //Profile
@@ -106,7 +101,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Log.d("USERNAME: ", "isloggedin");
             profileBtn.setVisibility(View.GONE);
         }
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
 
+    }
+
+    @SuppressLint("Range")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -140,8 +140,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.frame, fragment).commit();
-
-                //constraintLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.bgheader));
                 break;
 
             case R.id.menu_favorite:

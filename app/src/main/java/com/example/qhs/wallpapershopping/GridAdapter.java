@@ -74,7 +74,7 @@ public class GridAdapter  extends BaseAdapter {
                     .load(logo_txt[i])
                     .thumbnail(0.5f)
                     //.crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    //.diskCacheStrategy(DiskCacheStrategy.ALL)
                     ///.override(400,200)
                     .into(icon);
         }

@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.qhs.wallpapershopping.R;
 
 public class AboutAdapter extends BaseAdapter {
@@ -26,8 +28,6 @@ public class AboutAdapter extends BaseAdapter {
         //  this.flags = flags;
         inflter = (LayoutInflater.from(context));
     }
-
-
     public int getCount() {
         return nameList.length;
     }
@@ -46,18 +46,22 @@ public class AboutAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 //        Typeface face=Typeface.createFromAsset(context.getAssets(), "yekan/homa.ttf");
         view = inflter.inflate(R.layout.about_list, null);
-        TextView name = (TextView) view.findViewById(R.id.txtA);
-        name.setText(nameList[i]);
-    //    name.setTypeface(face);
-        ImageView image=(ImageView)view.findViewById(R.id.imgA);
+       //TextView name = (TextView) view.findViewById(R.id.txtA);
+        //name.setText(nameList[i]);
+    // name.setTypeface(face);
+        ImageView image = view.findViewById(R.id.imgA);
+        //ImageView image = (ImageView)view.findViewById(R.id.imgA);
         //Picasso.with(context).load(imgList[i])
         //   .into(image);
         Glide.with(context)
                 .load(imgList[i])
-                .thumbnail(0.5f)
+                .apply(new RequestOptions().override(500, 500))
+
+                //.override(800,300)
+               // .thumbnail(1f)
                 //.crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                ///.override(400,200)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+
                 .into(image);
         return view;
     }
