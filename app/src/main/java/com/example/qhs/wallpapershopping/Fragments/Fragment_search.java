@@ -130,13 +130,28 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         firstLoad();
 
         SearchView simpleSearchView = (SearchView) view.findViewById(R.id.search_view); // inititate a search view
-        simpleSearchView.onActionViewExpanded();
-        simpleSearchView.setIconified(true);
+//        simpleSearchView.onActionViewExpanded();
+//        simpleSearchView.setIconified(true);
 
         CharSequence query = simpleSearchView.getQuery(); // get the query string currently in the text field
 
         Log.d("Query", String.valueOf(query));
         simpleSearchView.setOnQueryTextListener( this);
+
+        simpleSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(final View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(view.findFocus(), 0);
+                        }
+                    }, 200);
+                }
+            }
+        });
 //        simpleSearchView.setOnQueryTextFocusChangeListener(){
 //            @Override
 //            public void onFocusChange(View view, boolean hasFocus) {
