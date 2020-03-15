@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,73 +73,95 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             Picasso.with(context)
                     .load(temp).resize(200, 200)
                     .into(holder.img);
-
-            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteId = Integer.parseInt(item.getId());
+             if(Integer.parseInt(holder.counter.getText().toString())==0){ deleteId = Integer.parseInt(item.getId());
                     db1.deleteListItem(item.getId());
                     listItems.remove(position); // remove the item from list
                     notifyItemRemoved(position); // notify the adapter about the removed item
                     notifyItemRangeChanged(position, getItemCount());
 
                    // deleteFromServer();
+}
 
-                }
-            });
-            holder.counter.setSelection(item.getCount() - 1);
-
-            holder.counter.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    mFlag = true;
-                    return false;
-                }
-            });
-
-            holder.counter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                public void onItemSelected(AdapterView <?> parent, View view, int position, long id) {
-                    // On selecting a spinner item
-                    if (!onBind) {
-                        item.setCount(Integer.parseInt((String) parent.getItemAtPosition(position)));
-                        db1.updateListItem(item);
+                public void onClick(View view) {
+                    holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())-1));
+                    item.setCount(Integer.parseInt(holder.counter.getText().toString()));
+                   if (Integer.parseInt(holder.counter.getText().toString())<1) {
+                        deleteId = Integer.parseInt(item.getId());
+                        db1.deleteListItem(item.getId());
+                        listItems.remove(position); // remove the item from list
+                        notifyItemRemoved(position); // notify the adapter about the removed item
                         notifyItemRangeChanged(position, getItemCount());
-
-                        final JSONObject postparams = new JSONObject();
-
-//                        try {
-//                            postparams.put("cart_item_key", );
-//                            postparams.put("quantity", parent.getItemAtPosition(position));
-//
-//                        } catch (JSONException e) {
-//                            Log.d("JSONException_add", e.getMessage());
-//                            e.printStackTrace();
-//                        }
-
-                    //    request.JsonObjectNetRequest("POST", "cocart/v1/item", null, null);
-//                        String item = parent.getItemAtPosition(position).toString();
-//                        Log.d("SPINNER ", item);
                     }
-                    if (mFlag) {
-                        // Your selection handling code here
-                        mFlag = false;
-                        Fragment fragment = new Fragment_Shopping();
-                        //AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                        // Fragment myFragment = new TaskApprovalFragmentDetails();
-                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
-
-                    }
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView <?> parent) {
-                    // todo for nothing selected
+                   deleteFromServer();
 
                 }
             });
+            holder.counterTxt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())+1));
+                    item.setCount(Integer.parseInt(holder.counter.getText().toString()));
+
+                }
+            });
+       //     holder.counter.setSelection(item.getCount() - 1);
+
+//            holder.counter.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View view, MotionEvent motionEvent) {
+//                    mFlag = true;
+//                    return false;
+//                }
+//            });
+
+//            holder.counter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//
+//                @Override
+//                public void onItemSelected(AdapterView <?> parent, View view, int position, long id) {
+//                    // On selecting a spinner item
+//                    if (!onBind) {
+//                        item.setCount(Integer.parseInt((String) parent.getItemAtPosition(position)));
+//                        db1.updateListItem(item);
+//                        notifyItemRangeChanged(position, getItemCount());
+//
+//                        final JSONObject postparams = new JSONObject();
+//
+////                        try {
+////                            postparams.put("cart_item_key", );
+////                            postparams.put("quantity", parent.getItemAtPosition(position));
+////
+////                        } catch (JSONException e) {
+////                            Log.d("JSONException_add", e.getMessage());
+////                            e.printStackTrace();
+////                        }
+//
+//                    //    request.JsonObjectNetRequest("POST", "cocart/v1/item", null, null);
+////                        String item = parent.getItemAtPosition(position).toString();
+////                        Log.d("SPINNER ", item);
+//                    }
+//                    if (mFlag) {
+//                        // Your selection handling code here
+//                        mFlag = false;
+//                        Fragment fragment = new Fragment_Shopping();
+//                        //AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                        // Fragment myFragment = new TaskApprovalFragmentDetails();
+//                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+//
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView <?> parent) {
+//                    // todo for nothing selected
+//
+//                }
+//            });
             holder.price.setText(String.valueOf(item.getPrice()));
 
             holder.name.setText(" نام محصول:" + item.getName());
@@ -200,24 +223,20 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView img;
-        public Spinner counter;
+        public TextView counter;
         public Button deleteBtn;
         public TextView price;
         public TextView name;
+        public Button counterTxt;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             img=(ImageView) itemView.findViewById(R.id.imgF);
-            counter=(Spinner)itemView.findViewById(R.id.counter);
+            counter=(TextView)itemView.findViewById(R.id.counter);
             deleteBtn=(Button)itemView.findViewById(R.id.deleteBtn);
+            counterTxt=(Button)itemView.findViewById(R.id.counterTxt);
             price=(TextView)itemView.findViewById(R.id.price);
             name=(TextView)itemView.findViewById(R.id.name);
-            String[] items = new String[]{"1", "2", "3"};
-            ArrayAdapter<String> Spinneradapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, items);
-            Spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            counter.setAdapter(Spinneradapter);
-
-
         }
         @Override
         public void onClick(View view) {
