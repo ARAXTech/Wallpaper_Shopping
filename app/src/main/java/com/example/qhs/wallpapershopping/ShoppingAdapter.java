@@ -73,14 +73,13 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             Picasso.with(context)
                     .load(temp).resize(200, 200)
                     .into(holder.img);
-             if(Integer.parseInt(holder.counter.getText().toString())==0){ deleteId = Integer.parseInt(item.getId());
-                    db1.deleteListItem(item.getId());
-                    listItems.remove(position); // remove the item from list
-                    notifyItemRemoved(position); // notify the adapter about the removed item
-                    notifyItemRangeChanged(position, getItemCount());
-
-                   // deleteFromServer();
-}
+//            if(Integer.parseInt(holder.counter.getText().toString())==0){
+//                 deleteId = Integer.parseInt(item.getId());
+//                 db1.deleteListItem(item.getId());
+//                 listItems.remove(position); // remove the item from list
+//                 notifyItemRemoved(position); // notify the adapter about the removed item
+//                 notifyItemRangeChanged(position, getItemCount());
+//            }
 
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -88,14 +87,16 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                 public void onClick(View view) {
                     holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())-1));
                     item.setCount(Integer.parseInt(holder.counter.getText().toString()));
-                   if (Integer.parseInt(holder.counter.getText().toString())<1) {
+                    if (Integer.parseInt(holder.counter.getText().toString())<1) {
                         deleteId = Integer.parseInt(item.getId());
                         db1.deleteListItem(item.getId());
                         listItems.remove(position); // remove the item from list
                         notifyItemRemoved(position); // notify the adapter about the removed item
                         notifyItemRangeChanged(position, getItemCount());
+                        deleteFromServer();
                     }
-                   deleteFromServer();
+                    //Todo: update count in site
+
 
                 }
             });
@@ -106,6 +107,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
                     holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())+1));
                     item.setCount(Integer.parseInt(holder.counter.getText().toString()));
+                    //Todo: update count in site
 
                 }
             });
@@ -173,13 +175,12 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             listItems.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, getItemCount());
+
         }
     }
 
     private void deleteFromServer() {
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, null);
-
-
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback);
     }
 
     private NetRequest.Callback<JSONObject> mShoppingProductCallback = new NetRequest.Callback<JSONObject>(){
@@ -196,7 +197,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
                         int productId = response.getJSONObject(key).getInt("product_id");
                         if (productId == deleteId){
-                            //request.JsonStringNetRequest("DELETE", "cocart/v1/item", key);
+                            request.JsonStringNetRequest("DELETE", "cocart/v1/item?cart_item_key="+ key);
                             break;
                         }
 

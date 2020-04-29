@@ -218,7 +218,7 @@ public class Fragment_Shopping extends Fragment {
 
     private void doGetShopping() {
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, null);
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback);
 
     }
 
@@ -254,18 +254,45 @@ public class Fragment_Shopping extends Fragment {
                         }
                         else{
                             shoppingProductId[idx][1] = 1;
-                        }
+                            // TODO: check quantity is updated
+                            if (quantity != shoppingProductId[idx][2]){
+                                ListItem item = new ListItem(
+                                        listItems.get(idx).getId(),
+                                        listItems.get(idx).getName(),
+                                        listItems.get(idx).getDescription(),
+                                        listItems.get(idx).getImgLink(),
+                                        listItems.get(idx).getFavorite(),
+                                        listItems.get(idx).getNum_link(),
+                                        listItems.get(idx).getPrice(),
+                                        quantity
+                                );
 
+                                db.updateListItem(item);
+                                listItems.get(idx).setCount(quantity);
+//                                listItems.remove(idx);
+//                                listItems.add(item);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            // delete item from app. this item was deleted from site before
             for (int i = 0; i < num; i++) {
                 if (shoppingProductId[i][1] == -1) {
-                    Log.d("addProduct_index ", String.valueOf(shoppingProductId[i][0]));
-                    addProduct(shoppingProductId[i][0], shoppingProductId[i][2]);
-                }
+//                    Log.d("addProduct_index ", String.valueOf(shoppingProductId[i][0]));
+//                    addProduct(shoppingProductId[i][0], shoppingProductId[i][2]);
+
+                    db.deleteListItem(String.valueOf(shoppingProductId[i][0]));
+
+                    listItems.remove(i);
+                    adapter.notifyItemRemoved(i);
+                    adapter.notifyItemRangeChanged(i, adapter.getItemCount());
+                    //adapter.notifyDataSetChanged();
+
+            }
             }
 
         }
@@ -279,7 +306,7 @@ public class Fragment_Shopping extends Fragment {
 
     public void getProduct(int id){
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, null);
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback);
 
     }
 
@@ -319,16 +346,8 @@ public class Fragment_Shopping extends Fragment {
 
         Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
 
-//
-//        Map<String, String> params = new HashMap();
-//        params.put("product_id", "1444");
-//        params.put("quantity", "1");
-//
-//        JSONObject parameters = new JSONObject(params);
-
-
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback, null);
+        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback);
 
     }
 

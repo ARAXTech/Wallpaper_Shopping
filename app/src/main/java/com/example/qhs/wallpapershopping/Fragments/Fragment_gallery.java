@@ -182,7 +182,7 @@ public class Fragment_gallery extends Fragment {
 
                     //remove from site
                     request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products",
-                            mWishlistProductCallback, null);
+                            mWishlistProductCallback);
                 }
             }
         });
@@ -198,6 +198,7 @@ public class Fragment_gallery extends Fragment {
                     ListItem item1 = new ListItem(id,name,description, finalS,"false",image_list.size(),1000,1);
 
                     db.addListItem(item1);
+                    addProductToCart(Integer.parseInt(id), 1);
                     shoppingBtn.setEnabled(true);
                     shoppingBtn.setClickable(false);
                     shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
@@ -269,7 +270,7 @@ public class Fragment_gallery extends Fragment {
                     if (productId == Integer.parseInt(id)){
                         db.deleteListItem(id);
                         //notifyDataSetChanged();
-                        request.JsonStringNetRequest("POST", "wc/v3/wishlist/remove_product/" + response.getJSONObject(i).getInt("item_id"), null);
+                        request.JsonStringNetRequest("POST", "wc/v3/wishlist/remove_product/" + response.getJSONObject(i).getInt("item_id"));
                         break;
                     }
                 } catch (JSONException e) {
@@ -319,6 +320,31 @@ public class Fragment_gallery extends Fragment {
         queue.add(jsonObjectRequest);
 
     }
+
+
+    public void addProductToCart(final int productId, final int quantity){
+
+        Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
+
+        NetRequest request = new NetRequest(getContext());
+        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback);
+
+    }
+
+    private NetRequest.Callback<JSONObject> mAddProductCallback = new NetRequest.Callback<JSONObject>() {
+        @Override
+        public void onResponse(@NonNull JSONObject response) {
+            try {
+                Log.d("Successful, key: ", response.getString("key"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(String error) {
+        }
+    };
 
     private ArrayList<ImageModel> populateList() throws JSONException {
 

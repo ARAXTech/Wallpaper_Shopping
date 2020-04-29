@@ -123,7 +123,7 @@ public class Fragment_favorite extends Fragment {
 
     private void getWishlistProduct(String shareKey) {
         NetRequest request = new NetRequest(getContext());
-        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+shareKey+"/get_products", mWishlistProductCallback, null);
+        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+shareKey+"/get_products", mWishlistProductCallback);
     }
 
     private NetRequest.Callback<JSONArray> mWishlistProductCallback = new NetRequest.Callback<JSONArray>(){
@@ -163,11 +163,39 @@ public class Fragment_favorite extends Fragment {
                     //addProduct(wishlistProductId[0][i]);
                 }
             }
+//            if(response.length()==0){
+//                for (int i = 0; i < num; i++) {
+//                    if (wishlistProductId[1][i] == -1) {
+//                        Log.d("index ", String.valueOf(wishlistProductId[0][i]));
+//                        db.deleteListItem(String.valueOf(wishlistProductId[0][i]));
+//                        adapter.notifyDataSetChanged();
+//
+//                        Fragment fragment = new Fragment_favorite();
+//                        ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+//
+//
+//                        //addProduct(wishlistProductId[0][i]);
+//                    }
+//                }
+//            }
 
         }
 
         @Override
         public void onError(String error) {
+            for (int i = 0; i < num; i++) {
+                if (wishlistProductId[1][i] == -1) {
+                    Log.d("index ", String.valueOf(wishlistProductId[0][i]));
+                    db.deleteListItem(String.valueOf(wishlistProductId[0][i]));
+                    adapter.notifyDataSetChanged();
+
+                    Fragment fragment = new Fragment_favorite();
+                    ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+
+
+                    //addProduct(wishlistProductId[0][i]);
+                }
+            }
             Log.d("Server Error",error);
 
         }
@@ -175,7 +203,7 @@ public class Fragment_favorite extends Fragment {
 
     public void getProduct(int id){
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, null);
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback);
 
     }
 

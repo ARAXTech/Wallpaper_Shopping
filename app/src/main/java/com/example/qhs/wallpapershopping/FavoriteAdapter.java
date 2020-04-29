@@ -156,7 +156,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     //notifyDataSetChanged();
 
                     //remove from site
-                    request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products", mWishlistProductCallback, null);
+                    request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products", mWishlistProductCallback);
                 }
             });
         }
@@ -171,7 +171,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                         int productId = response.getJSONObject(i).getInt("product_id");
                         if (productId == Integer.parseInt(item.getId())){
 
-                            request.JsonStringNetRequest("POST", "wc/v3/wishlist/remove_product/" + response.getJSONObject(i).getInt("item_id"), null);
+                            request.JsonStringNetRequest("POST", "wc/v3/wishlist/remove_product/" + response.getJSONObject(i).getInt("item_id"));
                             //context.startActivity(new Intent(context, FavoriteActivity.class));
                             Fragment fragment = new Fragment_favorite();
                             ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
