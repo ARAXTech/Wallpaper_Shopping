@@ -46,15 +46,15 @@ public class NetRequest {
         mAuthHelper = AuthHelper.getInstance(c);
     }
 
-    public void JsonObjectNetRequest(String method, String endpoint, final Callback callback, JSONObject postparams){
-        if (method == "GET"){
+    public void JsonObjectNetRequest(String method, String endpoint, final Callback callback){
+        if ( method.equals("GET") ){
             this.method = com.android.volley.Request.Method.GET;
         }
-        else if (method == "POST"){
+        else if ( method.equals("POST") ){
             this.method = Request.Method.POST;
         }
 
-        objectRequest = new JsonObjectRequest(this.method, BASE_URL + endpoint, postparams, new com.android.volley.Response.Listener<JSONObject>() {
+        objectRequest = new JsonObjectRequest(this.method, BASE_URL + endpoint, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response != null) {
@@ -102,7 +102,7 @@ public class NetRequest {
     }
 
 
-    public void JsonArrayNetRequest(String method, String endpoint, final Callback callback, final JSONArray postparams){
+    public void JsonArrayNetRequest(String method, String endpoint, final Callback callback){
         if (method == "GET"){
             this.method = com.android.volley.Request.Method.GET;
         }
@@ -110,7 +110,7 @@ public class NetRequest {
             this.method = Request.Method.POST;
         }
 
-        arrayRequest = new JsonArrayRequest(this.method, BASE_URL + endpoint, postparams, new com.android.volley.Response.Listener<JSONArray>() {
+        arrayRequest = new JsonArrayRequest(this.method, BASE_URL + endpoint, null, new com.android.volley.Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 if (response != null) {
@@ -159,7 +159,7 @@ public class NetRequest {
 
     }
 
-    public void JsonStringNetRequest(String method, String endpoint, final String key) {
+    public void JsonStringNetRequest(String method, String endpoint) {
         if (method == "POST"){
             this.method = com.android.volley.Request.Method.GET;
         }
