@@ -60,6 +60,9 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         return new ShoppingAdapter.ViewHolder(rootView);
     }
     private boolean onBind;
+
+
+
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final DatabaseHandler db1 = new DatabaseHandler(context);
@@ -73,29 +76,32 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             Picasso.with(context)
                     .load(temp).resize(200, 200)
                     .into(holder.img);
-             if(Integer.parseInt(holder.counter.getText().toString())==0){ deleteId = Integer.parseInt(item.getId());
-                    db1.deleteListItem(item.getId());
-                    listItems.remove(position); // remove the item from list
-                    notifyItemRemoved(position); // notify the adapter about the removed item
-                    notifyItemRangeChanged(position, getItemCount());
+//            if(Integer.parseInt(holder.counter.getText().toString())==0)
+//            { deleteId = Integer.parseInt(item.getId());
+//                db1.deleteListItem(item.getId());
+//                listItems.remove(position); // remove the item from list
+//                notifyItemRemoved(position); // notify the adapter about the removed item
+//                notifyItemRangeChanged(position, getItemCount());
 
-                   // deleteFromServer();
-}
-
+                // deleteFromServer();
+       //     }
+            holder.counter.setText(String.valueOf(item.getCount()));
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-                    holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())-1));
-                    item.setCount(Integer.parseInt(holder.counter.getText().toString()));
-                   if (Integer.parseInt(holder.counter.getText().toString())<1) {
+                  //  holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())-1));
+                    holder.counter.setText(String.valueOf(item.getCount()-1));
+                    item.setCount(item.getCount()-1);
+                    if (Integer.parseInt(holder.counter.getText().toString())<1) {
                         deleteId = Integer.parseInt(item.getId());
                         db1.deleteListItem(item.getId());
                         listItems.remove(position); // remove the item from list
                         notifyItemRemoved(position); // notify the adapter about the removed item
                         notifyItemRangeChanged(position, getItemCount());
                     }
-                   deleteFromServer();
+                    db1.updateListItem(item);
+                    deleteFromServer();
 
                 }
             });
@@ -103,13 +109,14 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
                 @Override
                 public void onClick(View view) {
-
-                    holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())+1));
-                    item.setCount(Integer.parseInt(holder.counter.getText().toString()));
+                    holder.counter.setText(String.valueOf(item.getCount()+1));
+                  //  holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())+1));
+                    item.setCount(item.getCount()+1);
+                    db1.updateListItem(item);
 
                 }
             });
-       //     holder.counter.setSelection(item.getCount() - 1);
+            //     holder.counter.setSelection(item.getCount() - 1);
 
 //            holder.counter.setOnTouchListener(new View.OnTouchListener() {
 //                @Override

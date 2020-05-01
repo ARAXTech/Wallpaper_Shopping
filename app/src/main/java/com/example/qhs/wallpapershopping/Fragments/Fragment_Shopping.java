@@ -97,7 +97,7 @@ public class Fragment_Shopping extends Fragment {
 
 
 
-        //db.deleteAll();
+       // db.deleteAll();
         listItems = db.getAllShoppingItem();
         num = db.getShoppingItemCount();
 
@@ -130,15 +130,16 @@ public class Fragment_Shopping extends Fragment {
         adapter = new ShoppingAdapter(getContext(),listItems);
 
 
+
+
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        totalPrice = (TextView) view.findViewById(R.id.totalPrice);
         for (int i=0; i <num; i++) {
 
             sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount();
 
         }
-
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        totalPrice = (TextView) view.findViewById(R.id.totalPrice);
         totalPrice.setText(String.valueOf(sum)+"تومان");
 
 
@@ -347,8 +348,8 @@ public class Fragment_Shopping extends Fragment {
         @Override
         public void onError(String error) {
 
-         //   Gson g = new Gson();
-           // ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
+            //   Gson g = new Gson();
+            // ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
 
             //Log.d("errorHandler ", errorHandler.getCode());
         }
