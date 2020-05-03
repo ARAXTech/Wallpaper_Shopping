@@ -38,7 +38,9 @@
                     android:inputType="textEmailAddress"
                     android:hint="@string/hint_email"/>
             </com.github.florent37.materialtextfield.MaterialTextField>
+
             <com.github.florent37.materialtextfield.MaterialTextField
+                android:id="@+id/materialtextfield_username"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 app:mtf_labelColor="#666"
@@ -66,8 +68,6 @@
                     android:inputType="textPassword"
                     android:hint="@string/hint_password"/>
             </com.github.florent37.materialtextfield.MaterialTextField>
-
-
 
             <Button
                 android:id="@+id/button_action"
