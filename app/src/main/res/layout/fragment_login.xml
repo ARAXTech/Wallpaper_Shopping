@@ -1,90 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context="com.example.qhs.wallpapershopping.Fragments.Fragment_login"
         android:fillViewport="true">
-        <LinearLayout
-            android:id="@+id/activity_login"
+
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="52dp"
+        android:gravity="center"
+        android:text="@string/text_login"
+        android:textSize="@dimen/text_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.056" />
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+
+        android:id="@+id/materialtextfield_username"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextField3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:mtf_image="@drawable/ic_person_black_24dp"
+        app:mtf_labelColor="#666">
+
+        <EditText
+            android:id="@+id/edit_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:orientation="vertical"
-            tools:context="com.segunfamisa.sample.jwt.LoginActivity">
+            android:hint="@string/hint_username"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1" />
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialTextField_password"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_action"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextField3"
+        app:mtf_image="@drawable/ic_vpn_key_black_24dp"
+        app:mtf_labelColor="#666">
 
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/text_login"
-                android:textSize="@dimen/text_title"/>
-            <com.github.florent37.materialtextfield.MaterialTextField
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                app:mtf_labelColor="#666"
-                app:mtf_image="@drawable/ic_mail_black_24dp"
-                >
-                <EditText
-                    android:id="@+id/edit_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/hint_email"/>
-            </com.github.florent37.materialtextfield.MaterialTextField>
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password"
+            android:inputType="textPassword" />
 
-            <com.github.florent37.materialtextfield.MaterialTextField
-                android:id="@+id/materialtextfield_username"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                app:mtf_labelColor="#666"
-                app:mtf_image="@drawable/ic_person_black_24dp"
-                >
-                <EditText
-                    android:id="@+id/edit_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_username"
-                    android:imeOptions="actionDone"
-                    android:inputType="textNoSuggestions"
-                    android:maxLines="1" />
-            </com.github.florent37.materialtextfield.MaterialTextField>
-            <com.github.florent37.materialtextfield.MaterialTextField
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                app:mtf_labelColor="#666"
-                app:mtf_image="@drawable/ic_vpn_key_black_24dp"
-                >
-                <EditText
-                    android:id="@+id/edit_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:hint="@string/hint_password"/>
-            </com.github.florent37.materialtextfield.MaterialTextField>
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
-            <Button
-                android:id="@+id/button_action"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_login"
-                android:background="@drawable/button_ripple_effect"/>
+    <Button
+        android:id="@+id/button_action"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_ripple_effect"
+        android:text="@string/text_login"
+        app:layout_constraintBottom_toTopOf="@+id/prompt_action"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextField_password" />
 
-            <TextView
-                android:id="@+id/prompt_action"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:clickable="true"
-                android:padding="@dimen/text_padding"
-                android:layout_marginTop="@dimen/text_margin"
-                android:text="@string/text_sign_up"/>
-        </LinearLayout>
-</ScrollView>
+    <TextView
+        android:id="@+id/prompt_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="71dp"
+        android:layout_marginBottom="164dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="@dimen/text_padding"
+        android:text="@string/text_sign_up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_action" />
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialTextField3"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextField_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_title"
+        app:mtf_image="@drawable/ic_mail_black_24dp"
+        app:mtf_labelColor="#666">
+
+        <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#666" />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+</android.support.constraint.ConstraintLayout>
 
