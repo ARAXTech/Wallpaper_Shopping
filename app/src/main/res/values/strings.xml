@@ -2,7 +2,7 @@
     <string name="app_name">WallPaper_Shopping</string>
     <string name="search">search</string>
     <string name="btn_search">بگرد</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Login</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
