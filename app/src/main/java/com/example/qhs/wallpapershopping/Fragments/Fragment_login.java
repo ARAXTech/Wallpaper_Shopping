@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -70,6 +71,9 @@ public class Fragment_login extends Fragment {
         mButtonAction = (Button) view.findViewById(R.id.button_action);
         materialTextField_username = (MaterialTextField)view.findViewById(R.id.materialtextfield_username);
 
+
+
+
         setupView(mIsSignUpShowing);
 
         if (mAuthHelper.isLoggedIn()) {
@@ -94,7 +98,9 @@ public class Fragment_login extends Fragment {
         mButtonAction.setText(isSignUpShowing ? R.string.text_sign_up : R.string.text_login);
         mPromptAction.setText(isSignUpShowing ? R.string.prompt_login: R.string.prompt_signup);
         //mEditUsername.setVisibility(isSignUpShowing ? View.VISIBLE : View.GONE);
+
         materialTextField_username.setVisibility(isSignUpShowing ? View.VISIBLE : View.GONE);
+
         mButtonAction.setOnClickListener(isSignUpShowing ? doSignUpClickListener : doLoginClickListener);
         mPromptAction.setOnClickListener(isSignUpShowing ? showLoginFormClickListener : showSignUpFormClickListener);
     }
