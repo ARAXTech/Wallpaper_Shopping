@@ -164,15 +164,11 @@ public class Fragment_login extends Fragment {
     private void saveSessionDetails(@NonNull Token token) {
         mAuthHelper.setIdToken(token);
 
-//        Log.d("saveSessionDetails", token.getIdToken());
-        // start profile activity
-        //   startActivity(MainActivity.getCallingIntent(this));
-//        startActivity(new Intent(getContext(), Fragment_home.class));
+        // start profile page
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, new Fragment_home());
         fragmentTransaction.commit();
-
 
     }
 
@@ -191,7 +187,6 @@ public class Fragment_login extends Fragment {
         public void onError(String error) {
             dismissDialog();
             Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-            Log.d("mLoginCallback", error);
         }
 
         @Override

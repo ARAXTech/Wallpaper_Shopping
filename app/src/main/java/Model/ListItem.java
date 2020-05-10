@@ -17,6 +17,7 @@ public class ListItem {
     private String imgLink;
     private int price;
     private int count;
+    private int count_shop;
 
     private int num_link;
     private JSONArray image_json;
@@ -39,7 +40,13 @@ public class ListItem {
     }
 
 
+    public int getCount_shop() {
+        return count_shop;
+    }
 
+    public void setCount_shop(int count_shop) {
+        this.count_shop = count_shop;
+    }
     public int getNum_link() {
         return num_link;
     }
@@ -60,7 +67,7 @@ public class ListItem {
     }
 
 
-    public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count) {
+    public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count, int count_shop) {
         this.id=id;
         this.imgLink=imgLink;
         this.description = description;
@@ -69,6 +76,7 @@ public class ListItem {
         this.num_link=num_link;
         this.price=price;
         this.count=count;
+        this.count_shop=count_shop;
     }
 
     public ListItem() {
