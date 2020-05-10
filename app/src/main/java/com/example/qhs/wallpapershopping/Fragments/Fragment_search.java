@@ -223,7 +223,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         Log.d("unicode**",url + "***"+search_key_encode);
 
         NetRequest request = new NetRequest(getContext());
-        request.JsonArrayNetRequest("GET", url, mProductCallback, null);
+        request.JsonArrayNetRequest("GET", url, mProductCallback);
 
       //  for (int j = 0; j < 10 + 1; j++) {
 
@@ -243,7 +243,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         pgsBar.setVisibility(VISIBLE);
 
         NetRequest request = new NetRequest(getContext());
-        request.JsonArrayNetRequest("GET", "wc/v3/products", mProductCallback, null);
+        request.JsonArrayNetRequest("GET", "wc/v3/products", mProductCallback);
 
 //        }) {
 //            @Override

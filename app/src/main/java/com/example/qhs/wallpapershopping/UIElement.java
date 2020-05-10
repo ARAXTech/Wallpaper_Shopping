@@ -124,8 +124,8 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
     public void defineVariable(){
 
            }
-    public void curvedNavigationMethod() {
-        curvedBottomNavigationView = (CurvedBottomNavigationView) activity.findViewById(R.id.curved_bottom_navigation);
+    //public void curvedNavigationMethod() {
+       // curvedBottomNavigationView = (CurvedBottomNavigationView) activity.findViewById(R.id.curved_bottom_navigation);
         //BottomNavigationMenuView menuView = (BottomNavigationMenuView) curvedBottomNavigationView.getChildAt(0);
 
 //        fab_home = (VectorMasterView) activity.findViewById(R.id.fab_home);
@@ -156,8 +156,8 @@ public class UIElement extends AppCompatActivity implements BottomNavigationView
 //        curvedBottomNavigationView.getMenu().getItem(4).getIcon().setVisible(true,true);
 
         //set event for botton navigation
-        curvedBottomNavigationView.setOnNavigationItemSelectedListener(this);
-    }
+     //   curvedBottomNavigationView.setOnNavigationItemSelectedListener(this);
+  //  }
 
     public static Bitmap takeScreenShot(Activity activity) {
         View view = activity.getWindow().getDecorView();

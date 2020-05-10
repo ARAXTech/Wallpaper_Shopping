@@ -2,7 +2,7 @@ package Util;
 
 public class util {
     //Database version
-    public static final int DARABASE_VERSION=5;
+    public static final int DARABASE_VERSION=6;
     public  static final String DATABASE_NAME="Dey";
     public  static final String TABLE_NAME="dey";
 
@@ -15,6 +15,7 @@ public class util {
     public static final  String KEY_NUM_LINK="key_num_link";
     public static final  String KEY_PRICE="key_price";
     public static final  String KEY_COUNT="key_count";
+    public static final  String KEY_COUNT_SHOP="key_count_shop";
 
 
 }
