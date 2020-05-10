@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.network.NetworkRequest;
 import com.example.qhs.wallpapershopping.network.Token;
+import com.github.florent37.materialtextfield.MaterialTextField;
 
 
 public class Fragment_login extends Fragment {
@@ -33,6 +35,7 @@ public class Fragment_login extends Fragment {
     private EditText mEditPassword;
     private EditText mEditUsername;
     private Button mButtonAction;
+    private MaterialTextField materialTextField_username;
 
     private ProgressDialog mProgressDialog;
     private AuthHelper mAuthHelper;
@@ -66,6 +69,10 @@ public class Fragment_login extends Fragment {
         mEditPassword = (EditText) view.findViewById(R.id.edit_password);
         mEditUsername = (EditText) view.findViewById(R.id.edit_username);
         mButtonAction = (Button) view.findViewById(R.id.button_action);
+        materialTextField_username = (MaterialTextField)view.findViewById(R.id.materialtextfield_username);
+
+
+
 
         setupView(mIsSignUpShowing);
 
@@ -90,11 +97,12 @@ public class Fragment_login extends Fragment {
         mTitleAction.setText(isSignUpShowing ? R.string.text_sign_up : R.string.text_login);
         mButtonAction.setText(isSignUpShowing ? R.string.text_sign_up : R.string.text_login);
         mPromptAction.setText(isSignUpShowing ? R.string.prompt_login: R.string.prompt_signup);
+        //mEditUsername.setVisibility(isSignUpShowing ? View.VISIBLE : View.GONE);
 
-        mEditUsername.setVisibility(isSignUpShowing ? View.VISIBLE : View.GONE);
+        materialTextField_username.setVisibility(isSignUpShowing ? View.VISIBLE : View.GONE);
+
         mButtonAction.setOnClickListener(isSignUpShowing ? doSignUpClickListener : doLoginClickListener);
-        mPromptAction.setOnClickListener(isSignUpShowing ? showLoginFormClickListener :
-                showSignUpFormClickListener);
+        mPromptAction.setOnClickListener(isSignUpShowing ? showLoginFormClickListener : showSignUpFormClickListener);
     }
 
     /**
