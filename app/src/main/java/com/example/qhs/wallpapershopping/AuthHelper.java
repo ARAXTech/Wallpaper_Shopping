@@ -173,7 +173,7 @@ public class AuthHelper {
 
     public void setUserId(){
 
-        request.JsonObjectNetRequest("GET", "wp/v2/users/me", mUserIdCallback);
+        request.JsonObjectNetRequest("GET", "wp/v2/users/me", mUserIdCallback, null);
     }
 
     private NetRequest.Callback<JSONObject> mUserIdCallback = new NetRequest.Callback<JSONObject>() {
@@ -186,7 +186,7 @@ public class AuthHelper {
 //                editor.putString(PREF_ID, String.valueOf(response.getInt("id")));
 //                editor.apply();
 
-                request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + String.valueOf(response.getInt("id")), mWishlistCallback);
+                request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + String.valueOf(response.getInt("id")), mWishlistCallback, null);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -200,7 +200,7 @@ public class AuthHelper {
     };
 
     private void getSharekeyWishlist() {
-        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + getUserId(), mWishlistCallback);
+        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + getUserId(), mWishlistCallback, null);
 
 
     }

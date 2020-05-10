@@ -113,6 +113,15 @@ public class NetworkRequest {
     private void doPostRequest(@NonNull String url, @NonNull Map<String, String> params,
                                @Nullable final Callback callback) {
 
+//        jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+//                URL_complete, null, new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                try {
+      //  JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.)
+
+
+
         HttpUrl httpUrl = HttpUrl.parse(url);
 
         JSONObject jsonObject = new JSONObject();
@@ -169,6 +178,10 @@ public class NetworkRequest {
         doRequest(requestBuilder.build(), callback);
     }
 
+    private void doGetRequestNoToken(@NonNull String url, @NonNull Map<String, String> params,
+                                     @NonNull String token, @Nullable Callback callback) {
+        doGetRequestWithToken(url, params, token, callback);
+    }
 
     /**
      * Makes request and fires callback as at when due
