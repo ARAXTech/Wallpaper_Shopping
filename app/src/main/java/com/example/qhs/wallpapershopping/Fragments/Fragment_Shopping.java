@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.RecyclerItemClickListener;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.google.gson.Gson;
@@ -57,12 +61,12 @@ import Data.DatabaseHandler;
 import Model.ListItem;
 
 
-public class Fragment_Shopping extends Fragment {
+public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemCallback {
 
     private RecyclerView recyclerView;
     private ShoppingAdapter adapter;
     private List<ListItem> listItems;
-    private TextView totalPrice;
+    public  TextView totalPrice;
     private int sum=0;
     private AuthHelper mAuthHelper;
     private Menu mOptionsMenu;
@@ -70,6 +74,8 @@ public class Fragment_Shopping extends Fragment {
     private Integer[][] shoppingProductId;
     private int num;
     private int quantity;
+    private CardView cardN;
+    Fragment_Shopping fragment_shopping;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,11 +99,13 @@ public class Fragment_Shopping extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listItems = new ArrayList<>();
+        ///cardview
+        cardN=(CardView) view.findViewById(R.id.cardN);
         /// Spinner
 
 
 
-       // db.deleteAll();
+      //  db.deleteAll();
         listItems = db.getAllShoppingItem();
         num = db.getShoppingItemCount();
 
@@ -127,20 +135,24 @@ public class Fragment_Shopping extends Fragment {
         });
         //displayArray();
 
-        adapter = new ShoppingAdapter(getContext(),listItems);
+        adapter = new ShoppingAdapter(getContext(),listItems,this);
 
 
 
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        totalPrice = (TextView) view.findViewById(R.id.totalPrice);
-        for (int i=0; i <num; i++) {
 
-            sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount();
+        totalPrice=(TextView)view.findViewById(R.id.totalPrice);
 
-        }
-        totalPrice.setText(String.valueOf(sum)+"تومان");
+//                        int sum=0;
+                    for (int i=0; i <num; i++) {
+
+                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
+
+                    }
+                    totalPrice.setText(String.valueOf(sum)+"تومان");
+
 
 
         //Shopping rest api
@@ -219,7 +231,7 @@ public class Fragment_Shopping extends Fragment {
 
     private void doGetShopping() {
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, null);
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback);
 
     }
 
@@ -255,18 +267,45 @@ public class Fragment_Shopping extends Fragment {
                         }
                         else{
                             shoppingProductId[idx][1] = 1;
-                        }
+                            // TODO: check quantity is updated
+                            if (quantity != shoppingProductId[idx][2]){
+                                ListItem item = new ListItem(
+                                        listItems.get(idx).getId(),
+                                        listItems.get(idx).getName(),
+                                        listItems.get(idx).getDescription(),
+                                        listItems.get(idx).getImgLink(),
+                                        listItems.get(idx).getFavorite(),
+                                        listItems.get(idx).getNum_link(),
+                                        listItems.get(idx).getPrice(),
+                                        quantity,1
+                                );
 
+                                db.updateListItem(item);
+                                listItems.get(idx).setCount(quantity);
+//                                listItems.remove(idx);
+//                                listItems.add(item);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            // delete item from app. this item was deleted from site before
             for (int i = 0; i < num; i++) {
                 if (shoppingProductId[i][1] == -1) {
-                    Log.d("addProduct_index ", String.valueOf(shoppingProductId[i][0]));
-                    addProduct(shoppingProductId[i][0], shoppingProductId[i][2]);
-                }
+//                    Log.d("addProduct_index ", String.valueOf(shoppingProductId[i][0]));
+//                    addProduct(shoppingProductId[i][0], shoppingProductId[i][2]);
+
+                    db.deleteListItem(String.valueOf(shoppingProductId[i][0]));
+
+                    listItems.remove(i);
+                    adapter.notifyItemRemoved(i);
+                    adapter.notifyItemRangeChanged(i, adapter.getItemCount());
+                    adapter.notifyDataSetChanged();
+
+            }
             }
 
         }
@@ -280,7 +319,7 @@ public class Fragment_Shopping extends Fragment {
 
     public void getProduct(int id){
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, null);
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback);
 
     }
 
@@ -296,7 +335,7 @@ public class Fragment_Shopping extends Fragment {
                         "false",
                         response.getJSONArray("images").length(),
                         Integer.parseInt(response.getString("price")),
-                        quantity
+                        quantity,1
                 );
 
                 db.addListItem(item);
@@ -320,16 +359,8 @@ public class Fragment_Shopping extends Fragment {
 
         Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
 
-//
-//        Map<String, String> params = new HashMap();
-//        params.put("product_id", "1444");
-//        params.put("quantity", "1");
-//
-//        JSONObject parameters = new JSONObject(params);
-
-
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback, null);
+        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback);
 
     }
 
@@ -354,5 +385,17 @@ public class Fragment_Shopping extends Fragment {
             //Log.d("errorHandler ", errorHandler.getCode());
         }
     };
+    @Override
+     public void TotalPrice(){
+                    sum=0;
+                    for (int i=0; i <num; i++) {
+
+                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
+
+                    }
+                    totalPrice.setText(String.valueOf(sum)+"تومان");
+
+     }
+
 
 }
