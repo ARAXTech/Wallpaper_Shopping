@@ -10,7 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -71,6 +73,30 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         }
 //        //End Splash
 
+//        Window window = getWindow();
+//        WindowManager.LayoutParams winParams = window.getAttributes();
+//        winParams.flags &= ~WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+//        window.setAttributes(winParams);
+//        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+
+
+        //Full screen ui
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                                  WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+        //End Full screen ui
+        //Hide navigation bar
+        View decorView = getWindow().getDecorView();
+// Hide both the navigation bar and the status bar.
+// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+// a general rule, you should design your app to hide the status bar whenever you
+// hide the navigation bar.
+        int uiOptions =  View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
+        //End Hide navigation bar
         super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
@@ -79,9 +105,19 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         fragment = new Fragment_home();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frame, fragment).commit();
-     //Toolbar
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //toolbar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#550000ff")));
+     //Toolbar
+       // toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+
+
+
+
 
         //Profile
         mAuthHelper = AuthHelper.getInstance(this);
