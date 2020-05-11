@@ -219,7 +219,8 @@ public class Fragment_favorite extends Fragment {
                         "true",
                         response.getJSONArray("images").length(),
                         1000,
-                        0
+                        0,
+                        1
                 );
 
                 db.addListItem(item);

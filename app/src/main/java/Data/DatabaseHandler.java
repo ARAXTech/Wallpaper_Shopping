@@ -34,7 +34,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + util.KEY_FAVORITE + " TEXT DEFAULT 'false', "
                 + util.KEY_NUM_LINK + " INTEGER DEFAULT 0, "
                 + util.KEY_PRICE + " INTEGER DEFAULT 1, "
-                + util.KEY_COUNT + " INTEGER DEFAULT 0 " +")";
+                + util.KEY_COUNT + " INTEGER DEFAULT 0, "
+                + util.KEY_COUNT_SHOP + " INTEGER "+")";
         sqLiteDatabase.execSQL(CREATE_GL_TABLE);
 
     }
@@ -59,7 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         value.put(util.KEY_NUM_LINK,listItem.getNum_link());
         value.put(util.KEY_PRICE,listItem.getPrice());
         value.put(util.KEY_COUNT,listItem.getCount());
-
+        value.put(util.KEY_COUNT_SHOP,listItem.getCount_shop());
         //Insert to row
         db.insert(util.TABLE_NAME, null, value);
         db.close();//Close db connection
@@ -72,13 +73,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(util.TABLE_NAME, new String[]{util.KEY_ID,
                         util.KEY_NAME, util.KEY_DESCRIPTION, util.KEY_IMG_SRC, util.KEY_FAVORITE, util.KEY_NUM_LINK.toString(),
-                        util.KEY_PRICE.toString(), util.KEY_COUNT.toString()}, util.KEY_ID + "=?",
+                        util.KEY_PRICE.toString(), util.KEY_COUNT.toString(),util.KEY_COUNT_SHOP}, util.KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
 
             ListItem item = new ListItem(cursor.getString(0),
-                    cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getInt(7));
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),
+                    cursor.getInt(5),cursor.getInt(6),cursor.getInt(7),cursor.getInt(8));
             return item;
         }
         return null;
@@ -104,6 +106,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setNum_link(cursor.getInt(5));
                 item.setPrice(cursor.getInt(6));
                 item.setCount(cursor.getInt(7));
+                item.setCount_shop(cursor.getInt(8));
                 //add contact object to our contact list
                 ItemList.add(item);
                 //  ListItem item=new ListItem(cursor.getString(1),cursor.getString(2));
@@ -134,6 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setNum_link(cursor.getInt(5));
                 item.setPrice(cursor.getInt(6));
                 item.setCount(cursor.getInt(7));
+                item.setCount_shop(cursor.getInt(8));
                 //add contact object to our contact list
                 ItemList.add(item);
                 //  ListItem item=new ListItem(cursor.getString(1),cursor.getString(2));
@@ -156,7 +160,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ListItem item = new ListItem(cursor.getString(0),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)
-                ,cursor.getInt(5),cursor.getInt(6),cursor.getInt(7));
+                ,cursor.getInt(5),cursor.getInt(6),cursor.getInt(7),cursor.getInt(8));
         return item.getFavorite();
     }
     //Update contact
@@ -171,8 +175,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(String.valueOf(util.KEY_NUM_LINK), listItem.getNum_link());
         values.put(String.valueOf(util.KEY_PRICE),listItem.getPrice());
         values.put(String.valueOf(util.KEY_COUNT),listItem.getCount());
+        values.put(String.valueOf(util.KEY_COUNT_SHOP),listItem.getCount_shop());
         //Update row
         return db.update(util.TABLE_NAME, values, util.KEY_ID + "=?", new String[]{String.valueOf(listItem.getId())});
+     //   return db.update(util.TABLE_NAME, values, "util.KEY_ID", null);
 
     }
 

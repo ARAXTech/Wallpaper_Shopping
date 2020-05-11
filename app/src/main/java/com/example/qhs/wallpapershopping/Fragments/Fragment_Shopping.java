@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.RecyclerItemClickListener;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.google.gson.Gson;
@@ -57,12 +61,12 @@ import Data.DatabaseHandler;
 import Model.ListItem;
 
 
-public class Fragment_Shopping extends Fragment {
+public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemCallback {
 
     private RecyclerView recyclerView;
     private ShoppingAdapter adapter;
     private List<ListItem> listItems;
-    private TextView totalPrice;
+    public  TextView totalPrice;
     private int sum=0;
     private AuthHelper mAuthHelper;
     private Menu mOptionsMenu;
@@ -70,6 +74,8 @@ public class Fragment_Shopping extends Fragment {
     private Integer[][] shoppingProductId;
     private int num;
     private int quantity;
+    private CardView cardN;
+    Fragment_Shopping fragment_shopping;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,11 +99,13 @@ public class Fragment_Shopping extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listItems = new ArrayList<>();
+        ///cardview
+        cardN=(CardView) view.findViewById(R.id.cardN);
         /// Spinner
 
 
 
-        //db.deleteAll();
+      //  db.deleteAll();
         listItems = db.getAllShoppingItem();
         num = db.getShoppingItemCount();
 
@@ -127,19 +135,24 @@ public class Fragment_Shopping extends Fragment {
         });
         //displayArray();
 
-        adapter = new ShoppingAdapter(getContext(),listItems);
+        adapter = new ShoppingAdapter(getContext(),listItems,this);
 
 
-        for (int i=0; i <num; i++) {
 
-            sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount();
-
-        }
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        totalPrice = (TextView) view.findViewById(R.id.totalPrice);
-        totalPrice.setText(String.valueOf(sum)+"تومان");
+
+        totalPrice=(TextView)view.findViewById(R.id.totalPrice);
+
+//                        int sum=0;
+                    for (int i=0; i <num; i++) {
+
+                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
+
+                    }
+                    totalPrice.setText(String.valueOf(sum)+"تومان");
+
 
 
         //Shopping rest api
@@ -264,7 +277,7 @@ public class Fragment_Shopping extends Fragment {
                                         listItems.get(idx).getFavorite(),
                                         listItems.get(idx).getNum_link(),
                                         listItems.get(idx).getPrice(),
-                                        quantity
+                                        quantity,1
                                 );
 
                                 db.updateListItem(item);
@@ -290,7 +303,7 @@ public class Fragment_Shopping extends Fragment {
                     listItems.remove(i);
                     adapter.notifyItemRemoved(i);
                     adapter.notifyItemRangeChanged(i, adapter.getItemCount());
-                    //adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
 
             }
             }
@@ -322,7 +335,7 @@ public class Fragment_Shopping extends Fragment {
                         "false",
                         response.getJSONArray("images").length(),
                         Integer.parseInt(response.getString("price")),
-                        quantity
+                        quantity,1
                 );
 
                 db.addListItem(item);
@@ -366,11 +379,23 @@ public class Fragment_Shopping extends Fragment {
         @Override
         public void onError(String error) {
 
-         //   Gson g = new Gson();
-           // ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
+            //   Gson g = new Gson();
+            // ErrorHandler errorHandler = g.fromJson(error, ErrorHandler.class);
 
             //Log.d("errorHandler ", errorHandler.getCode());
         }
     };
+    @Override
+     public void TotalPrice(){
+                    sum=0;
+                    for (int i=0; i <num; i++) {
+
+                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
+
+                    }
+                    totalPrice.setText(String.valueOf(sum)+"تومان");
+
+     }
+
 
 }

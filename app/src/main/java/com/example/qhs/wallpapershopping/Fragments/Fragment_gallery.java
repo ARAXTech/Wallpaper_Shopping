@@ -171,7 +171,7 @@ public class Fragment_gallery extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),1000,0);
+                ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),1000,0,1);
                 if (isChecked ){
                     db.addListItem(item);
                     addProduct(Integer.parseInt(id));
@@ -195,7 +195,7 @@ public class Fragment_gallery extends Fragment {
             public void onClick(View view) {
 
                 if (mAuthHelper.isLoggedIn()) {
-                    ListItem item1 = new ListItem(id,name,description, finalS,"false",image_list.size(),1000,1);
+                    ListItem item1 = new ListItem(id,name,description, finalS,"false",image_list.size(),1000,1,1);
 
                     db.addListItem(item1);
                     addProductToCart(Integer.parseInt(id), 1);

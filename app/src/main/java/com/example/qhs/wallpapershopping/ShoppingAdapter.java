@@ -1,8 +1,11 @@
 package com.example.qhs.wallpapershopping;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -44,10 +47,12 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     private List<ListItem> listItems;
     private boolean mFlag;
     private int deleteId;
+    ItemCallback Listener;
 
-    public  ShoppingAdapter(Context context, List listitem) {
+    public  ShoppingAdapter(Context context, List listitem,ItemCallback Listener) {
         this.context = context;
         this.listItems = listitem;
+        this.Listener=Listener;
         mFlag = false;
         request = new NetRequest(context);
     }
@@ -57,37 +62,38 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View rootView = inflater.inflate(R.layout.shopping_item, parent, false);
+
         return new ShoppingAdapter.ViewHolder(rootView);
     }
     private boolean onBind;
+
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final DatabaseHandler db1 = new DatabaseHandler(context);
-//        for (ListItem item : db1.getAllShoppingItem())
-//            Log.d("count of " + item.getId(), String.valueOf(item.getCount()));
         final ListItem item = listItems.get(position);
         final List <String> image_link = new ArrayList <>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
         String temp = image_link.get(0);
+       int num = db1.getShoppingItemCount();
         //  temp = temp.replace("https", "http");
         if (URLUtil.isValidUrl(temp)) {
             Picasso.with(context)
                     .load(temp).resize(200, 200)
                     .into(holder.img);
-//            if(Integer.parseInt(holder.counter.getText().toString())==0){
-//                 deleteId = Integer.parseInt(item.getId());
-//                 db1.deleteListItem(item.getId());
-//                 listItems.remove(position); // remove the item from list
-//                 notifyItemRemoved(position); // notify the adapter about the removed item
-//                 notifyItemRangeChanged(position, getItemCount());
-//            }
+
+            holder.counter.setText(String.valueOf(item.getCount_shop()));
+             Log.d("shopcount1",String.valueOf(item.getCount_shop()));
+
 
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-                    holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())-1));
-                    item.setCount(Integer.parseInt(holder.counter.getText().toString()));
-                    if (Integer.parseInt(holder.counter.getText().toString())<1) {
+
+                    holder.counter.setText(String.valueOf(item.getCount_shop()-1));
+                    item.setCount_shop(item.getCount_shop()-1);
+                    Log.d("shopcount2",String.valueOf(item.getCount_shop()));
+
+                    if (item.getCount_shop()<1) {
                         deleteId = Integer.parseInt(item.getId());
                         db1.deleteListItem(item.getId());
                         listItems.remove(position); // remove the item from list
@@ -95,7 +101,10 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                         notifyItemRangeChanged(position, getItemCount());
                         deleteFromServer();
                     }
+                    db1.updateListItem(item);
+                    deleteFromServer();
                     //Todo: update count in site
+                    Listener.TotalPrice();
 
 
                 }
@@ -105,65 +114,17 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                 @Override
                 public void onClick(View view) {
 
-                    holder.counter.setText(String.valueOf(Integer.parseInt(holder.counter.getText().toString())+1));
-                    item.setCount(Integer.parseInt(holder.counter.getText().toString()));
-                    //Todo: update count in site
+                    holder.counter.setText(String.valueOf(item.getCount_shop()+1));
+                    item.setCount_shop(item.getCount_shop()+1);
+                    Log.d("shopcount3",String.valueOf(item.getCount_shop()));
+                    db1.updateListItem(item);
 
-                }
+                    Listener.TotalPrice();
+
+//
+               }
             });
-       //     holder.counter.setSelection(item.getCount() - 1);
-
-//            holder.counter.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View view, MotionEvent motionEvent) {
-//                    mFlag = true;
-//                    return false;
-//                }
-//            });
-
-//            holder.counter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //
-//                @Override
-//                public void onItemSelected(AdapterView <?> parent, View view, int position, long id) {
-//                    // On selecting a spinner item
-//                    if (!onBind) {
-//                        item.setCount(Integer.parseInt((String) parent.getItemAtPosition(position)));
-//                        db1.updateListItem(item);
-//                        notifyItemRangeChanged(position, getItemCount());
-//
-//                        final JSONObject postparams = new JSONObject();
-//
-////                        try {
-////                            postparams.put("cart_item_key", );
-////                            postparams.put("quantity", parent.getItemAtPosition(position));
-////
-////                        } catch (JSONException e) {
-////                            Log.d("JSONException_add", e.getMessage());
-////                            e.printStackTrace();
-////                        }
-//
-//                    //    request.JsonObjectNetRequest("POST", "cocart/v1/item", null, null);
-////                        String item = parent.getItemAtPosition(position).toString();
-////                        Log.d("SPINNER ", item);
-//                    }
-//                    if (mFlag) {
-//                        // Your selection handling code here
-//                        mFlag = false;
-//                        Fragment fragment = new Fragment_Shopping();
-//                        //AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//                        // Fragment myFragment = new TaskApprovalFragmentDetails();
-//                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
-//
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView <?> parent) {
-//                    // todo for nothing selected
-//
-//                }
-//            });
             holder.price.setText(String.valueOf(item.getPrice()));
 
             holder.name.setText(" نام محصول:" + item.getName());
@@ -229,6 +190,9 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         public TextView price;
         public TextView name;
         public Button counterTxt;
+     //   public TextView total;
+
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -238,6 +202,8 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             counterTxt=(Button)itemView.findViewById(R.id.counterTxt);
             price=(TextView)itemView.findViewById(R.id.price);
             name=(TextView)itemView.findViewById(R.id.name);
+            //total=(TextView)itemView.findViewById(R.id.totalPrice);
+
         }
         @Override
         public void onClick(View view) {
@@ -258,5 +224,8 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
 
         }
+    }
+    public interface ItemCallback{
+        void TotalPrice();
     }
 }
