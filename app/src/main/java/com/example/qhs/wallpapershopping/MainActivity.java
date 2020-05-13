@@ -82,20 +82,20 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
 
         //Full screen ui
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                                  WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                                  WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        }
         //End Full screen ui
         //Hide navigation bar
-        View decorView = getWindow().getDecorView();
+       //   View decorView = getWindow().getDecorView();
 // Hide both the navigation bar and the status bar.
 // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
 // a general rule, you should design your app to hide the status bar whenever you
 // hide the navigation bar.
-        int uiOptions =  View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        decorView.setSystemUiVisibility(uiOptions);
+//        int uiOptions =  View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+//        decorView.setSystemUiVisibility(uiOptions);
         //End Hide navigation bar
         super.onCreate(savedInstanceState);
         //animation
