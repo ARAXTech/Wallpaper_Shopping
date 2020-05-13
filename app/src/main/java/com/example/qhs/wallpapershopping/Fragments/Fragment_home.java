@@ -133,6 +133,7 @@ public class Fragment_home extends Fragment {
         //Toolbar
 
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("خانه");
 

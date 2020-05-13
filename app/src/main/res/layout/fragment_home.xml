@@ -11,15 +11,7 @@
         android:layout_height="match_parent"
         android:background="#F9FBFF">
 
-        <ImageView
-            android:id="@+id/bgheader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bgheader"
-            app:layout_constraintBottom_toTopOf="@+id/simpleGridView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
 <!--        <LinearLayout-->
 <!--            android:id="@+id/textsplash"-->
