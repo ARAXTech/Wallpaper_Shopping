@@ -22,10 +22,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.ListPreloader;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_Shopping;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_gallery;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +49,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     private List<ListItem> listItems;
     private boolean mFlag;
     private int deleteId;
+    private Admin admin;
     ItemCallback Listener;
 
     public  ShoppingAdapter(Context context, List listitem,ItemCallback Listener) {
@@ -55,6 +58,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         this.Listener=Listener;
         mFlag = false;
         request = new NetRequest(context);
+        admin = Admin.getInstance(context);
     }
 
     @NonNull
@@ -139,9 +143,9 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
         }
     }
-
+//TODO: endpoint
     private void deleteFromServer() {
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback);
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, admin.getAdminAuth());
     }
 
     private NetRequest.Callback<JSONObject> mShoppingProductCallback = new NetRequest.Callback<JSONObject>(){
