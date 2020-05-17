@@ -151,7 +151,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                         sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
 
                     }
-                    totalPrice.setText(String.valueOf(sum)+"تومان");
+                    totalPrice.setText(String.valueOf(sum)+" تومان");
 
 
 
@@ -393,7 +393,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                         sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
 
                     }
-                    totalPrice.setText(String.valueOf(sum)+"تومان");
+                    totalPrice.setText(String.valueOf(sum)+" تومان");
 
      }
 
