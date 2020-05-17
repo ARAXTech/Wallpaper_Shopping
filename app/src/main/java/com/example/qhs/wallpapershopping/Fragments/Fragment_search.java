@@ -32,6 +32,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 
 import org.json.JSONArray;
@@ -69,6 +70,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItems;
     private List<JSONArray> imageList;
+    private Admin admin;
     private RequestQueue queue;
     //public  View view;
     public  JSONArray image_series_json;
@@ -81,6 +83,8 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+
+        admin = Admin.getInstance(getContext());
         //Toolbar
         TextView title = (TextView) getActivity().findViewById(R.id.txtTitle);
         title.setText("جستجو");
@@ -223,7 +227,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         Log.d("unicode**",url + "***"+search_key_encode);
 
         NetRequest request = new NetRequest(getContext());
-        request.JsonArrayNetRequest("GET", url, mProductCallback);
+        request.JsonArrayNetRequest("GET", url, mProductCallback, admin.getAdminAuth());
 
       //  for (int j = 0; j < 10 + 1; j++) {
 
@@ -243,7 +247,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         pgsBar.setVisibility(VISIBLE);
 
         NetRequest request = new NetRequest(getContext());
-        request.JsonArrayNetRequest("GET", "wc/v3/products", mProductCallback);
+        request.JsonArrayNetRequest("GET", "wc/v3/products", mProductCallback, admin.getAdminAuth());
 
 //        }) {
 //            @Override

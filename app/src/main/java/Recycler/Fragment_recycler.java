@@ -2,6 +2,7 @@ package Recycler;
 
 import android.app.ProgressDialog;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.network.Admin;
+import com.example.qhs.wallpapershopping.network.NetRequest;
 
 
 import org.json.JSONArray;
@@ -62,10 +65,11 @@ public class Fragment_recycler extends Fragment {
     public RecyclerAdapter adapter;
     public List<ListItem> listItems;
     private List<JSONArray> imageList;
-    // okhttp request
+    private NetRequest request;
     private ProgressDialog mProgressDialog;
     //log in
     private AuthHelper mAuthHelper;
+    private Admin admin;
     private Menu mOptionsMenu;
     private Button profileBtn;
 
@@ -113,7 +117,9 @@ public class Fragment_recycler extends Fragment {
 
 
 
+        request = new NetRequest(getContext());
         queue = newRequestQueue(getContext());
+        admin = Admin.getInstance(getContext());
 
         mProgressDialog = new ProgressDialog(getContext());
         mAuthHelper = AuthHelper.getInstance(getContext());
@@ -200,11 +206,9 @@ public class Fragment_recycler extends Fragment {
         adapter = new RecyclerAdapter(getContext(), listItems);
         recyclerView.setAdapter(adapter);
 
-        try {
-            category_Response_edited(URL);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+
+        category_Response_edited();
+
         // newMyResponse(URL_products);
         pgsBar = (ProgressBar) view.findViewById(R.id.pBar);
 
@@ -260,108 +264,66 @@ public class Fragment_recycler extends Fragment {
         }
     }
 
-    public void category_Response_edited(String url) throws MalformedURLException {
+    public void category_Response_edited(){
 
         imageList.clear();
         Bundle extras = this.getArguments();
-        String count_string = extras.getString("count");
         String key_string = extras.getString("key");
-//        int count_int = Integer.valueOf(count_string);
 
-        String url_jwt = URL_category_product + key_string;
-
-        JsonArrayRequest jsonArrayRequest;
-
-        jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
-                url_jwt, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-
-                    //JSONArray products = response.getJSONArray();
-                    for (int i = 0; i < response.length(); i++) {
-
-                        response_number = response.length();
-
-
-                        image_series_json = response.getJSONObject(i).getJSONArray("images");
-                        //viewDialog.hideDialog();
-
-                        //Log.d("j**response number",String.valueOf(iteration_number) + "***"+String.valueOf(response_number) );
-                        //get image urls and save in arraylist
-                        imageList.add(image_series_json);
-
-                        Log.d("response*****", response.getJSONObject(i).getString("name"));
-                        ListItem item = new ListItem(
-                                response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
-                                response.getJSONObject(i).getString("name"),
-                                /*image_series_json*/
-                                response.getJSONObject(i).getString("id"),
-                                response.getJSONObject(i).getString("short_description"),
-                                response.getJSONObject(i).getJSONArray("images"),
-                                new ArrayList()
-                        );
-
-
-                        for (int u = 0; u < response.getJSONObject(i).getJSONArray("images").length(); u++) {
-                            Log.d("imgsrc***", response.getJSONObject(i).getJSONArray("images").getJSONObject(u).getString("src"));
-                        }
-
-
-                        listItems.add(item);
-                        adapter.notifyDataSetChanged();
-                        pgsBar.setVisibility(view.GONE);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //VolleyLog.d("Error:", error.getMessage());
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Log.e("NoConnectionError", error.getMessage());
-                } else if (error instanceof AuthFailureError) {
-                    Log.e("AuthFailureError", error.getMessage());
-                } else if (error instanceof ServerError) {
-                    Log.e("ServerError", error.getMessage());
-                } else if (error instanceof NetworkError) {
-                    Log.e("NetworkError", error.getMessage());
-                } else if (error instanceof ParseError) {
-                    Log.e("ParseError", error.getMessage());
-                }
-            }
-        }){
-
-            //This is for Headers If You Needed
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                //params.put("Content-Type", "application/x-www-form-urlencoded");
-
-                //  String access_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTcxNTU5MTAxLCJuYmYiOjE1NzE1NTkxMDEsImV4cCI6MTU3MjE2MzkwMSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.9Cgl5ZrBMV_MZ-ojZWjlguxHwqT0IuB0MiMCSxIJX2k";
-                // String creds = String.format("%s", access_token);
-
-                // params.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tb2JpZnl0ZWNoLmlyIiwiaWF0IjoxNTY3NTg4MDczLCJuYmYiOjE1Njc1ODgwNzMsImV4cCI6MTU2ODE5Mjg3MywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.pP2G2lZJys5USenPHpvKxhy5ugH1xxWCDX2tSAikwfw");
-
-                params.put("Authorization", "Bearer " + mAuthHelper.getIdToken());
-                //params.replace("\n", "");
-                return params;
-            }
-        };
-
-
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(1000000000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        //requests.add(jsonArrayRequest);
-        queue.add(jsonArrayRequest);
+        request.JsonArrayNetRequest("GET", "wc/v3/products?category="+key_string, mCategoryCallback, admin.getAdminAuth());
 
     }
+
+    private NetRequest.Callback<JSONArray> mCategoryCallback = new NetRequest.Callback<JSONArray>(){
+
+        @Override
+        public void onResponse(@NonNull JSONArray response) {
+            try {
+
+                //JSONArray products = response.getJSONArray();
+                for (int i = 0; i < response.length(); i++) {
+
+                    response_number = response.length();
+
+
+                    image_series_json = response.getJSONObject(i).getJSONArray("images");
+                    //viewDialog.hideDialog();
+
+                    //Log.d("j**response number",String.valueOf(iteration_number) + "***"+String.valueOf(response_number) );
+                    //get image urls and save in arraylist
+                    imageList.add(image_series_json);
+
+                    Log.d("response*****", response.getJSONObject(i).getString("name"));
+                    ListItem item = new ListItem(
+                            response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
+                            response.getJSONObject(i).getString("name"),
+                            /*image_series_json*/
+                            response.getJSONObject(i).getString("id"),
+                            response.getJSONObject(i).getString("short_description"),
+                            response.getJSONObject(i).getJSONArray("images"),
+                            new ArrayList()
+                    );
+
+
+                    for (int u = 0; u < response.getJSONObject(i).getJSONArray("images").length(); u++) {
+                        Log.d("imgsrc***", response.getJSONObject(i).getJSONArray("images").getJSONObject(u).getString("src"));
+                    }
+
+
+                    listItems.add(item);
+                    adapter.notifyDataSetChanged();
+                    pgsBar.setVisibility(view.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(String error) {
+
+        }
+    };
 
 
 

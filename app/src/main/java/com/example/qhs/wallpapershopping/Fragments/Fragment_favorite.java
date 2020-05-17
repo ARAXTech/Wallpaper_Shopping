@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.FavoriteAdapter;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 
 import org.json.JSONArray;
@@ -44,6 +45,7 @@ public class Fragment_favorite extends Fragment {
     private FavoriteAdapter adapter;
     private List<ListItem> listItems;
     private AuthHelper mAuthHelper;
+    private Admin admin;
     private DatabaseHandler db;
     private int[][] wishlistProductId;
     private String shareKey;
@@ -65,6 +67,7 @@ public class Fragment_favorite extends Fragment {
         db = new DatabaseHandler(getContext());
 
         mAuthHelper = AuthHelper.getInstance(getContext());
+        admin = Admin.getInstance(getContext());
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.FavoriteRecycler);
@@ -123,7 +126,7 @@ public class Fragment_favorite extends Fragment {
 
     private void getWishlistProduct(String shareKey) {
         NetRequest request = new NetRequest(getContext());
-        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+shareKey+"/get_products", mWishlistProductCallback);
+        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+shareKey+"/get_products", mWishlistProductCallback, null);
     }
 
     private NetRequest.Callback<JSONArray> mWishlistProductCallback = new NetRequest.Callback<JSONArray>(){
@@ -202,8 +205,9 @@ public class Fragment_favorite extends Fragment {
     };
 
     public void getProduct(int id){
+
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback);
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, admin.getAdminAuth());
 
     }
 

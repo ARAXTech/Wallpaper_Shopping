@@ -38,6 +38,7 @@ import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.RecyclerItemClickListener;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
+import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.google.gson.Gson;
 import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener;
@@ -69,6 +70,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     public  TextView totalPrice;
     private int sum=0;
     private AuthHelper mAuthHelper;
+    private Admin admin;
     private Menu mOptionsMenu;
     private DatabaseHandler db;
     private Integer[][] shoppingProductId;
@@ -91,6 +93,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         db = new DatabaseHandler(getContext());
 
         mAuthHelper = AuthHelper.getInstance(getContext());
+        admin = Admin.getInstance(getContext());
 //        Button profileBtn=(Button)findViewById(R.id.ProfileBtn);
 //        profileBtn.setVisibility(View.GONE);
 
@@ -230,8 +233,9 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     }
 
     private void doGetShopping() {
+        //TODO : endpoint changed
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback);
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, admin.getAdminAuth());
 
     }
 
@@ -319,7 +323,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
     public void getProduct(int id){
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback);
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, admin.getAdminAuth());
 
     }
 
@@ -360,7 +364,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
 
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback);
+        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback, null);
 
     }
 

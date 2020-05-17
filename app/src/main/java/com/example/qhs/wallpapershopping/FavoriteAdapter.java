@@ -20,12 +20,14 @@ import android.widget.TextView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -33,6 +35,7 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_gallery;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_search;
+import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +62,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     private DatabaseHandler db;
     private RequestQueue queue;
     private AuthHelper mAuthHelper;
+    private Admin admin;
 
 
     public  FavoriteAdapter(Context context, List listitem){
@@ -66,6 +71,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         db = new DatabaseHandler(context);
         queue = newRequestQueue(context);
         mAuthHelper = AuthHelper.getInstance(context);
+        admin = Admin.getInstance(context);
     }
 
 
@@ -96,21 +102,19 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Log.e("NoConnectionError", error.getMessage());
-                } else if (error instanceof AuthFailureError) {
-                    Log.e("AuthFailureError", error.getMessage());
-                } else if (error instanceof ServerError) {
+
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response != null) {
+                    Picasso.with(context)
+                            .load(temp).resize(200, 200)
+                            .into(holder.img);
+                }else {
                     db.deleteListItem(item.getId());
                     listItems.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, getItemCount());
-
-                } else if (error instanceof NetworkError) {
-                    Log.e("NetworkError", error.getMessage());
-                } else if (error instanceof ParseError) {
-                    Log.e("ParseError", error.getMessage());
                 }
+
 
             }
         }){
@@ -119,7 +123,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json");
-                params.put("Authorization", "Bearer " + mAuthHelper.getIdToken());
+                params.put("Authorization", "Bearer " + admin.getAdminAuth());
                 return params;
             }
 
@@ -156,7 +160,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     //notifyDataSetChanged();
 
                     //remove from site
-                    request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products", mWishlistProductCallback);
+                    request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products", mWishlistProductCallback, null);
                 }
             });
         }

@@ -33,27 +33,19 @@ import io.jsonwebtoken.security.Keys;
 
 public class AuthHelper {
 
-    /* Key for username in the jwt claim
-     */
-    private static final String JWT_KEY_USERNAME = "data";
     private static final String PREFS = "prefs";
     private static final String PREF_TOKEN = "pref_token";
     private static final String PREF_USERNAME = "pref_username";
-    private static final String PREF_ID = "pref_id";
     private static final String PREF_SHAREKEY_WISHLIST = "pref_sharekey";
     private SharedPreferences mPrefs;
 
-    //private Context context;
     private NetRequest request;
     private static AuthHelper sInstance;
 
     private AuthHelper(@NonNull Context c) {
-        //context = c;
         mPrefs = c.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         sInstance = this;
         request = new NetRequest(c);
-
-
     }
 
     public static AuthHelper getInstance(@NonNull Context context) {
@@ -71,21 +63,12 @@ public class AuthHelper {
         editor.putString(PREF_USERNAME, token.getUser_display_name());
         editor.apply();
 
-        setUserId();
-        //getSharekeyWishlist();
+        getUserId();
     }
-
-
 
     @Nullable
     public String getIdToken() {
         return mPrefs.getString(PREF_TOKEN, null);
-    }
-
-
-    public String getUserId() {
-        String d= mPrefs.getString(PREF_ID, null);
-        return d;
     }
 
     public String getSharekey() {
@@ -105,75 +88,20 @@ public class AuthHelper {
         if (isLoggedIn()) {
             Log.d("IDtoken: ", getIdToken());
             return mPrefs.getString(PREF_USERNAME, null);
-            //return decodeUsername(getIdToken());
         }
         return null;
     }
 
-
-    @Nullable
-    private String decodeUsername(String token) {
-        JWT jwt = new JWT(token);
-        Gson gson = null;
-        //  Map<String, Claim> allClaims = jwt.getClaims();
-
-
-
-        Date date = jwt.getExpiresAt();
-        date.setMonth(date.getMonth()+1);
-
-        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256); //or HS384 or HS512
-
-        String jws = Jwts.builder().setIssuer(jwt.getIssuer())
-                .setSubject("Bob")
-                .setAudience("you")
-                .setExpiration(date) //a java.util.Date
-                .setNotBefore(jwt.getNotBefore()) //a java.util.Date
-                .setIssuedAt(jwt.getIssuedAt()) // for example, now
-                //  .setId(UUID.randomUUID()) ;//just an example id
-                //   .setClaims(allClaims)
-                // .claim("data", gson.toJson(jwt.getClaim("data")))
-
-                .signWith(key) // <---
-
-                .compact();
-
-        try {
-
-            Claim claim = jwt.getClaim("data");//claim != null
-
-            if ( claim != null ) {
-
-                //JSONObject jsonObject = gson.fromJson(allClaims., JSONObject.class);jsonObject.toString()
-                //Log.d("dataClaim: ", claim.asString() );//
-
-                ArrayList<Claim> list = new ArrayList<>(claim.asList(Claim.class));
-
-                /// JsonObject[] arrayList = claim.asArray(JsonObject.class);
-                Log.d("dataClaim: ", String.valueOf(claim.asInt()));
-
-                // List<JSONObject> dataClaim = claim.asList(JSONObject.class);
-                Log.d("size of list: ", String.valueOf(list.size()));
-                Gson gson1 = null;
-
-                Log.d("NEW TOKEN: ", jws);
-                return jwt.getClaim(JWT_KEY_USERNAME).asString();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public void clear() {
         mPrefs.edit().clear().commit();
     }
 
 
-    public void setUserId(){
+    public void getUserId(){
 
-        request.JsonObjectNetRequest("GET", "wp/v2/users/me", mUserIdCallback);
+        Log.d("ttoken: ", getIdToken());
+        request.JsonObjectNetRequest("GET", "wp/v2/users/me", mUserIdCallback, getIdToken());
     }
 
     private NetRequest.Callback<JSONObject> mUserIdCallback = new NetRequest.Callback<JSONObject>() {
@@ -181,12 +109,8 @@ public class AuthHelper {
         public void onResponse(@NonNull JSONObject response) {
 
             try {
-                Log.d("knrlknfrl", String.valueOf(response.getInt("id")));
-//                SharedPreferences.Editor editor = mPrefs.edit();
-//                editor.putString(PREF_ID, String.valueOf(response.getInt("id")));
-//                editor.apply();
-
-                request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + String.valueOf(response.getInt("id")), mWishlistCallback);
+                //Get Sharekey Wishlist
+                request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + response.getInt("id"), mWishlistCallback, getIdToken());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -198,12 +122,6 @@ public class AuthHelper {
         public void onError(String error) {
         }
     };
-
-    private void getSharekeyWishlist() {
-        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + getUserId(), mWishlistCallback);
-
-
-    }
 
     private NetRequest.Callback<JSONArray> mWishlistCallback = new NetRequest.Callback<JSONArray>() {
         @Override
