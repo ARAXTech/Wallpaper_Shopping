@@ -36,9 +36,11 @@ import android.widget.ToggleButton;
 import android.support.v7.widget.Toolbar;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.Blur;
@@ -182,7 +184,7 @@ public class Fragment_gallery extends Fragment {
 
                     //remove from site
                     request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products",
-                            mWishlistProductCallback);
+                            mWishlistProductCallback, null);
                 }
             }
         });
@@ -309,7 +311,10 @@ public class Fragment_gallery extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("error_add ", error.getMessage());
+
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response == null)
+                    Log.d("error_add ", error.getMessage());
 
             }
         });
@@ -327,7 +332,7 @@ public class Fragment_gallery extends Fragment {
         Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
 
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback);
+        request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback, null);
 
     }
 

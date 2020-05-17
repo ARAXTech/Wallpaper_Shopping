@@ -36,6 +36,7 @@ import com.example.qhs.wallpapershopping.GridAdapter;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.UIElement;
+import com.example.qhs.wallpapershopping.network.Admin;
 
 import Recycler.Fragment_recycler;
 
@@ -47,6 +48,7 @@ public class Fragment_home extends Fragment {
     GridView simpleGrid;
     GridAdapter gridAdapter;
     private AuthHelper mAuthHelper;
+    private Admin admin;
     private Menu mOptionsMenu;
     private ImageButton profileBtn;
     private TextView txtView_login;
@@ -94,7 +96,7 @@ public class Fragment_home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 
-
+        admin = Admin.getInstance(getContext());
 
 //        //Splash Screen
 //        if (Splashscreen.Splash==0){
