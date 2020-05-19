@@ -58,55 +58,37 @@ public class NetRequest {
             this.method = Request.Method.POST;
         }
 
-        if (token!=null)
-            Log.d("token NEt ", token);
-
-        objectRequest = new JsonObjectRequest(this.method, BASE_URL + endpoint, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (response != null) {
-                    callback.onResponse(response);
-                }
+        objectRequest = new JsonObjectRequest(this.method, BASE_URL + endpoint, null, response -> {
+            if (response != null & callback != null) {
+                callback.onResponse(response);
             }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-                // As of f605da3 the following should work
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONObject obj = new JSONObject(res);
-                        callback.onResponse(obj);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    } catch (JSONException e2) {
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
-                    }
+            // As of f605da3 the following should work
+            NetworkResponse response = error.networkResponse;
+            if (error instanceof ServerError && response != null) {
+                try {
+                    String res = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                    JSONObject obj = new JSONObject(res);
+                    callback.onResponse(obj);
+                } catch (UnsupportedEncodingException e1) {
+                    // Couldn't properly decode data to string
+                    e1.printStackTrace();
+                } catch (JSONException e2) {
+                    // returned data is not JSONObject?
+                    e2.printStackTrace();
                 }
-
-//                error.printStackTrace();
-//
-//                //VolleyLog.d("Error:", error.getMessage());
-//                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                    Log.e("NoConnectionError", error.getMessage());
-//                } else if (error instanceof AuthFailureError) {
-//                    Log.e("AuthFailureError", error.getMessage());
-//                } else if (error instanceof ServerError) {
-//                    callback.onError(error.networkResponse.toString());
-//                    Log.e("VOLLEY_ServerError", error.toString());
-//                } else if (error instanceof NetworkError) {
-//                    Log.e("NetworkError", error.getMessage());
-//                } else if (error instanceof ParseError) {
-//                    Log.e("ParseError", error.getMessage());
-//                }
-
+            }else if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                Log.e("NoConnectionError", error.getMessage());
+            } else if (error instanceof AuthFailureError) {
+                Log.e("AuthFailureError", error.getMessage());
+            } else if (error instanceof NetworkError) {
+                Log.e("NetworkError", error.getMessage());
+            } else if (error instanceof ParseError) {
+                Log.e("ParseError", error.getMessage());
             }
+
         }){
             //This is for Headers If You Needed
             @Override
@@ -144,54 +126,39 @@ public class NetRequest {
             this.method = Request.Method.POST;
         }
 
-        arrayRequest = new JsonArrayRequest(this.method, BASE_URL + endpoint, null, new com.android.volley.Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response != null) {
-                    callback.onResponse(response);
-                } else {
-                    callback.onError(response.toString());
-                }
-
+        arrayRequest = new JsonArrayRequest(this.method, BASE_URL + endpoint, null, response -> {
+            if (response != null) {
+                callback.onResponse(response);
+            } else {
+                callback.onError(response.toString());
             }
 
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONArray obj = new JSONArray(res);
-                        callback.onResponse(obj);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    } catch (JSONException e2) {
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
-                    }
+            NetworkResponse response = error.networkResponse;
+            if (error instanceof ServerError && response != null) {
+                try {
+                    String res = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                    JSONArray obj = new JSONArray(res);
+                    callback.onResponse(obj);
+                } catch (UnsupportedEncodingException e1) {
+                    // Couldn't properly decode data to string
+                    e1.printStackTrace();
+                } catch (JSONException e2) {
+                    // returned data is not JSONObject?
+                    e2.printStackTrace();
                 }
-
-
-                //VolleyLog.d("Error:", error.getMessage());
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Log.e("NoConnectionError", error.getMessage());
-                } else if (error instanceof AuthFailureError) {
-                    Log.e("AuthFailureError", error.getMessage());
-                } else if (error instanceof ServerError) {
-                    // Log.e("ServerError", error.getMessage());
-                    callback.onError(error.toString());
-                } else if (error instanceof NetworkError) {
-                    Log.e("NetworkError", error.getMessage());
-                } else if (error instanceof ParseError) {
-                    Log.e("ParseError", error.getMessage());
-                }
-
+            }else if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                Log.e("NoConnectionError", error.getMessage());
+            } else if (error instanceof AuthFailureError) {
+                Log.e("AuthFailureError", error.getMessage());
+            } else if (error instanceof NetworkError) {
+                Log.e("NetworkError", error.getMessage());
+            } else if (error instanceof ParseError) {
+                Log.e("ParseError", error.getMessage());
             }
+
         }){
             //This is for Headers If You Needed
             @Override
@@ -230,7 +197,7 @@ public class NetRequest {
         stringRequest = new StringRequest(this.method, BASE_URL + endpoint, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DELETE Message ", response);
+                Log.d("Message of StringReq ", response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -259,12 +226,6 @@ public class NetRequest {
                 return params;
             }
 
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("cart_item_key", key);
-//                return params;
-//            }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000000000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -282,11 +243,5 @@ public class NetRequest {
         void onError(String error);
     }
 
-    /**
-     * ApiResponse interface
-     */
-    public interface ApiResponse {
-        String string();
-    }
 }
 
