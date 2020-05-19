@@ -233,9 +233,8 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     }
 
     private void doGetShopping() {
-        //TODO : endpoint changed
         NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, admin.getAdminAuth());
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart/" + mAuthHelper.getIdUser(), mShoppingProductCallback, admin.getAdminAuth());
 
     }
 
@@ -256,11 +255,9 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                 String key = keys.next();
                 try {
                     if (response.get(key) instanceof JSONObject) {
-                        Log.d("SHOPPING ", key);
 
                         int productId = response.getJSONObject(key).getInt("product_id");
                         quantity = response.getJSONObject(key).getInt("quantity");
-
 
 
                         int idx = Arrays.binarySearch(arrayIdx, productId);
@@ -281,11 +278,12 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                                         listItems.get(idx).getFavorite(),
                                         listItems.get(idx).getNum_link(),
                                         listItems.get(idx).getPrice(),
-                                        quantity,1
+                                        listItems.get(idx).getCount(),
+                                        quantity
                                 );
 
                                 db.updateListItem(item);
-                                listItems.get(idx).setCount(quantity);
+                                listItems.get(idx).setCount_shop(quantity);
 //                                listItems.remove(idx);
 //                                listItems.add(item);
                                 adapter.notifyDataSetChanged();

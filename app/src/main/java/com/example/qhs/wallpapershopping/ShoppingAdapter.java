@@ -48,17 +48,21 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     private NetRequest request;
     private List<ListItem> listItems;
     private boolean mFlag;
-    private int deleteId;
+    private String[][] id;
     private Admin admin;
+    private AuthHelper mAuthHelper;
     ItemCallback Listener;
 
-    public  ShoppingAdapter(Context context, List listitem,ItemCallback Listener) {
+    public ShoppingAdapter(Context context, List listitem,ItemCallback Listener) {
         this.context = context;
         this.listItems = listitem;
         this.Listener=Listener;
         mFlag = false;
         request = new NetRequest(context);
         admin = Admin.getInstance(context);
+        mAuthHelper = AuthHelper.getInstance(context);
+        id = new String[2][10];
+        getFromServer();
     }
 
     @NonNull
@@ -98,16 +102,15 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                     Log.d("shopcount2",String.valueOf(item.getCount_shop()));
 
                     if (item.getCount_shop()<1) {
-                        deleteId = Integer.parseInt(item.getId());
-                        db1.deleteListItem(item.getId());
+                        String deleteId = item.getId();
+                        db1.deleteListItem(deleteId);
                         listItems.remove(position); // remove the item from list
                         notifyItemRemoved(position); // notify the adapter about the removed item
                         notifyItemRangeChanged(position, getItemCount());
-                        deleteFromServer();
+                        deleteFromServer(deleteId);
                     }
                     db1.updateListItem(item);
-                    deleteFromServer();
-                    //Todo: update count in site
+                    updateQuantityOnServer(item.getId(), item.getCount_shop());
                     Listener.TotalPrice();
 
 
@@ -122,13 +125,12 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                     item.setCount_shop(item.getCount_shop()+1);
                     Log.d("shopcount3",String.valueOf(item.getCount_shop()));
                     db1.updateListItem(item);
-
+                    updateQuantityOnServer(item.getId(), item.getCount_shop());
                     Listener.TotalPrice();
 
-//
                }
             });
-//
+
             holder.price.setText(String.valueOf(item.getPrice()));
 
             holder.name.setText(" نام محصول:" + item.getName());
@@ -143,9 +145,35 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
         }
     }
-//TODO: endpoint
-    private void deleteFromServer() {
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart", mShoppingProductCallback, admin.getAdminAuth());
+
+    private void updateQuantityOnServer(String updateId, int newQuantity) {
+        ArrayList<String> idList = new ArrayList<>(Arrays.asList(id[0]));
+        int idx = idList.indexOf(updateId);
+        Log.d("index of update id", String.valueOf(idx));
+        String cartKey="";
+        if (idx>=0 & idx<id.length) {
+            cartKey = id[1][idx];
+        }
+        Log.d("Cart key of update id", cartKey);
+        request.JsonObjectNetRequest("POST", "cocart/v1/item?cart_item_key=" + cartKey + "&quantity=" + newQuantity,
+                null, null);
+
+    }
+
+    private void deleteFromServer(String deleteId) {
+        ArrayList<String> idList = new ArrayList<>(Arrays.asList(id[0]));
+        int idx = idList.indexOf(deleteId);
+        Log.d("index of deleted id", String.valueOf(idx));
+        String cartKey="";
+        if (idx>=0 & idx<id.length) {
+            cartKey = id[1][idx];
+        }
+        Log.d("Cart key of deleted id", cartKey);
+        request.JsonStringNetRequest("DELETE", "cocart/v1/item?cart_item_key="+ cartKey);
+    }
+
+    private void getFromServer() {
+        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart/" + mAuthHelper.getIdUser(), mShoppingProductCallback, admin.getAdminAuth());
     }
 
     private NetRequest.Callback<JSONObject> mShoppingProductCallback = new NetRequest.Callback<JSONObject>(){
@@ -154,29 +182,26 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         public void onResponse(@NonNull JSONObject response) {
             Iterator<String> keys = response.keys();
 
+            int i=0;
             while(keys.hasNext()) {
                 String key = keys.next();
                 try {
                     if (response.get(key) instanceof JSONObject) {
-                        Log.d("SHOPPING ", key);
 
-                        int productId = response.getJSONObject(key).getInt("product_id");
-                        if (productId == deleteId){
-                            request.JsonStringNetRequest("DELETE", "cocart/v1/item?cart_item_key="+ key);
-                            break;
-                        }
+                        id[0][i] = String.valueOf(response.getJSONObject(key).getInt("product_id"));
+                        id[1][i] = key;
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                i = i + 1;
             }
 
         }
 
         @Override
         public void onError(String error) {
-            Log.d("Server Error ", error);
 
         }
     };
