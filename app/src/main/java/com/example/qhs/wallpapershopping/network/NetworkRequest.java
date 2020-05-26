@@ -206,7 +206,6 @@ public class NetworkRequest {
                                         Object res = buildObjectFromResponse(stringResponse,
                                                 callback.type());
                                         if (res != null) {
-                                            Log.d("onResponse_res: ", res.toString());
                                             callback.onResponse(res);
                                         } else {
                                             callback.onError(stringResponse);

@@ -34,6 +34,7 @@ import io.jsonwebtoken.security.Keys;
 public class AuthHelper {
 
     private static final String PREFS = "prefs";
+    private static final String PREF_ID = "pref_id";
     private static final String PREF_TOKEN = "pref_token";
     private static final String PREF_USERNAME = "pref_username";
     private static final String PREF_SHAREKEY_WISHLIST = "pref_sharekey";
@@ -69,6 +70,10 @@ public class AuthHelper {
     @Nullable
     public String getIdToken() {
         return mPrefs.getString(PREF_TOKEN, null);
+    }
+
+    public String getIdUser() {
+        return mPrefs.getString(PREF_ID, null);
     }
 
     public String getSharekey() {
@@ -109,8 +114,12 @@ public class AuthHelper {
         public void onResponse(@NonNull JSONObject response) {
 
             try {
+                int id = response.getInt("id");
+                SharedPreferences.Editor editor = mPrefs.edit();
+                editor.putString(PREF_ID, String.valueOf(id));
+                editor.apply();
                 //Get Sharekey Wishlist
-                request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + response.getInt("id"), mWishlistCallback, getIdToken());
+                request.JsonArrayNetRequest("GET", "wc/v3/wishlist/get_by_user/" + id, mWishlistCallback, getIdToken());
 
             } catch (JSONException e) {
                 e.printStackTrace();
