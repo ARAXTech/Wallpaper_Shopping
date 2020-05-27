@@ -10,11 +10,15 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.qhs.wallpapershopping.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
 
 import Model.ImageModel;
+
+import static android.support.test.InstrumentationRegistry.getContext;
 
 public class SlidingImage_Adapter extends PagerAdapter {
 
@@ -61,6 +65,7 @@ public class SlidingImage_Adapter extends PagerAdapter {
                 ///.override(400,200)
                 .into(imageView);
         view.addView(imageLayout, 0);
+
 
         return imageLayout;
     }
