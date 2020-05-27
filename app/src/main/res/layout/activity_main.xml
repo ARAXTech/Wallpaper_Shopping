@@ -6,7 +6,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/SecondaryDark"
+    android:background="@color/colorBackgroundWhite"
     app:layout_anchor="@+id/constraintLayout"
     android:layout_marginTop="0dp">
     app:layout_anchorGravity="center">
@@ -43,7 +43,7 @@
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
         android:maxHeight="?attr/actionBarSize"
         app:itemIconTint="#050505"
         app:itemTextColor="#0E0E0E"

@@ -1,6 +1,7 @@
 package Recycler;
 
 import android.app.ProgressDialog;
+import android.app.SharedElementCallback;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
@@ -116,6 +119,9 @@ public class Fragment_recycler extends Fragment {
 //        //End Splash
 
 
+
+       // prepareTransitions();
+       // postponeEnterTransition();
 
         request = new NetRequest(getContext());
         queue = newRequestQueue(getContext());
@@ -207,7 +213,10 @@ public class Fragment_recycler extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
+
+
         category_Response_edited();
+
 
         // newMyResponse(URL_products);
         pgsBar = (ProgressBar) view.findViewById(R.id.pBar);
@@ -223,6 +232,12 @@ public class Fragment_recycler extends Fragment {
         // pgsBar.setVisibility(view.GONE);
         return view;
     }
+
+    //anim shared element trans
+    /**
+     * Prepares the shared element transition to the pager fragment, as well as the other transitions
+     * that affect the flow.
+     */
 
 
     @Override
@@ -270,7 +285,8 @@ public class Fragment_recycler extends Fragment {
         Bundle extras = this.getArguments();
         String key_string = extras.getString("key");
 
-        request.JsonArrayNetRequest("GET", "wc/v3/products?category="+key_string, mCategoryCallback, admin.getAdminAuth());
+        request.JsonArrayNetRequest("GET", "wc/v3/products?category="+
+                key_string, mCategoryCallback, admin.getAdminAuth());
 
     }
 
