@@ -87,6 +87,7 @@ public class Admin {
 
         @Override
         public void onError(String error) {
+            Log.d("LOG_ADMIN ", error);
         }
 
         @Override

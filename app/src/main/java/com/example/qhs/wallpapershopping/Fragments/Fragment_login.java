@@ -21,10 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.example.qhs.wallpapershopping.network.NetworkRequest;
 import com.example.qhs.wallpapershopping.network.Token;
 import com.github.florent37.materialtextfield.MaterialTextField;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Fragment_login extends Fragment {
@@ -71,17 +76,7 @@ public class Fragment_login extends Fragment {
         mButtonAction = (Button) view.findViewById(R.id.button_action);
         materialTextField_username = (MaterialTextField)view.findViewById(R.id.materialtextfield_username);
 
-
-
-
         setupView(mIsSignUpShowing);
-
-        if (mAuthHelper.isLoggedIn()) {
-            startActivity(new Intent(getContext(), Fragment_home.class) );
-//            fragment = new Fragment_home();
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.frame, fragment).commit();
-        }
 
         return view;
     }
@@ -141,6 +136,19 @@ public class Fragment_login extends Fragment {
         mProgressDialog.setMessage(getString(R.string.progress_signup));
         mProgressDialog.setCancelable(true);
         mProgressDialog.show();
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("email", email);
+            jsonObject.put("username", username);
+            jsonObject.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        NetRequest request = new NetRequest(getContext());
+//        request.JsonObjectNetRequest("POST", "wp/v2/users/register?email="+email+"&username="+username+"&password="+password,mSignUpCallback,"no_need");
+
+
         NetworkRequest request = new NetworkRequest();
         request.doSignUp(email, username, password, mSignUpCallback);
     }
@@ -165,10 +173,11 @@ public class Fragment_login extends Fragment {
         mAuthHelper.setIdToken(token);
 
         // start profile page
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame, new Fragment_home());
-        fragmentTransaction.commit();
+        startActivity(new Intent(getContext(), MainActivity.class) );
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.frame, new Fragment_home());
+//        fragmentTransaction.commit();
 
     }
 
@@ -181,6 +190,7 @@ public class Fragment_login extends Fragment {
             dismissDialog();
             // save token and go to profile page
             saveSessionDetails(response);
+            Toast.makeText(getContext(), "Hi "+ response.getUser_display_name(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -196,6 +206,24 @@ public class Fragment_login extends Fragment {
 
     };
 
+//    private NetRequest.Callback<JSONObject> mSignUpCallback = new NetRequest.Callback<JSONObject>() {
+//        @Override
+//        public void onResponse(@NonNull JSONObject response) {
+//            dismissDialog();
+//            try {
+//                Log.d("SIGN_UP ", response.getString("message"));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        @Override
+//        public void onError(String error) {
+//            dismissDialog();
+//            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+//
+//        }
+//    };
     /**
      * Callback for sign up
      */
@@ -203,8 +231,10 @@ public class Fragment_login extends Fragment {
         @Override
         public void onResponse(@NonNull Token response) {
             dismissDialog();
+            doLogin();
             // save token and go to profile page
-            saveSessionDetails(response);
+            //saveSessionDetails(response);
+            Toast.makeText(getContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
         }
 
         @Override

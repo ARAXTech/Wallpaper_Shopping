@@ -46,6 +46,7 @@ import com.zarinpal.ewallets.purchase.OnCallbackVerificationPaymentListener;
 import com.zarinpal.ewallets.purchase.PaymentRequest;
 import com.zarinpal.ewallets.purchase.ZarinPal;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,7 +63,7 @@ import Data.DatabaseHandler;
 import Model.ListItem;
 
 
-public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemCallback {
+public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemCallback, View.OnClickListener {
 
     private RecyclerView recyclerView;
     private ShoppingAdapter adapter;
@@ -77,7 +78,10 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private int num;
     private int quantity;
     private CardView cardN;
+    private JSONArray line_items;
+    private NetRequest request;
     Fragment_Shopping fragment_shopping;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +100,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         admin = Admin.getInstance(getContext());
 //        Button profileBtn=(Button)findViewById(R.id.ProfileBtn);
 //        profileBtn.setVisibility(View.GONE);
-
+        request = new NetRequest(getContext());
 
         recyclerView = (RecyclerView) view.findViewById(R.id.ShoppingRecycler);
         recyclerView.setHasFixedSize(true);
@@ -110,56 +114,32 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
       //  db.deleteAll();
         listItems = db.getAllShoppingItem();
-        num = db.getShoppingItemCount();
-
-        ListItem[] myArray = listItems.toArray(new ListItem[listItems.size()]);
-
-        shoppingProductId = new Integer[num][3];
-        for (int i = 0; i < num; i++) {
-            shoppingProductId[i][0] = Integer.parseInt(myArray[i].getId());
-            shoppingProductId[i][1] = -1;
-            shoppingProductId[i][2] = myArray[i].getCount();
-        }
-
-        //displayArray();
-
-
-        // sort the array on item id(first column)
-        Arrays.sort(shoppingProductId, new Comparator<Integer[]>() {
-            @Override
-            //arguments to this method represent the arrays to be sorted
-            public int compare(Integer[] o1, Integer[] o2) {
-                //get the item ids which are at index 0 of the array
-                Integer itemIdOne = o1[0];
-                Integer itemIdTwo = o2[0];
-                // sort on item id
-                return itemIdOne.compareTo(itemIdTwo);
-            }
-        });
-        //displayArray();
-
         adapter = new ShoppingAdapter(getContext(),listItems,this);
-
-
-
-
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         totalPrice=(TextView)view.findViewById(R.id.totalPrice);
 
-//                        int sum=0;
-                    for (int i=0; i <num; i++) {
+        line_items = new JSONArray();
+        for (int i=0; i <num; i++) {
 
-                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
+            sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
 
-                    }
-                    totalPrice.setText(String.valueOf(sum)+"تومان");
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
+                jsonObject.put("quantity", listItems.get(i).getCount_shop());
+                jsonObject.put("price", String.valueOf(listItems.get(i).getPrice()));
+                jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
 
+                line_items.put(i, jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+        }
+        totalPrice.setText(sum+"تومان");
 
-        //Shopping rest api
-        doGetShopping();
 
         // zarinpal Payment
         Uri data = getActivity().getIntent().getData();
@@ -174,17 +154,11 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         }
 
         Button btnPay = (Button) view.findViewById(R.id.totelPriceBtn);
-        btnPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                myPayment();
-
-            }
-        });
+        btnPay.setOnClickListener(this);
 
         return view;
     }
+
 
     private void displayArray() {
         System.out.println("-------------------------------------");
@@ -232,136 +206,11 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
     }
 
-    private void doGetShopping() {
-        NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "cocart/v1/get-cart/" + mAuthHelper.getIdUser(), mShoppingProductCallback, admin.getAdminAuth());
-
-    }
-
-
-    private NetRequest.Callback<JSONObject> mShoppingProductCallback = new NetRequest.Callback<JSONObject>(){
-
-        @Override
-        public void onResponse(@NonNull JSONObject response) {
-            Iterator<String> keys = response.keys();
-
-            //copy first column to a new array for binarySearch
-            Integer[] arrayIdx = new Integer[num];
-            for (int i=0; i<num; i++){
-                arrayIdx[i] = shoppingProductId[i][0];
-            }
-
-            while(keys.hasNext()) {
-                String key = keys.next();
-                try {
-                    if (response.get(key) instanceof JSONObject) {
-
-                        int productId = response.getJSONObject(key).getInt("product_id");
-                        quantity = response.getJSONObject(key).getInt("quantity");
-
-
-                        int idx = Arrays.binarySearch(arrayIdx, productId);
-                        if (idx < 0){
-                            //get product from site
-                            Log.d("getProduct_WishID ", String.valueOf(productId));
-                            getProduct(productId);
-                        }
-                        else{
-                            shoppingProductId[idx][1] = 1;
-                            // TODO: check quantity is updated
-                            if (quantity != shoppingProductId[idx][2]){
-                                ListItem item = new ListItem(
-                                        listItems.get(idx).getId(),
-                                        listItems.get(idx).getName(),
-                                        listItems.get(idx).getDescription(),
-                                        listItems.get(idx).getImgLink(),
-                                        listItems.get(idx).getFavorite(),
-                                        listItems.get(idx).getNum_link(),
-                                        listItems.get(idx).getPrice(),
-                                        listItems.get(idx).getCount(),
-                                        quantity
-                                );
-
-                                db.updateListItem(item);
-                                listItems.get(idx).setCount_shop(quantity);
-//                                listItems.remove(idx);
-//                                listItems.add(item);
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            // delete item from app. this item was deleted from site before
-            for (int i = 0; i < num; i++) {
-                if (shoppingProductId[i][1] == -1) {
-//                    Log.d("addProduct_index ", String.valueOf(shoppingProductId[i][0]));
-//                    addProduct(shoppingProductId[i][0], shoppingProductId[i][2]);
-
-                    db.deleteListItem(String.valueOf(shoppingProductId[i][0]));
-
-                    listItems.remove(i);
-                    adapter.notifyItemRemoved(i);
-                    adapter.notifyItemRangeChanged(i, adapter.getItemCount());
-                    adapter.notifyDataSetChanged();
-
-            }
-            }
-
-        }
-
-        @Override
-        public void onError(String error) {
-            Log.d("Server Error ", error);
-
-        }
-    };
-
-    public void getProduct(int id){
-        NetRequest request = new NetRequest(getContext());
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, admin.getAdminAuth());
-
-    }
-
-    private NetRequest.Callback<JSONObject> mProductCallback = new NetRequest.Callback<JSONObject>() {
-        @Override
-        public void onResponse(@NonNull JSONObject response) {
-            try {
-                ListItem item = new ListItem(
-                        response.getString("id"),
-                        response.getString("name"),
-                        response.getString("short_description"),
-                        response.getJSONArray("images").getJSONObject(0).getString("src"),
-                        "false",
-                        response.getJSONArray("images").length(),
-                        Integer.parseInt(response.getString("price")),
-                        quantity,1
-                );
-
-                db.addListItem(item);
-                //db.deleteListItem(response.getString("id"));
-                listItems.add(item);
-                adapter.notifyDataSetChanged();
-
-            } catch (JSONException e) {
-                Log.d("JSONException_get", e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onError(String error) {
-        }
-    };
-
     public void addProduct(final int productId, final int quantity){
 
         Log.d("ProductID Quantity ", String.valueOf(productId)+"   "+quantity);
 
-        NetRequest request = new NetRequest(getContext());
+
         request.JsonObjectNetRequest("POST", "cocart/v1/add-item?product_id=" + productId + "&quantity=" + quantity , mAddProductCallback, null);
 
     }
@@ -400,4 +249,39 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
      }
 
 
+    @Override
+    public void onClick(View view) {
+        NetRequest request = new NetRequest(getContext());
+        request.JsonObjectNetRequest("GET", "wc/v3/customers/"+mAuthHelper.getIdUser(), mCustomerCallback, admin.getAdminAuth());
+
+
+    }
+    private NetRequest.Callback<JSONObject> mCustomerCallback = new NetRequest.Callback<JSONObject>(){
+
+        @Override
+        public void onResponse(@NonNull JSONObject response) throws JSONException {
+//            Gson gson = new Gson();
+//            Billing billing = gson.fromJson(response.getJSONObject("billing").toString(), Billing.class);
+//            if () {// اگر از طرف سایت اطالعات وارد شده بود، برو به پرداخت
+//
+//                JSONObject orderObject = new JSONObject();
+//                orderObject.put("customer_id", mAuthHelper.getIdUser());
+//                orderObject.put("set_paid", false);
+//                orderObject.put("billing", response.getJSONObject("billing"));
+//                orderObject.put("line_items", line_items);
+//
+//                request.JsonObjectNetRequest("POST","wc/v3/orders", );
+//
+//                myPayment();
+//
+//            } else {// وگرنه صفحه وارد کردن اطلاعات رو براش بیار
+//
+//            }
+        }
+
+        @Override
+        public void onError(String error) {
+
+        }
+    };
 }
