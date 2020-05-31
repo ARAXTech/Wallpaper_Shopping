@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.security.acl.LastOwnerException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class NetRequest {
         objectRequest = new JsonObjectRequest(this.method, BASE_URL + endpoint, null, response -> {
             if (response != null & callback != null) {
                 callback.onResponse(response);
+
             }
         }, error -> {
 
@@ -71,7 +73,8 @@ public class NetRequest {
                     String res = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                     JSONObject obj = new JSONObject(res);
-                    callback.onResponse(obj);
+                    if (obj!=null)
+                        callback.onResponse(obj);
                 } catch (UnsupportedEncodingException e1) {
                     // Couldn't properly decode data to string
                     e1.printStackTrace();
@@ -128,7 +131,9 @@ public class NetRequest {
 
         arrayRequest = new JsonArrayRequest(this.method, BASE_URL + endpoint, null, response -> {
             if (response != null) {
-                callback.onResponse(response);
+
+                    callback.onResponse(response);
+
             } else {
                 callback.onError(response.toString());
             }
@@ -141,7 +146,8 @@ public class NetRequest {
                     String res = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                     JSONArray obj = new JSONArray(res);
-                    callback.onResponse(obj);
+                    if (obj!=null){
+                    callback.onResponse(obj);}
                 } catch (UnsupportedEncodingException e1) {
                     // Couldn't properly decode data to string
                     e1.printStackTrace();
@@ -194,30 +200,32 @@ public class NetRequest {
             this.method = Request.Method.DELETE;
         }
 
-        stringRequest = new StringRequest(this.method, BASE_URL + endpoint, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("Message of StringReq ", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //VolleyLog.d("Error:", error.getMessage());
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Log.e("NoConnectionError", error.getMessage());
-                } else if (error instanceof AuthFailureError) {
-                    Log.e("AuthFailureError", error.getMessage());
-                } else if (error instanceof ServerError) {
-                    Log.e("ServerError", error.getMessage());
-                    // callback.onError(error.toString());
-                } else if (error instanceof NetworkError) {
-                    Log.e("NetworkError", error.getMessage());
-                } else if (error instanceof ParseError) {
-                    Log.e("ParseError", error.getMessage());
-                }
+        stringRequest = new StringRequest(this.method, BASE_URL + endpoint,
+                response ->
+                Log.d("Message of StringReq ", response),
 
-            }
-        }){
+                error -> {
+                    NetworkResponse response = error.networkResponse;
+                    if (error instanceof ServerError && response != null) {
+                        try {
+                            String res = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                            Log.d(method+" Message ", res);
+                        } catch (UnsupportedEncodingException e1) {
+                            // Couldn't properly decode data to string
+                            e1.printStackTrace();
+                        }
+                    } else if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        Log.e("NoConnectionError", error.getMessage());
+                    } else if (error instanceof AuthFailureError) {
+                        Log.e("AuthFailureError", error.getMessage());
+                    } else if (error instanceof NetworkError) {
+                        Log.e("NetworkError", error.getMessage());
+                    } else if (error instanceof ParseError) {
+                        Log.e("ParseError", error.getMessage());
+                    }
+
+                }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();

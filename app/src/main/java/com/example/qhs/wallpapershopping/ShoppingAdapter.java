@@ -37,6 +37,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,6 +52,10 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     private String[][] id;
     private Admin admin;
     private AuthHelper mAuthHelper;
+    private DatabaseHandler db;
+    private Integer[][] shoppingProductId;
+    private int quantity;
+    int num;
     ItemCallback Listener;
 
     public ShoppingAdapter(Context context, List listitem,ItemCallback Listener) {
@@ -62,7 +67,31 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         admin = Admin.getInstance(context);
         mAuthHelper = AuthHelper.getInstance(context);
         id = new String[2][10];
-        getFromServer();
+        db = new DatabaseHandler(context);
+        num = db.getShoppingItemCount();
+
+        shoppingProductId = new Integer[num][3];
+        for (int i = 0; i < num; i++) {
+            shoppingProductId[i][0] = Integer.valueOf(listItems.get(i).getId());
+            shoppingProductId[i][1] = -1;
+            shoppingProductId[i][2] = listItems.get(i).getCount();
+        }
+
+
+        // sort the array on item id(first column)
+        Arrays.sort(shoppingProductId, new Comparator<Integer[]>() {
+            @Override
+            //arguments to this method represent the arrays to be sorted
+            public int compare(Integer[] o1, Integer[] o2) {
+                //get the item ids which are at index 0 of the array
+                Integer itemIdOne = o1[0];
+                Integer itemIdTwo = o2[0];
+                // sort on item id
+                return itemIdOne.compareTo(itemIdTwo);
+            }
+        });
+
+        //getFromServer();
     }
 
     @NonNull
@@ -73,15 +102,14 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
         return new ShoppingAdapter.ViewHolder(rootView);
     }
-    private boolean onBind;
+
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final DatabaseHandler db1 = new DatabaseHandler(context);
+
         final ListItem item = listItems.get(position);
         final List <String> image_link = new ArrayList <>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
         String temp = image_link.get(0);
-       int num = db1.getShoppingItemCount();
         //  temp = temp.replace("https", "http");
         if (URLUtil.isValidUrl(temp)) {
             Picasso.with(context)
@@ -103,14 +131,14 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
                     if (item.getCount_shop()<1) {
                         String deleteId = item.getId();
-                        db1.deleteListItem(deleteId);
+                        db.deleteListItem(deleteId);
                         listItems.remove(position); // remove the item from list
                         notifyItemRemoved(position); // notify the adapter about the removed item
                         notifyItemRangeChanged(position, getItemCount());
-                        deleteFromServer(deleteId);
+                        //deleteFromServer(deleteId);
                     }
-                    db1.updateListItem(item);
-                    updateQuantityOnServer(item.getId(), item.getCount_shop());
+                    db.updateListItem(item);
+                    //updateQuantityOnServer(item.getId(), item.getCount_shop());
                     Listener.TotalPrice();
 
 
@@ -124,8 +152,8 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                     holder.counter.setText(String.valueOf(item.getCount_shop()+1));
                     item.setCount_shop(item.getCount_shop()+1);
                     Log.d("shopcount3",String.valueOf(item.getCount_shop()));
-                    db1.updateListItem(item);
-                    updateQuantityOnServer(item.getId(), item.getCount_shop());
+                    db.updateListItem(item);
+                    //updateQuantityOnServer(item.getId(), item.getCount_shop());
                     Listener.TotalPrice();
 
                }
@@ -138,13 +166,53 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         }
         else
         {
-            db1.deleteListItem(item.getId());
+            db.deleteListItem(item.getId());
             listItems.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, getItemCount());
 
         }
     }
+
+    public void getProduct(int id){
+        NetRequest request = new NetRequest(context);
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, admin.getAdminAuth());
+
+    }
+
+    private NetRequest.Callback<JSONObject> mProductCallback = new NetRequest.Callback<JSONObject>() {
+        @Override
+        public void onResponse(@NonNull JSONObject response) {
+            try {
+                ListItem item = new ListItem(
+                        response.getString("id"),
+                        response.getString("name"),
+                        response.getString("short_description"),
+                        response.getJSONArray("images").getJSONObject(0).getString("src"),
+                        "false",
+                        response.getJSONArray("images").length(),
+                        Integer.parseInt(response.getString("price")),
+                        1,
+                        quantity,
+                        Integer.parseInt(mAuthHelper.getIdUser())
+                );
+
+                db.addListItem(item);
+                listItems.add(item);
+                notifyDataSetChanged();
+
+            } catch (JSONException e) {
+                Log.d("JSONException_get", e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onError(String error) {
+        }
+    };
+
 
     private void updateQuantityOnServer(String updateId, int newQuantity) {
         ArrayList<String> idList = new ArrayList<>(Arrays.asList(id[0]));
@@ -157,6 +225,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         Log.d("Cart key of update id", cartKey);
         request.JsonObjectNetRequest("POST", "cocart/v1/item?cart_item_key=" + cartKey + "&quantity=" + newQuantity,
                 null, null);
+        request.JsonStringNetRequest("POST", "/wp-json/cocart/v1/calculate");
 
     }
 
@@ -170,11 +239,14 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         }
         Log.d("Cart key of deleted id", cartKey);
         request.JsonStringNetRequest("DELETE", "cocart/v1/item?cart_item_key="+ cartKey);
+
+        request.JsonStringNetRequest("POST", "/wp-json/cocart/v1/calculate");
     }
 
     private void getFromServer() {
         request.JsonObjectNetRequest("GET", "cocart/v1/get-cart/" + mAuthHelper.getIdUser(), mShoppingProductCallback, admin.getAdminAuth());
     }
+
 
     private NetRequest.Callback<JSONObject> mShoppingProductCallback = new NetRequest.Callback<JSONObject>(){
 
@@ -182,29 +254,93 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         public void onResponse(@NonNull JSONObject response) {
             Iterator<String> keys = response.keys();
 
-            int i=0;
+            //copy first column to a new array for binarySearch
+            Integer[] arrayIdx = new Integer[num];
+            for (int i=0; i<num; i++){
+                arrayIdx[i] = shoppingProductId[i][0];
+            }
+
+            int j=0;
             while(keys.hasNext()) {
                 String key = keys.next();
                 try {
                     if (response.get(key) instanceof JSONObject) {
 
-                        id[0][i] = String.valueOf(response.getJSONObject(key).getInt("product_id"));
-                        id[1][i] = key;
+                        int productId = response.getJSONObject(key).getInt("product_id");
+                        quantity = response.getJSONObject(key).getInt("quantity");
 
+
+                        id[0][j] = String.valueOf(productId);
+                        id[1][j] = key;
+
+
+                        int idx = Arrays.binarySearch(arrayIdx, productId);
+                        Log.d("productId,idx ", productId+" "+idx);
+                        if (idx < 0){
+                            //get product from site
+                            Log.d("getProduct_WishID ", String.valueOf(productId));
+                            getProduct(productId);
+                        }
+                        else{
+                            shoppingProductId[idx][1] = 1;
+                            // TODO: check quantity is updated
+                            Log.d("QuantityDB_QServer ", shoppingProductId[idx][2]+" "+quantity);
+                            if (quantity != shoppingProductId[idx][2]){
+                                ListItem item = new ListItem(
+                                        listItems.get(idx).getId(),
+                                        listItems.get(idx).getName(),
+                                        listItems.get(idx).getDescription(),
+                                        listItems.get(idx).getImgLink(),
+                                        listItems.get(idx).getFavorite(),
+                                        listItems.get(idx).getNum_link(),
+                                        listItems.get(idx).getPrice(),
+                                        listItems.get(idx).getCount(),
+                                        quantity,
+                                        Integer.parseInt(mAuthHelper.getIdUser())
+                                );
+
+                                db.updateListItem(item);
+                                Log.d("after update ", String.valueOf(db.getListItem(productId).getCount_shop()));
+                                //listItems.get(idx).setCount_shop(quantity);
+                                //   adapter.notifyDataSetChanged();
+                                listItems.set(idx, item);
+                                notifyItemChanged(idx);
+                                Log.d("adapter updated ", String.valueOf(listItems.get(idx).getCount_shop()));
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                i = i + 1;
+                j = j + 1;
+            }
+
+            // delete item from app. this item was deleted from site before
+            for (int i = 0; i < num; i++) {
+                if (shoppingProductId[i][1] == -1) {
+//                    Log.d("addProduct_index ", String.valueOf(shoppingProductId[i][0]));
+//                    addProduct(shoppingProductId[i][0], shoppingProductId[i][2]);
+
+                    db.deleteListItem(String.valueOf(shoppingProductId[i][0]));
+
+                    listItems.remove(i);
+                    notifyItemRemoved(i);
+                    notifyItemRangeChanged(i, getItemCount());
+                    notifyDataSetChanged();
+
+                }
             }
 
         }
 
         @Override
         public void onError(String error) {
+            Log.d("Server Error ", error);
 
         }
     };
+
+
 
     @Override
     public int getItemCount() {
