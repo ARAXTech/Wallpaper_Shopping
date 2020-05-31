@@ -106,8 +106,6 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         cardN=(CardView) view.findViewById(R.id.cardN);
         /// Spinner
 
-
-
       //  db.deleteAll();
         listItems = db.getAllShoppingItem();
         num = db.getShoppingItemCount();
@@ -139,22 +137,24 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         //displayArray();
 
         adapter = new ShoppingAdapter(getContext(),listItems,this);
-
-
-
-
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         totalPrice=(TextView)view.findViewById(R.id.totalPrice);
 
-//                        int sum=0;
-                    for (int i=0; i <num; i++) {
 
-                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
+        if(num==0){
+            cardN.setVisibility(View.GONE);
+        }
+        if(num>0) {
+            cardN.setVisibility(View.VISIBLE);
+            for (int i = 0; i < num; i++) {
 
-                    }
-                    totalPrice.setText(String.valueOf(sum)+" تومان");
+                sum = sum + listItems.get(i).getPrice() * listItems.get(i).getCount_shop();
+
+            }
+            totalPrice.setText(String.valueOf(sum) + " تومان");
+        }
 
 
 
@@ -279,7 +279,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                                         listItems.get(idx).getNum_link(),
                                         listItems.get(idx).getPrice(),
                                         listItems.get(idx).getCount(),
-                                        quantity
+                                        quantity,Integer.parseInt(mAuthHelper.getIdUser())
                                 );
 
                                 db.updateListItem(item);
@@ -337,7 +337,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                         "false",
                         response.getJSONArray("images").length(),
                         Integer.parseInt(response.getString("price")),
-                        quantity,1
+                        quantity,1,Integer.parseInt(mAuthHelper.getIdUser())
                 );
 
                 db.addListItem(item);
@@ -390,13 +390,18 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     @Override
      public void TotalPrice(){
                     sum=0;
-                    for (int i=0; i <num; i++) {
-
-                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
-
+                    if(num==0){
+                        cardN.setVisibility(View.GONE);
                     }
-                    totalPrice.setText(String.valueOf(sum)+" تومان");
+                    if(num>0) {
+                        cardN.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < num; i++) {
 
+                            sum = sum + listItems.get(i).getPrice() * listItems.get(i).getCount_shop();
+
+                        }
+                        totalPrice.setText(String.valueOf(sum) + " تومان");
+                    }
      }
 
 

@@ -81,7 +81,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         final ListItem item = listItems.get(position);
         final List <String> image_link = new ArrayList <>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
         String temp = image_link.get(0);
-       int num = db1.getShoppingItemCount();
+        int num = db1.getShoppingItemCount();
         //  temp = temp.replace("https", "http");
         if (URLUtil.isValidUrl(temp)) {
             Picasso.with(context)
