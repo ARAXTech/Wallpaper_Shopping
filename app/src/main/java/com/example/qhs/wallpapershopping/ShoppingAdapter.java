@@ -193,7 +193,8 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                         response.getJSONArray("images").length(),
                         Integer.parseInt(response.getString("price")),
                         1,
-                        quantity
+                        quantity,
+                        Integer.parseInt(mAuthHelper.getIdUser())
                 );
 
                 db.addListItem(item);
@@ -294,7 +295,8 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                                         listItems.get(idx).getNum_link(),
                                         listItems.get(idx).getPrice(),
                                         listItems.get(idx).getCount(),
-                                        quantity
+                                        quantity,
+                                        Integer.parseInt(mAuthHelper.getIdUser())
                                 );
 
                                 db.updateListItem(item);

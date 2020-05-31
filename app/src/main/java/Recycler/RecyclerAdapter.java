@@ -1,10 +1,17 @@
 package Recycler;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.SharedElementCallback;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +28,11 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import Model.ListItem;
+
+import static android.support.test.InstrumentationRegistry.getContext;
 
 public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
@@ -54,6 +64,9 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         Picasso.with(context)
                 .load(temp)
                 .into(holder.imgR);
+
+       // ViewCompat.setTransitionName(holder.imgR, mPhotoObjects.get(position).photo);
+
 
     }
 
@@ -112,14 +125,28 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                     bundle.putString("name",item.getName());
                     bundle.putString("id",item.getId());
                     bundle.putString("description",item.getDescription());
+                    bundle.putInt("position",getAdapterPosition());
 
                     Fragment fragment = new Fragment_gallery();
                     fragment.setArguments(bundle);
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("tag").commit();
+                    ((AppCompatActivity)context).
+                            getSupportFragmentManager()
+                            .beginTransaction()
+                            .addSharedElement(imgR, imgR.getTransitionName())
+                            .replace(R.id.frame, fragment).
+                            addToBackStack("tag")
+                            .commit();
+//                    ActivityOptionsCompat option  =
+//                            ActivityOptionsCompat.makeSceneTransitionAnimation(Fragment_recycler.class,imgR,
+//                                    ViewCompat.getTransitionName(imgR));
+
+
+
                 }
             });
 
         }
+
 
     }
 

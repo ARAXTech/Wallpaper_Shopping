@@ -61,11 +61,8 @@ public class NetRequest {
 
         objectRequest = new JsonObjectRequest(this.method, BASE_URL + endpoint, null, response -> {
             if (response != null & callback != null) {
-                try {
-                    callback.onResponse(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                callback.onResponse(response);
+
             }
         }, error -> {
 
@@ -134,11 +131,9 @@ public class NetRequest {
 
         arrayRequest = new JsonArrayRequest(this.method, BASE_URL + endpoint, null, response -> {
             if (response != null) {
-                try {
+
                     callback.onResponse(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
             } else {
                 callback.onError(response.toString());
             }
@@ -151,7 +146,8 @@ public class NetRequest {
                     String res = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                     JSONArray obj = new JSONArray(res);
-                    callback.onResponse(obj);
+                    if (obj!=null){
+                    callback.onResponse(obj);}
                 } catch (UnsupportedEncodingException e1) {
                     // Couldn't properly decode data to string
                     e1.printStackTrace();
@@ -251,7 +247,7 @@ public class NetRequest {
      * @param <T>
      */
     public interface Callback<T> {
-        void onResponse(@NonNull T response) throws JSONException;
+        void onResponse(@NonNull T response);
         void onError(String error);
     }
 

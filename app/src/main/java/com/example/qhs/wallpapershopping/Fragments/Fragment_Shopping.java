@@ -121,24 +121,29 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         totalPrice=(TextView)view.findViewById(R.id.totalPrice);
 
         line_items = new JSONArray();
-        for (int i=0; i <num; i++) {
-
-            sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
-                jsonObject.put("quantity", listItems.get(i).getCount_shop());
-                jsonObject.put("price", String.valueOf(listItems.get(i).getPrice()));
-                jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
-
-                line_items.put(i, jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+        if(num==0){
+            cardN.setVisibility(View.GONE);
         }
-        totalPrice.setText(sum+"تومان");
+        if(num>0) {
+            cardN.setVisibility(View.VISIBLE);
+            for (int i = 0; i < num; i++) {
+
+                sum = sum + listItems.get(i).getPrice() * listItems.get(i).getCount_shop();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
+                    jsonObject.put("quantity", listItems.get(i).getCount_shop());
+                    jsonObject.put("price", String.valueOf(listItems.get(i).getPrice()));
+                    jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
+
+                    line_items.put(i, jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            totalPrice.setText(String.valueOf(sum) + " تومان");
+        }
+
 
 
         // zarinpal Payment
@@ -158,7 +163,6 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
         return view;
     }
-
 
     private void displayArray() {
         System.out.println("-------------------------------------");
@@ -239,13 +243,18 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     @Override
      public void TotalPrice(){
                     sum=0;
-                    for (int i=0; i <num; i++) {
-
-                        sum=sum+ listItems.get(i).getPrice()*listItems.get(i).getCount_shop();
-
+                    if(num==0){
+                        cardN.setVisibility(View.GONE);
                     }
-                    totalPrice.setText(String.valueOf(sum)+"تومان");
+                    if(num>0) {
+                        cardN.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < num; i++) {
 
+                            sum = sum + listItems.get(i).getPrice() * listItems.get(i).getCount_shop();
+
+                        }
+                        totalPrice.setText(String.valueOf(sum) + " تومان");
+                    }
      }
 
 
@@ -259,7 +268,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private NetRequest.Callback<JSONObject> mCustomerCallback = new NetRequest.Callback<JSONObject>(){
 
         @Override
-        public void onResponse(@NonNull JSONObject response) throws JSONException {
+        public void onResponse(@NonNull JSONObject response)  {
 //            Gson gson = new Gson();
 //            Billing billing = gson.fromJson(response.getJSONObject("billing").toString(), Billing.class);
 //            if () {// اگر از طرف سایت اطالعات وارد شده بود، برو به پرداخت

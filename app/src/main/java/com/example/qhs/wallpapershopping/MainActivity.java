@@ -59,6 +59,11 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     private BottomNavigationView navigation;
     private Fragment fragment;
 
+    //anim
+    public static int currentPosition;
+    private static final String KEY_CURRENT_POSITION = "com.example.qhs.wallpapershopping.key.currentPosition";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,18 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
             finish();
             return;
         }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
 //        //End Splash
+//        //anim
+//        if (savedInstanceState != null) {
+//            currentPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, 0);
+//            // Return here to prevent adding additional GridFragments when changing orientation.
+//            return;
+//        }
+//        //end anim
 
 //        Window window = getWindow();
 //        WindowManager.LayoutParams winParams = window.getAttributes();
@@ -97,10 +113,8 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 //        int uiOptions =  View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 //        decorView.setSystemUiVisibility(uiOptions);
         //End Hide navigation bar
-        super.onCreate(savedInstanceState);
         //animation
         //setAnimation();
-        setContentView(R.layout.activity_main);
 
         fragment = new Fragment_home();
         getSupportFragmentManager().beginTransaction()
@@ -142,6 +156,13 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
     }
 
+    //anim shared element trans
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_POSITION, currentPosition);
+    }
+    //end anim shared element trans
     @SuppressLint("Range")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

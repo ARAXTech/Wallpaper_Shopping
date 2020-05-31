@@ -224,7 +224,8 @@ public class Fragment_favorite extends Fragment {
                         response.getJSONArray("images").length(),
                         1000,
                         0,
-                        1
+                        1,
+                        Integer.parseInt(mAuthHelper.getIdUser())
                 );
 
                 db.addListItem(item);
