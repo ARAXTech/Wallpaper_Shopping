@@ -1,6 +1,7 @@
 package com.example.qhs.wallpapershopping.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -146,6 +146,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onFocusChange(final View view, boolean hasFocus) {
                 if (hasFocus) {
+                    simpleSearchView.setBackgroundColor(Color.WHITE);
                     view.postDelayed(new Runnable() {
                         @Override
                         public void run() {
