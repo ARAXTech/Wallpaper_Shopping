@@ -10,17 +10,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.widget.Toolbar;
-
 import android.text.Html;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,8 +33,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.support.v7.widget.Toolbar;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -44,29 +42,28 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.Blur;
+import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
-import com.example.qhs.wallpapershopping.UIElement;
 import com.example.qhs.wallpapershopping.network.CustomJsonRequest;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.viewpagerindicator.CirclePageIndicator;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import Data.DatabaseHandler;
 import Gallery.SlidingImage_Adapter;
 import Model.ImageModel;
 import Model.ListItem;
-
 import static com.android.volley.toolbox.Volley.newRequestQueue;
 
 
 public class Fragment_gallery extends Fragment {
+
     private ViewPager mPager;
     private int currentPage = 0;
     private int NUM_PAGES = 0;
@@ -83,11 +80,10 @@ public class Fragment_gallery extends Fragment {
     private float density;
     private CirclePageIndicator indicator;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
@@ -99,6 +95,7 @@ public class Fragment_gallery extends Fragment {
         mAuthHelper = AuthHelper.getInstance(getContext());
         request = new NetRequest(getContext());
         queue = newRequestQueue(getContext());
+
 
         TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
 
@@ -114,6 +111,7 @@ public class Fragment_gallery extends Fragment {
             e.printStackTrace();
         }
 
+        //Initialize views
         mPager = (ViewPager) view.findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImage_Adapter(getContext(),imageModelArrayList));
 
@@ -129,8 +127,13 @@ public class Fragment_gallery extends Fragment {
         Bundle bundle = this.getArguments();
         id = bundle.getString("id");
 
+
+
+        //Get values from recyclerAdapter by intent to show description of products
         final String description = bundle.getString("description");
-        //Textview
+        final int currentPosition = bundle.getInt("position");
+
+        //Textview of details
         TextView txt_name = (TextView) view.findViewById(R.id.txt1);
         final TextView txt_description = (TextView) view.findViewById(R.id.txt2);
         txt_description.setText("\n" + Html.fromHtml(description));
@@ -145,8 +148,7 @@ public class Fragment_gallery extends Fragment {
 //        txt_id.setTextColor(Color.parseColor("#FF0000"));
 
         final String name = bundle.getString("name");
-        txt_name.setText( name +"\n"+
-                product_code + bundle.getString("id") );
+        txt_name.setText( name +"\n"+ product_code + bundle.getString("id") );
 
 
         //txt_name.setTypeface(face);
@@ -168,6 +170,7 @@ public class Fragment_gallery extends Fragment {
             toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
         }
 
+        //favorite button
         final String finalS = s;
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -188,6 +191,8 @@ public class Fragment_gallery extends Fragment {
                 }
             }
         });
+
+        //end favorite button
 
         ///Shopping Cart
         final Button shoppingBtn = (Button) view.findViewById(R.id.ShoppingBtn);
@@ -238,8 +243,53 @@ public class Fragment_gallery extends Fragment {
             }
         });
 
+//        //anim shared element trans
+//        // Set the current position and add a listener that will update the selection coordinator when
+//        // paging the images.
+//
+//        prepareSharedElementTransition();
+//
+//        // Avoid a postponeEnterTransition on orientation change, and postpone only of first creation.
+//        if (savedInstanceState == null) {
+//            postponeEnterTransition();
+//        }
+//        //end anim shared element trans
+
         return view;
     }
+
+
+//    //anim shared element trans
+//    /**
+//     * Prepares the shared element transition from and back to the grid fragment.
+//     */
+//    private void prepareSharedElementTransition() {
+//        Transition transition =
+//                TransitionInflater.from(getContext())
+//                        .inflateTransition(R.transition.image_shared_element_transition);
+//        setSharedElementEnterTransition(transition);
+//
+//        // A similar mapping is set at the GridFragment with a setExitSharedElementCallback.
+//       setEnterSharedElementCallback(new SharedElementCallback() {
+//           @Override
+//           public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+//               // Locate the image view at the primary fragment (the ImageFragment that is currently
+//               // visible). To locate the fragment, call instantiateItem with the selection position.
+//               // At this stage, the method will simply return the fragment at the position and will
+//               // not create a new one.
+//               Fragment currentFragment = (Fragment) mPager.getAdapter()
+//                       .instantiateItem(mPager, currentPage);
+//               View view = currentFragment.getView();
+//               if (view == null) {
+//                   return;
+//               }
+//
+//               // Map the first shared element name to the child ImageView.
+//               sharedElements.put(names.get(0), view.findViewById(R.id.image));
+//           }
+//       });
+//    }
+//    //end anim
 
 
     @Override
