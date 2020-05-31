@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.qhs.wallpapershopping.AuthHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +20,11 @@ import Util.util;
  */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-
+ private AuthHelper mAuthHelper;
 
     public DatabaseHandler(Context context) {
-        super(context, util.DATABASE_NAME, null, util.DARABASE_VERSION);
+        super(context, util.DATABASE_NAME, null, util.DATABASE_VERSION);
+        mAuthHelper=AuthHelper.getInstance(context);
     }
 
     @Override
@@ -35,7 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + util.KEY_NUM_LINK + " INTEGER DEFAULT 0, "
                 + util.KEY_PRICE + " INTEGER DEFAULT 1, "
                 + util.KEY_COUNT + " INTEGER DEFAULT 0, "
-                + util.KEY_COUNT_SHOP + " INTEGER "+")";
+                + util.KEY_COUNT_SHOP + " INTEGER, "+ util.KEY_USER_ID + " INTEGER "+")";
         sqLiteDatabase.execSQL(CREATE_GL_TABLE);
 
     }
@@ -61,6 +64,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         value.put(util.KEY_PRICE,listItem.getPrice());
         value.put(util.KEY_COUNT,listItem.getCount());
         value.put(util.KEY_COUNT_SHOP,listItem.getCount_shop());
+        value.put(util.KEY_USER_ID,listItem.getUser_id());
         //Insert to row
         db.insert(util.TABLE_NAME, null, value);
         db.close();//Close db connection
@@ -73,14 +77,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(util.TABLE_NAME, new String[]{util.KEY_ID,
                         util.KEY_NAME, util.KEY_DESCRIPTION, util.KEY_IMG_SRC, util.KEY_FAVORITE, util.KEY_NUM_LINK.toString(),
-                        util.KEY_PRICE.toString(), util.KEY_COUNT.toString(),util.KEY_COUNT_SHOP}, util.KEY_ID + "=?",
+                        util.KEY_PRICE.toString(), util.KEY_COUNT.toString(),util.KEY_COUNT_SHOP,util.KEY_USER_ID}, util.KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
 
             ListItem item = new ListItem(cursor.getString(0),
                     cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),
-                    cursor.getInt(5),cursor.getInt(6),cursor.getInt(7),cursor.getInt(8));
+                    cursor.getInt(5),cursor.getInt(6),cursor.getInt(7),cursor.getInt(8),cursor.getInt(9));
             return item;
         }
         return null;
@@ -92,7 +96,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List <ListItem> ItemList = new ArrayList <>();
         //select all contacts
         Cursor cursor = null;
-        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_FAVORITE+"='" + true + "'";
+        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_FAVORITE+"='" + true + "' AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         cursor = db.rawQuery(selectAll, null);
         if (cursor.moveToFirst()) {
             do {
@@ -107,6 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setPrice(cursor.getInt(6));
                 item.setCount(cursor.getInt(7));
                 item.setCount_shop(cursor.getInt(8));
+                item.setUser_id(cursor.getInt(9));
                 //add contact object to our contact list
                 ItemList.add(item);
                 //  ListItem item=new ListItem(cursor.getString(1),cursor.getString(2));
@@ -123,7 +128,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //  List<Contact> contactList = new ArrayList<>();
         List <ListItem> ItemList = new ArrayList <>();
         //select all contacts
-        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_COUNT+"!=0";
+        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_COUNT+"!=0 AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         Cursor cursor = db.rawQuery(selectAll, null);
         if (cursor.moveToFirst()) {
             do {
@@ -138,6 +143,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setPrice(cursor.getInt(6));
                 item.setCount(cursor.getInt(7));
                 item.setCount_shop(cursor.getInt(8));
+                item.setUser_id(cursor.getInt(9));
                 //add contact object to our contact list
                 ItemList.add(item);
                 //  ListItem item=new ListItem(cursor.getString(1),cursor.getString(2));
@@ -160,7 +166,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ListItem item = new ListItem(cursor.getString(0),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)
-                ,cursor.getInt(5),cursor.getInt(6),cursor.getInt(7),cursor.getInt(8));
+                ,cursor.getInt(5),cursor.getInt(6),cursor.getInt(7),cursor.getInt(8),cursor.getInt(9));
         return item.getFavorite();
     }
     //Update contact
@@ -176,8 +182,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(String.valueOf(util.KEY_PRICE),listItem.getPrice());
         values.put(String.valueOf(util.KEY_COUNT),listItem.getCount());
         values.put(String.valueOf(util.KEY_COUNT_SHOP),listItem.getCount_shop());
+        values.put(String.valueOf(util.KEY_USER_ID),listItem.getUser_id());
         //Update row
-        return db.update(util.TABLE_NAME, values, util.KEY_ID + "=?", new String[]{String.valueOf(listItem.getId())});
+        return db.update(util.TABLE_NAME, values, util.KEY_ID + "=? AND " + util.KEY_USER_ID+ "=?",
+                new String[]{String.valueOf(listItem.getId()),String.valueOf(listItem.getUser_id())});
      //   return db.update(util.TABLE_NAME, values, "util.KEY_ID", null);
 
     }
@@ -185,8 +193,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // delete single contact
     public void deleteListItem(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(util.TABLE_NAME, util.KEY_ID + "=?",
-                new String[]{id});
+        db.delete(util.TABLE_NAME, util.KEY_ID + "=? AND " + util.KEY_USER_ID+ "=?",
+                new String[]{id,mAuthHelper.getIdUser()});
         db.close();
     }
 
@@ -208,7 +216,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //get contacts count
     public int getFavoriteItemCount() {
-        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_FAVORITE+"='" + true + "'";
+        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_FAVORITE+"='" + true + "' AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -224,7 +232,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //get contacts count
     public int getShoppingItemCount() {
-        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_COUNT+"!=0";
+        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_COUNT+"!=0 AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -253,7 +261,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //        cursor.close();
 //        return exists;
         Cursor cursor = null;
-        String sql ="SELECT * FROM "+util.TABLE_NAME+" WHERE "+util.KEY_ID+"="+id;
+        String sql ="SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_ID+"="+id +" AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         cursor= db.rawQuery(sql,null);
         Log.d("Cursor Count : " , String.valueOf(cursor.getCount()));
         cursor.close();

@@ -18,7 +18,7 @@ public class ListItem {
     private int price;
     private int count;
     private int count_shop;
-
+    private int user_id;
     private int num_link;
     private JSONArray image_json;
     private List<JSONArray> image_series;
@@ -66,8 +66,15 @@ public class ListItem {
         this.favorite = favorite;
     }
 
+    public int getUser_id() {
+        return user_id;
+    }
 
-    public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count, int count_shop) {
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count, int count_shop,int user_id) {
         this.id=id;
         this.imgLink=imgLink;
         this.description = description;
@@ -77,6 +84,7 @@ public class ListItem {
         this.price=price;
         this.count=count;
         this.count_shop=count_shop;
+        this.user_id=user_id;
     }
 
     public ListItem() {
