@@ -167,11 +167,15 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
+        View layout = this.findViewById(R.id.constraintLayout);
         switch (menuItem.getItemId()){
             case R.id.menu_shopping_cart:
 
                 if (mAuthHelper.isLoggedIn()) {
+                    layout.setBackgroundColor(0xFFFFFF);
+                    getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_Shopping();
+
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame, fragment).commit();;
                 } else {
@@ -188,19 +192,25 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 break;
             case R.id.menu_search:
 
+                layout.setBackgroundColor(0xFFFFFF);
+                getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame, fragment).commit();
                 break;
 
             case R.id.menu_home:
+
+                getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.frame, fragment).commit();
+                        .replace(R.id.frame, fragment).commit();
                 break;
 
             case R.id.menu_favorite:
                 if (mAuthHelper.isLoggedIn()) {
+                    layout.setBackgroundColor(0xFFFFFF);
+                    getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame, fragment).commit();
@@ -218,6 +228,9 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 break;
 
             case R.id.menu_call:
+
+                layout.setBackgroundColor(0xFFFFFF);
+                getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame, fragment).commit();
