@@ -17,19 +17,26 @@ import com.example.qhs.wallpapershopping.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.Billing;
+import Model.Shipping;
+
 
 public class Fragment_billing extends Fragment  implements AdapterView.OnItemSelectedListener {
        private EditText first_name;
        private EditText last_name;
        private EditText address;
-       private Spinner city;
-       private Spinner state;
-       private EditText passcode;
+       private Spinner city_spinner;
+       private Spinner state_spinner;
+       private String city;
+       private String state;
+       private EditText postcode;
        private EditText email;
        private EditText phone;
-       String[] City_Tehran={"بومهن","رودهن","تهران"};
-        String[] City_Mazandaran={"رامسر","بابل","ساری"};
-       String[] State={"مازندران","تهران"};
+       private String[][] cities ={{"بومهن","رودهن","تهران"},{"رامسر","بابل","ساری"}};
+      // String[] City_Tehran={"بومهن","رودهن","تهران"};
+       // String[] City_Mazandaran={"رامسر","بابل","ساری"};
+       String[] State={"تهران","مازندران"};
+       int index = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,33 +46,36 @@ public class Fragment_billing extends Fragment  implements AdapterView.OnItemSel
         first_name = (EditText) view.findViewById(R.id.first_name);
         last_name = (EditText) view.findViewById(R.id.last_name);
         address = (EditText) view.findViewById(R.id.address);
-        city = (Spinner) view.findViewById(R.id.city);
-        state = (Spinner) view.findViewById(R.id.state);
-        passcode = (EditText) view.findViewById(R.id.passcode);
+        city_spinner = (Spinner) view.findViewById(R.id.city);
+        state_spinner = (Spinner) view.findViewById(R.id.state);
+        postcode = (EditText) view.findViewById(R.id.passcode);
         email = (EditText) view.findViewById(R.id.email);
         phone = (EditText) view.findViewById(R.id.phone);
 
     //    state.setOnItemSelectedListener(this);
         ArrayAdapter aa = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, State);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        state.setAdapter(aa);
-        state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        state_spinner.setAdapter(aa);
+        state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int position, long l) {
                 Toast.makeText(getContext(), State[position], Toast.LENGTH_LONG).show();
+                index = position;
                 switch(position){
                     case 0:
-                        ArrayAdapter aa1 = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, City_Tehran);
+                        state = "تهران";
+                        ArrayAdapter aa1 = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, cities[position]);
                         aa1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        city.setAdapter(aa1);
+                        city_spinner.setAdapter(aa1);
                         break;
                     case 1:
-                        ArrayAdapter aa2 = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, City_Mazandaran);
+                        state = "مازندران";
+                        ArrayAdapter aa2 = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, cities[position]);
                         aa2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        city.setAdapter(aa2);
+                        city_spinner.setAdapter(aa2);
                         break;
                 }
-                city.setOnItemSelectedListener(this);
+                city_spinner.setOnItemSelectedListener(this);
             }
 
             @Override
@@ -79,12 +89,28 @@ public class Fragment_billing extends Fragment  implements AdapterView.OnItemSel
     //Performing action onItemSelected and onNothing selected
     @Override
     public void onItemSelected(AdapterView <?> arg0, View arg1, int position, long id) {
-      //  Toast.makeText(getContext(), State[position], Toast.LENGTH_LONG).show();
+       // state_spinner.getpositio
+        city = cities[index][position];
+        Toast.makeText(getContext(), city, Toast.LENGTH_LONG).show();
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
 // TODO Auto-generated method stub
+
+    }
+
+    public void addInfo (){
+        Billing billing = new Billing(first_name.getText().toString().trim(),last_name.getText().toString().trim(),address.getText().toString().trim(),city, state,
+                postcode.getText().toString().trim(), "ایران", email.getText().toString().trim(), phone.getText().toString().trim());
+
+        Shipping shipping = new Shipping(first_name.getText().toString().trim(),last_name.getText().toString().trim(),address.getText().toString().trim(),city, state,
+                postcode.getText().toString().trim(), "ایران");
+
+        //TODO: send customer info. to server, then create order
+
+
 
     }
 }

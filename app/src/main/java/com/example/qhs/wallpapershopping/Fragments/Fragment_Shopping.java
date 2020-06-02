@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +42,8 @@ import com.example.qhs.wallpapershopping.RecyclerItemClickListener;
 import com.example.qhs.wallpapershopping.ShoppingAdapter;
 import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
+import com.example.qhs.wallpapershopping.network.NetworkRequest;
+import com.example.qhs.wallpapershopping.network.Token;
 import com.google.gson.Gson;
 import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener;
 import com.zarinpal.ewallets.purchase.OnCallbackVerificationPaymentListener;
@@ -60,7 +64,10 @@ import java.util.Map;
 import java.util.zip.Inflater;
 
 import Data.DatabaseHandler;
+import Model.Billing;
 import Model.ListItem;
+import Model.Order;
+import Model.Shipping;
 
 
 public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemCallback, View.OnClickListener {
@@ -72,15 +79,12 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private int sum=0;
     private AuthHelper mAuthHelper;
     private Admin admin;
-    private Menu mOptionsMenu;
     private DatabaseHandler db;
     private Integer[][] shoppingProductId;
     private int num;
-    private int quantity;
     private CardView cardN;
-    private JSONArray line_items;
+    private List<JSONObject> line_items;
     private NetRequest request;
-    Fragment_Shopping fragment_shopping;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +99,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         title.setText("سبد خرید");
 
         db = new DatabaseHandler(getContext());
+        num = db.getShoppingItemCount();
 
         mAuthHelper = AuthHelper.getInstance(getContext());
         admin = Admin.getInstance(getContext());
@@ -112,7 +117,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
 
 
-      //  db.deleteAll();
+        //db.deleteAll();
         listItems = db.getAllShoppingItem();
         adapter = new ShoppingAdapter(getContext(),listItems,this);
         recyclerView.setAdapter(adapter);
@@ -120,7 +125,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
         totalPrice=(TextView)view.findViewById(R.id.totalPrice);
 
-        line_items = new JSONArray();
+        line_items = new ArrayList<JSONObject>();
         if(num==0){
             cardN.setVisibility(View.GONE);
         }
@@ -133,10 +138,10 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                 try {
                     jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
                     jsonObject.put("quantity", listItems.get(i).getCount_shop());
-                    jsonObject.put("price", String.valueOf(listItems.get(i).getPrice()));
+                    jsonObject.put("name", String.valueOf(listItems.get(i).getName()));
                     jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
 
-                    line_items.put(i, jsonObject);
+                    line_items.add(i, jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -265,32 +270,66 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
 
     }
-    private NetRequest.Callback<JSONObject> mCustomerCallback = new NetRequest.Callback<JSONObject>(){
+
+    private final NetRequest.Callback<JSONObject> mCustomerCallback = new NetRequest.Callback<JSONObject>() {
 
         @Override
-        public void onResponse(@NonNull JSONObject response)  {
-//            Gson gson = new Gson();
-//            Billing billing = gson.fromJson(response.getJSONObject("billing").toString(), Billing.class);
-//            if () {// اگر از طرف سایت اطالعات وارد شده بود، برو به پرداخت
-//
-//                JSONObject orderObject = new JSONObject();
-//                orderObject.put("customer_id", mAuthHelper.getIdUser());
-//                orderObject.put("set_paid", false);
-//                orderObject.put("billing", response.getJSONObject("billing"));
-//                orderObject.put("line_items", line_items);
-//
-//                request.JsonObjectNetRequest("POST","wc/v3/orders", );
-//
-//                myPayment();
-//
-//            } else {// وگرنه صفحه وارد کردن اطلاعات رو براش بیار
-//
-//            }
+        public void onResponse(@NonNull JSONObject response) {
+            Gson gson = new Gson();
+            try {
+                Billing billing = gson.fromJson(response.getJSONObject("billing").toString(), Billing.class);
+                Shipping shipping = gson.fromJson(response.getJSONObject("shipping").toString(), Shipping.class);
+
+                Log.d("BILLING ", response.getJSONObject("billing").toString());
+
+                Log.d("BILLING_object {", billing.getFirstName());
+//                        billing.getFirstName()+ " " + billing.getLastName()+ " " + billing.getAddress1()+ " " +
+//                        billing.getCity() +" "+billing.getEmail()+" " + billing.getPhone()+" " + billing.getPostcode()+" " + billing.getState()+"}");
+                if (!billing.getFirstName().equals("") & billing.getLastName() != "" & billing.getAddress1() != "" & billing.getCity() != ""
+                        & billing.getEmail() != "" & billing.getPhone() != "" & billing.getPostcode() != "" & billing.getState() != "") {// اگر از طرف سایت اطالعات وارد شده بود، برو به پرداخت
+
+                    Order order = new Order("pending", Integer.parseInt(mAuthHelper.getIdUser()), billing, shipping, line_items);
+
+                    NetworkRequest request = new NetworkRequest();
+                    //request.orderPostRequest("http://mobifytech.ir/wp-json/wc/v3/orders", order, mOrderCallback);
+
+
+                    //myPayment();
+
+                } else {// وگرنه صفحه وارد کردن اطلاعات رو براش بیار
+                    Fragment fragment = new Fragment_billing();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, fragment);
+                    fragmentTransaction.commit();
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onError(String error) {
 
+        }
+    };
+
+    private NetworkRequest.Callback<Order> mOrderCallback = new NetworkRequest.Callback<Order>() {
+        @Override
+        public void onResponse(@NonNull Order response) {
+            Toast.makeText(getContext(), response.getId()+" ", Toast.LENGTH_LONG ).show();
+
+        }
+
+        @Override
+        public void onError(String error) {
+
+        }
+
+        @Override
+        public Class<Order> type() {
+            return null;
         }
     };
 }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import Model.Order;
 import okhttp3.Call;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -169,6 +170,32 @@ public class NetworkRequest {
         doRequest(requestBuilder.build(), callback);
     }
 
+    public void orderPostRequest(@NonNull String url, @NonNull Order order,
+                               @Nullable final Callback callback) throws JSONException {
+
+        HttpUrl httpUrl = HttpUrl.parse(url);
+
+        Gson gson = new Gson();
+
+        JSONObject jsonObject = new JSONObject(gson.toJson(order));
+
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+//        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512); //or HS384 or HS512
+//
+//        String token = Jwts.builder() // (1)
+//                .setSubject("register")      // (2)
+//                .signWith(key)          // (3)
+//                .compact();
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                .post(body)
+                //.post(bodyBuilder.build())
+                .build();
+
+        doRequest(request, callback);
+    }
 
     /**
      * Makes request and fires callback as at when due
