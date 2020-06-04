@@ -38,9 +38,6 @@
             app:fillColor="#df0623"
             app:pageColor="#fff"
             app:snap="false" />
-
-
-
     </RelativeLayout>
     <TextView
         android:id="@+id/txt1"
