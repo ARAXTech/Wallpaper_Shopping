@@ -171,10 +171,7 @@ public class Fragment_gallery extends Fragment {
         final TextView txt_description = (TextView) view.findViewById(R.id.txt2);
         txt_description.setText(
                 "\n" + Html.fromHtml(description) +
-                 "\n" + Html.fromHtml(description) +
-                "\n" + Html.fromHtml(description)+
-                "\n" + Html.fromHtml(description)+
-                "\n" + Html.fromHtml(description));
+                 "\n" + Html.fromHtml(description));
         txt_description.setTextColor(Color.parseColor("#000000"));
         //txt_description.setPaintFlags(txt_description.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         //txt_description.setMovementMethod(new ScrollingMovementMethod());
