@@ -23,56 +23,6 @@ public class ListItem {
     private JSONArray image_json;
     private List<JSONArray> image_series;
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-
-    public int getCount_shop() {
-        return count_shop;
-    }
-
-    public void setCount_shop(int count_shop) {
-        this.count_shop = count_shop;
-    }
-    public int getNum_link() {
-        return num_link;
-    }
-
-    public void setNum_link(int num_link) {
-        this.num_link = num_link;
-    }
-
-
-
-
-    public String getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(String favorite) {
-        this.favorite = favorite;
-    }
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
 
     public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count, int count_shop,int user_id) {
         this.id=id;
@@ -90,30 +40,6 @@ public class ListItem {
     public ListItem() {
 
     }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-    public List<JSONArray> getImage_series() {
-        return image_series;
-    }
-
-    public void setImage_series(List<JSONArray> image_series) {
-        this.image_series = image_series;
-    }
-
-
 
     public ListItem(String imgLink,String name,String id, String description, JSONArray image_json,ArrayList img_src) {
         this.imgLink = imgLink;
@@ -124,19 +50,107 @@ public class ListItem {
         this.img_src = img_src;
     }
 
+
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+
+    public int getCount_shop() {
+        return count_shop;
+    }
+
+    public void setCount_shop(int count_shop) {
+        this.count_shop = count_shop;
+    }
+
+
+    public int getNum_link() {
+        return num_link;
+    }
+
+    public void setNum_link(int num_link) {
+        this.num_link = num_link;
+    }
+
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+
+    public List<JSONArray> getImage_series() {
+        return image_series;
+    }
+
+    public void setImage_series(List<JSONArray> image_series) {
+        this.image_series = image_series;
+    }
+
+
     public List<String> getImg_src() {
         return img_src;
     }
+
     public void setImg_src(ArrayList <String> img_src) {
         this.img_src = img_src;
     }
+
     public void setImg_src(String src) {
         this.img_src.add(src);
     }
 
+
     public int get_img_src_size(){
         return img_src.size();
     }
+
 
     public String getImgLink() {
         return imgLink;
@@ -154,6 +168,7 @@ public class ListItem {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public JSONArray getImage_json() {
         return image_json;
