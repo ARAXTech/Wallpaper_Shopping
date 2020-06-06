@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="140dp"
-    android:layout_height="110dp"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="25dp"
-
+    app:cardCornerRadius="50dp"
     android:background="@color/SecondaryLight"
     android:layout_margin="5dp">
     <!--android:paddingBottom="3dp" -->
@@ -23,7 +22,7 @@
          android:layout_gravity="center_horizontal"
          android:scaleType="fitXY"
          android:src="@drawable/logo1"
-         android:background="@drawable/selector"/>
+         />
 
      <TextView
          android:id="@+id/textViewH"

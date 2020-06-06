@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -57,11 +58,13 @@ import java.util.Map;
 
 import Model.ListItem;
 import Recycler.RecyclerAdapter;
+import Recycler.RecyclerViewHorizontalListAdapter;
 import Ui.SpannableGridLayoutManager;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.android.volley.toolbox.Volley.newRequestQueue;
+import Model.RecyclerHorizentalItem;
 
 
 
@@ -77,6 +80,11 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
     private ProgressBar pgsBar;
     private SpannableGridLayoutManager gridLayoutManager;
     private EditText editText;
+
+    //horizental recycler
+    private RecyclerView recyclerViewHorizental;
+    private RecyclerView.Adapter adapterHorizental;
+    private List<RecyclerHorizentalItem> HorizentalItems = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,6 +110,8 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         //**************************************************
        // editText=(EditText) view.findViewById(R.id.EtSearch);
         //  category_id=editText.getText().toString();
+
+
 
 
         imageList = new ArrayList<JSONArray>();
@@ -130,6 +140,39 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
         adapter=new RecyclerAdapter( getContext(),listItems);
         recyclerView.setAdapter(adapter);
+
+        //Horizental RecyclerView///////////////////////////////////////////////////////////////////////////////
+        //image for horizental com.example.qhs.deydigital.Recycler
+        int logos[] = {
+                R.drawable.logo1, R.drawable.logo12, R.drawable.logo3, R.drawable.logo6,
+                R.drawable.logo8,R.drawable.logo5};
+        //text for horizental com.example.qhs.deydigital.Recycler
+        String txt[]={
+                "سالن پذیرایی",
+                "اتاق کودک",
+                "پشت Tv",
+                "اتاق خواب",
+                "سه بعدی",
+                "هنری",
+        };
+
+        recyclerViewHorizental = (RecyclerView) view.findViewById(R.id.searchReciclerViewHorizental);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(
+                getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewHorizental.setLayoutManager(horizontalLayoutManager);
+
+        for (int i = 0; i < logos.length; i++) {
+
+            RecyclerHorizentalItem HItem = new RecyclerHorizentalItem(logos[i], txt[i]);
+
+            HorizentalItems.add(HItem);
+            //  adapterHorizental.notifyDataSetChanged();
+
+        }
+        adapterHorizental = new RecyclerViewHorizontalListAdapter(HorizentalItems, getContext());
+        recyclerViewHorizental.setAdapter(adapterHorizental);
+        //End Horizental RecyclerView///////////////////////////////////////////////////////////////////////////////
+
 
         firstLoad();
 
