@@ -200,15 +200,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                 }
             }
         });
-//        simpleSearchView.setOnQueryTextFocusChangeListener(){
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (hasFocus) {
-//                    showInputMethod(view.findFocus());
-//                }
-//            }
-//        });
-
 
 //        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "yekan/homa.ttf");
         //TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
@@ -218,13 +209,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
         return view;
     }
-
-//    private void showInputMethod(View view) {
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        if (imm != null) {
-//            imm.showSoftInput(view, 0);
-//        }
-//    }
 
 
     @Override
@@ -318,25 +302,26 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                         image_series_json = products.getJSONObject(i).getJSONArray("images");
                         //viewDialog.hideDialog();
 
-                        Log.d("hello","hiiii");
-                        //get image urls and save in arraylist
-                        imageList.add(image_series_json);
+                        if (image_series_json.length() > 0) {
+                            //get image urls and save in arraylist
+                            imageList.add(image_series_json);
 
-                        ListItem item=new ListItem(
-                                products.getJSONObject(i).getJSONArray("images").
-                                        getJSONObject(0).getString("src"),
-                                products.getJSONObject(i).getString("name"),
-                                /*image_series_json*/
-                                products.getJSONObject(i).getString("id"),
-                                products.getJSONObject(i).getString("description"),
-                                products.getJSONObject(i).getJSONArray("images"),
-                                new ArrayList()
-                        );
+                            ListItem item=new ListItem(
+                                    products.getJSONObject(i).getJSONArray("images").
+                                            getJSONObject(0).getString("src"),
+                                    products.getJSONObject(i).getString("name"),
+                                    /*image_series_json*/
+                                    products.getJSONObject(i).getString("id"),
+                                    products.getJSONObject(i).getString("description"),
+                                    products.getJSONObject(i).getJSONArray("images"),
+                                    new ArrayList()
+                            );
 
+                            listItems.add(item);
+                            adapter.notifyDataSetChanged();
+                            pgsBar.setVisibility(GONE);
+                        }
 
-                        listItems.add(item);
-                        adapter.notifyDataSetChanged();
-                        pgsBar.setVisibility(GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

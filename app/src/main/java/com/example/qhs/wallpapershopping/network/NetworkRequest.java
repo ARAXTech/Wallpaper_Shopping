@@ -1,5 +1,6 @@
 package com.example.qhs.wallpapershopping.network;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import Model.Customer;
 import Model.Order;
 import okhttp3.Call;
 import okhttp3.HttpUrl;
@@ -29,6 +31,7 @@ import okhttp3.Response;
  * Network Request class to abstract implementation details of requests
  */
 public class NetworkRequest {
+    private Context context;
     public static final MediaType JSON  = MediaType.parse("application/json; charset=utf-8");
     private static final String BASE_URL = "http://mobifytech.ir/wp-json/";
 
@@ -39,6 +42,7 @@ public class NetworkRequest {
     public NetworkRequest() {
         mClient = new OkHttpClient();
     }
+
 
     /**
      * Sets the callback for the network request
@@ -170,6 +174,28 @@ public class NetworkRequest {
         doRequest(requestBuilder.build(), callback);
     }
 
+    public void customerPostRequest(@NonNull String url, @NonNull Customer customer,
+                                 @Nullable final Callback callback) throws JSONException {
+
+        HttpUrl httpUrl = HttpUrl.parse(url);
+
+        Gson gson = new Gson();
+
+        JSONObject jsonObject = new JSONObject(gson.toJson(customer));
+
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Admin admin = Admin.getInstance(context);
+        Request request = new Request.Builder()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "Bearer " + admin.getAdminAuth())
+                .url(httpUrl)
+                .post(body)
+                .build();
+
+        doRequest(request, callback);
+    }
+
     public void orderPostRequest(@NonNull String url, @NonNull Order order,
                                @Nullable final Callback callback) throws JSONException {
 
@@ -181,14 +207,10 @@ public class NetworkRequest {
 
         RequestBody body = RequestBody.create(JSON, jsonObject.toString());
 
-//        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512); //or HS384 or HS512
-//
-//        String token = Jwts.builder() // (1)
-//                .setSubject("register")      // (2)
-//                .signWith(key)          // (3)
-//                .compact();
-
+        Admin admin = Admin.getInstance(context);
         Request request = new Request.Builder()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "Bearer " + admin.getAdminAuth())
                 .url(httpUrl)
                 .post(body)
                 //.post(bodyBuilder.build())
@@ -207,6 +229,8 @@ public class NetworkRequest {
         mClient.newCall(request)
                 .enqueue(new okhttp3.Callback() {
                     Handler mainHandler = new Handler(Looper.getMainLooper());
+
+
                     @Override
                     public void onFailure(Call call, final IOException e) {
                         Log.d("onFailureDoRequest: ", e.toString());

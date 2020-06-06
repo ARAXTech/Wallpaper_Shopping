@@ -76,12 +76,12 @@ public class Order {
     private Object dateCompletedGmt;
     @SerializedName("line_items")
     @Expose
-    private List<JSONObject> lineItems = new ArrayList<JSONObject>();
+    private List<CartItem> lineItems = new ArrayList<CartItem>();
     @SerializedName("coupon_lines")
     @Expose
     private List<Object> couponLines = null;
 
-    public Order(String status, Integer customerId, Billing billing, Shipping shipping, List<JSONObject> lineItems) {
+    public Order(String status, Integer customerId, Billing billing, Shipping shipping, List<CartItem> lineItems) {
         this.status = status;
         this.customerId = customerId;
         this.billing = billing;
@@ -257,11 +257,11 @@ public class Order {
         this.dateCompletedGmt = dateCompletedGmt;
     }
 
-    public List<JSONObject> getLineItems() {
+    public List<CartItem> getLineItems() {
         return lineItems;
     }
 
-    public void setLineItems(List<JSONObject> lineItems) {
+    public void setLineItems(List<CartItem> lineItems) {
         this.lineItems = lineItems;
     }
 
