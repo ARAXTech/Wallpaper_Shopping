@@ -1,12 +1,14 @@
 package com.example.qhs.wallpapershopping.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -57,11 +58,13 @@ import java.util.Map;
 
 import Model.ListItem;
 import Recycler.RecyclerAdapter;
+import Recycler.RecyclerViewHorizontalListAdapter;
 import Ui.SpannableGridLayoutManager;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.android.volley.toolbox.Volley.newRequestQueue;
+import Model.RecyclerHorizentalItem;
 
 
 
@@ -77,6 +80,11 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
     private ProgressBar pgsBar;
     private SpannableGridLayoutManager gridLayoutManager;
     private EditText editText;
+
+    //horizental recycler
+    private RecyclerView recyclerViewHorizental;
+    private RecyclerView.Adapter adapterHorizental;
+    private List<RecyclerHorizentalItem> HorizentalItems = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,6 +110,8 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         //**************************************************
        // editText=(EditText) view.findViewById(R.id.EtSearch);
         //  category_id=editText.getText().toString();
+
+
 
 
         imageList = new ArrayList<JSONArray>();
@@ -131,6 +141,39 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         adapter=new RecyclerAdapter( getContext(),listItems);
         recyclerView.setAdapter(adapter);
 
+        //Horizental RecyclerView///////////////////////////////////////////////////////////////////////////////
+        //image for horizental com.example.qhs.deydigital.Recycler
+        int logos[] = {
+                R.drawable.logo1, R.drawable.logo12, R.drawable.logo3, R.drawable.logo6,
+                R.drawable.logo8,R.drawable.logo5};
+        //text for horizental com.example.qhs.deydigital.Recycler
+        String txt[]={
+                "سالن پذیرایی",
+                "اتاق کودک",
+                "پشت Tv",
+                "اتاق خواب",
+                "سه بعدی",
+                "هنری",
+        };
+
+        recyclerViewHorizental = (RecyclerView) view.findViewById(R.id.searchReciclerViewHorizental);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(
+                getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewHorizental.setLayoutManager(horizontalLayoutManager);
+
+        for (int i = 0; i < logos.length; i++) {
+
+            RecyclerHorizentalItem HItem = new RecyclerHorizentalItem(logos[i], txt[i]);
+
+            HorizentalItems.add(HItem);
+            //  adapterHorizental.notifyDataSetChanged();
+
+        }
+        adapterHorizental = new RecyclerViewHorizontalListAdapter(HorizentalItems, getContext());
+        recyclerViewHorizental.setAdapter(adapterHorizental);
+        //End Horizental RecyclerView///////////////////////////////////////////////////////////////////////////////
+
+
         firstLoad();
 
         SearchView simpleSearchView = (SearchView) view.findViewById(R.id.search_view); // inititate a search view
@@ -146,6 +189,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onFocusChange(final View view, boolean hasFocus) {
                 if (hasFocus) {
+                    simpleSearchView.setBackgroundColor(Color.WHITE);
                     view.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -156,15 +200,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                 }
             }
         });
-//        simpleSearchView.setOnQueryTextFocusChangeListener(){
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (hasFocus) {
-//                    showInputMethod(view.findFocus());
-//                }
-//            }
-//        });
-
 
 //        final Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "yekan/homa.ttf");
         //TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
@@ -174,13 +209,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
         return view;
     }
-
-//    private void showInputMethod(View view) {
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        if (imm != null) {
-//            imm.showSoftInput(view, 0);
-//        }
-//    }
 
 
     @Override
@@ -274,25 +302,26 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                         image_series_json = products.getJSONObject(i).getJSONArray("images");
                         //viewDialog.hideDialog();
 
-                        Log.d("hello","hiiii");
-                        //get image urls and save in arraylist
-                        imageList.add(image_series_json);
+                        if (image_series_json.length() > 0) {
+                            //get image urls and save in arraylist
+                            imageList.add(image_series_json);
 
-                        ListItem item=new ListItem(
-                                products.getJSONObject(i).getJSONArray("images").
-                                        getJSONObject(0).getString("src"),
-                                products.getJSONObject(i).getString("name"),
-                                /*image_series_json*/
-                                products.getJSONObject(i).getString("id"),
-                                products.getJSONObject(i).getString("description"),
-                                products.getJSONObject(i).getJSONArray("images"),
-                                new ArrayList()
-                        );
+                            ListItem item=new ListItem(
+                                    products.getJSONObject(i).getJSONArray("images").
+                                            getJSONObject(0).getString("src"),
+                                    products.getJSONObject(i).getString("name"),
+                                    /*image_series_json*/
+                                    products.getJSONObject(i).getString("id"),
+                                    products.getJSONObject(i).getString("description"),
+                                    products.getJSONObject(i).getJSONArray("images"),
+                                    new ArrayList()
+                            );
 
+                            listItems.add(item);
+                            adapter.notifyDataSetChanged();
+                            pgsBar.setVisibility(GONE);
+                        }
 
-                        listItems.add(item);
-                        adapter.notifyDataSetChanged();
-                        pgsBar.setVisibility(GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

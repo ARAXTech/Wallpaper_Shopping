@@ -36,7 +36,8 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //inflate the layout file
-        View groceryProductView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_horizental, parent, false);
+        View groceryProductView = LayoutInflater.from(parent.getContext()).inflate
+                (R.layout.recycler_item_horizental, parent, false);
         ViewHolder gvh = new ViewHolder(groceryProductView);
         return gvh;
     }
@@ -94,14 +95,16 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                                 fragment = new Fragment_recycler();
                                 fragment.setArguments(bundle);
                                 // Fragment myFragment = new TaskApprovalFragmentDetails();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace
+                                        (R.id.frame, fragment).addToBackStack(null).commit();
                             }else {
 
                                 //startActivity(intent);
                                 fragment = new Fragment_recycler();
                                 fragment.setArguments(bundle);
                                 // Fragment myFragment = new TaskApprovalFragmentDetails();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace
+                                        (R.id.frame, fragment).addToBackStack(null).commit();
                             }
                             //End animation
                             //the below line commented because of animation

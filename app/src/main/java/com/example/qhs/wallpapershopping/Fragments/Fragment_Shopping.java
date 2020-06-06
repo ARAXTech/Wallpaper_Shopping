@@ -66,6 +66,7 @@ import java.util.zip.Inflater;
 
 import Data.DatabaseHandler;
 import Model.Billing;
+import Model.CartItem;
 import Model.ListItem;
 import Model.Order;
 import Model.Shipping;
@@ -85,7 +86,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private Integer[][] shoppingProductId;
     private int num;
     private CardView cardN;
-    private List<JSONObject> line_items;
+    private List<CartItem> line_items;
     private NetRequest request;
 
     @Override
@@ -137,7 +138,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
         totalPrice=(TextView)view.findViewById(R.id.totalPrice);
 
-        line_items = new ArrayList<JSONObject>();
+        line_items = new ArrayList<CartItem>();
         if(num==0){
             cardN.setVisibility(View.GONE);
         }
@@ -146,18 +147,25 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
             for (int i = 0; i < num; i++) {
 
                 sum = sum + listItems.get(i).getPrice() * listItems.get(i).getCount_shop();
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
-                    jsonObject.put("quantity", listItems.get(i).getCount_shop());
-                    jsonObject.put("name", String.valueOf(listItems.get(i).getName()));
-                    jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
 
-                    Log.d("linee ", jsonObject.toString());
-                    line_items.add(jsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                CartItem cartItem = new CartItem();
+                cartItem.setProductId(Integer.parseInt(listItems.get(i).getId()));
+                cartItem.setName(listItems.get(i).getName());
+                cartItem.setQuantity(listItems.get(i).getCount_shop());
+                cartItem.setTotal(String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
+//                JSONObject jsonObject = new JSONObject();
+//                try {
+//                    jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
+//                    jsonObject.put("quantity", listItems.get(i).getCount_shop());
+//                    jsonObject.put("name", String.valueOf(listItems.get(i).getName()));
+//                    jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
+//
+//                    Log.d("linee ", jsonObject.toString());
+//                    line_items.add(jsonObject);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                line_items.add(cartItem);
             }
             totalPrice.setText(String.valueOf(sum) + " تومان");
             Log.d("line_itemss", line_items.toString());
@@ -306,7 +314,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                     request.orderPostRequest("http://mobifytech.ir/wp-json/wc/v3/orders", order, mOrderCallback);
 
 
-                    //myPayment();
+                    myPayment();
 
                 } else {// وگرنه صفحه وارد کردن اطلاعات رو براش بیار
                     Fragment fragment = new Fragment_billing();
@@ -346,7 +354,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         }
     };
 
-    public List<JSONObject> getLineItems(){
+    public List<CartItem> getLineItems(){
         return line_items;
     }
 }

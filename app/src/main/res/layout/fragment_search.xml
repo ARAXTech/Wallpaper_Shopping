@@ -1,69 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".Fragments.Fragment_search"
-        android:layoutDirection="locale">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Fragment_search"
+    android:layoutDirection="locale">
 
     <android.support.v7.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="166dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/searchRecycler"
+        android:layout_marginBottom="153dp"
+        android:background="@color/colorPrimaryDark"
+        android:focusableInTouchMode="true"
+        app:iconifiedByDefault="false"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="Type something..."
-        android:background="@drawable/bginclud"
-        app:iconifiedByDefault="true"
-        android:focusableInTouchMode="true"/>
-
-        <ProgressBar
-            android:id="@+id/SearchpBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    <RelativeLayout
-        android:id="@+id/search_layout"
-        android:layout_width="match_parent"
+        app:layout_constraintVertical_bias="0.0"
+        />
+    <ProgressBar
+        android:id="@+id/SearchpBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/searchRecycler"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txtView_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="دسته بندی ها"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchReciclerViewHorizental"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/searchReciclerViewHorizental"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/txtView_newProducts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtView_category" />
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtView_newProducts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="جدیدترین محصولات"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.977"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchReciclerViewHorizental" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/searchRecycler"
         android:layout_width="0dp"
-        android:layout_height="418dp"
+        android:layout_height="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/txtView_newProducts"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_layout"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

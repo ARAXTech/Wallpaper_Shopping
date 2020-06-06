@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +21,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnticipateInterpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -80,12 +85,40 @@ public class Fragment_gallery extends Fragment {
     private float density;
     private CirclePageIndicator indicator;
 
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container,
+                             @NonNull Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        //constraint layout animation
+
+        ConstraintLayout cc1;
+        cc1 = view.findViewById(R.id.constraintLayout_gallery);
+
+
+        final ConstraintSet constraintSet = new ConstraintSet();
+        final Handler handler = new Handler();
+
+        constraintSet.clone(getContext(), R.layout.fragment_gallery_animation);
+        ChangeBounds transition = new ChangeBounds();
+        transition.setInterpolator(new AnticipateInterpolator(1.0f));
+        transition.setDuration(1200);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+
+
+
+                TransitionManager.beginDelayedTransition(cc1, transition);
+                constraintSet.applyTo(cc1);
+            }
+        }, 300);
+//end constraint layout animation
 
         //DataBase Define
         db = new DatabaseHandler(getContext());
@@ -136,19 +169,21 @@ public class Fragment_gallery extends Fragment {
         //Textview of details
         TextView txt_name = (TextView) view.findViewById(R.id.txt1);
         final TextView txt_description = (TextView) view.findViewById(R.id.txt2);
-        txt_description.setText("\n" + Html.fromHtml(description));
+        txt_description.setText(
+                "\n" + Html.fromHtml(description) +
+                 "\n" + Html.fromHtml(description));
         txt_description.setTextColor(Color.parseColor("#000000"));
         //txt_description.setPaintFlags(txt_description.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         //txt_description.setMovementMethod(new ScrollingMovementMethod());
         //txt_description.setTypeface(face);
 
-        //   TextView txt_id=(TextView)findViewById(R.id.txt3);
+          TextView txt_id=(TextView)view.findViewById(R.id.txt_productCode);
         String product_code=" کد محصول: " ;
-//        txt_id.setText(product_code+getIntent().getStringExtra("id"));
-//        txt_id.setTextColor(Color.parseColor("#FF0000"));
+        txt_id.setText(product_code + bundle.getString("id"));
+        txt_id.setTextColor(Color.parseColor("#FF0000"));
 
         final String name = bundle.getString("name");
-        txt_name.setText( name +"\n"+ product_code + bundle.getString("id") );
+        txt_name.setText( name );
 
 
         //txt_name.setTypeface(face);
