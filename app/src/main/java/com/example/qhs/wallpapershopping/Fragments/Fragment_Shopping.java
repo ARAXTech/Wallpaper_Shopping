@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -72,6 +73,7 @@ import Model.Shipping;
 
 public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemCallback, View.OnClickListener {
 
+    private static Fragment_Shopping instance = null;
     private RecyclerView recyclerView;
     private ShoppingAdapter adapter;
     private List<ListItem> listItems;
@@ -85,6 +87,16 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private CardView cardN;
     private List<JSONObject> line_items;
     private NetRequest request;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this;
+    }
+
+    public static Fragment_Shopping getInstance() {
+        return instance;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,12 +153,14 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                     jsonObject.put("name", String.valueOf(listItems.get(i).getName()));
                     jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
 
-                    line_items.add(i, jsonObject);
+                    Log.d("linee ", jsonObject.toString());
+                    line_items.add(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
             totalPrice.setText(String.valueOf(sum) + " تومان");
+            Log.d("line_itemss", line_items.toString());
         }
 
 
@@ -282,16 +296,14 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
                 Log.d("BILLING ", response.getJSONObject("billing").toString());
 
-                Log.d("BILLING_object {", billing.getFirstName());
-//                        billing.getFirstName()+ " " + billing.getLastName()+ " " + billing.getAddress1()+ " " +
-//                        billing.getCity() +" "+billing.getEmail()+" " + billing.getPhone()+" " + billing.getPostcode()+" " + billing.getState()+"}");
-                if (!billing.getFirstName().equals("") & billing.getLastName() != "" & billing.getAddress1() != "" & billing.getCity() != ""
-                        & billing.getEmail() != "" & billing.getPhone() != "" & billing.getPostcode() != "" & billing.getState() != "") {// اگر از طرف سایت اطالعات وارد شده بود، برو به پرداخت
+                if (!billing.getFirstName().equals("") & !billing.getLastName().equals("") & !billing.getAddress1().equals("") & !billing.getCity().equals("")
+                        & !billing.getEmail().equals("") & !billing.getPhone().equals("") & !billing.getPostcode().equals("") & !billing.getState().equals("")) {// اگر از طرف سایت اطالعات وارد شده بود، برو به پرداخت
 
                     Order order = new Order("pending", Integer.parseInt(mAuthHelper.getIdUser()), billing, shipping, line_items);
 
+                    Log.d("ORDER ", order.getLineItems().toString());
                     NetworkRequest request = new NetworkRequest();
-                    //request.orderPostRequest("http://mobifytech.ir/wp-json/wc/v3/orders", order, mOrderCallback);
+                    request.orderPostRequest("http://mobifytech.ir/wp-json/wc/v3/orders", order, mOrderCallback);
 
 
                     //myPayment();
@@ -320,6 +332,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         public void onResponse(@NonNull Order response) {
             Toast.makeText(getContext(), response.getId()+" ", Toast.LENGTH_LONG ).show();
 
+            myPayment();
         }
 
         @Override
@@ -329,7 +342,11 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
         @Override
         public Class<Order> type() {
-            return null;
+            return Order.class;
         }
     };
+
+    public List<JSONObject> getLineItems(){
+        return line_items;
+    }
 }

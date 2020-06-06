@@ -31,6 +31,8 @@ public class Admin {
     private NetRequest request;
     private static Admin sInstance;
 
+
+
     private Admin(Context context){
 
         NetworkRequest request = new NetworkRequest();
