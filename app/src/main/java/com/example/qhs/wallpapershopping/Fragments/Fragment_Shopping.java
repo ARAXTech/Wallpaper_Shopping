@@ -258,12 +258,12 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     @Override
      public void TotalPrice(){
                     sum=0;
-                    if(num==0){
+                    if(listItems.size()==0){
                         cardN.setVisibility(View.GONE);
                     }
-                    if(num>0) {
+                    if(listItems.size()>0) {
                         cardN.setVisibility(View.VISIBLE);
-                        for (int i = 0; i < num; i++) {
+                        for (int i = 0; i < listItems.size(); i++) {
 
                             sum = sum + listItems.get(i).getPrice() * listItems.get(i).getCount_shop();
 
