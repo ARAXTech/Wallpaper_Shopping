@@ -153,21 +153,9 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                 cartItem.setName(listItems.get(i).getName());
                 cartItem.setQuantity(listItems.get(i).getCount_shop());
                 cartItem.setTotal(String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
-//                JSONObject jsonObject = new JSONObject();
-//                try {
-//                    jsonObject.put("product_id", Integer.parseInt(listItems.get(i).getId()));
-//                    jsonObject.put("quantity", listItems.get(i).getCount_shop());
-//                    jsonObject.put("name", String.valueOf(listItems.get(i).getName()));
-//                    jsonObject.put("total", String.valueOf(listItems.get(i).getPrice()*listItems.get(i).getCount_shop()));
-//
-//                    Log.d("linee ", jsonObject.toString());
-//                    line_items.add(jsonObject);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
                 line_items.add(cartItem);
             }
-            totalPrice.setText(String.valueOf(sum) + " تومان");
+            totalPrice.setText(sum + " تومان");
             Log.d("line_itemss", line_items.toString());
         }
 
@@ -209,7 +197,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
 
         payment.setMerchantID("71c705f8-bd37-11e6-aa0c-000c295eb8fc");
-        payment.setAmount(100);
+        payment.setAmount(sum);
         payment.setDescription("In App Purchase Test SDK");
         payment.setCallbackURL("app://zarinpalpayment"); // scheme://host in manifest
         payment.setMobile("09355106005");

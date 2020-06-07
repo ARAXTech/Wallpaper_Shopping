@@ -379,6 +379,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             bundle.putString("id",item.getId());
             bundle.putString("name",item.getName());
             bundle.putString("description",item.getDescription());
+            bundle.putInt("price", item.getPrice());
             //convert string to array with , seperator
             List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
 
