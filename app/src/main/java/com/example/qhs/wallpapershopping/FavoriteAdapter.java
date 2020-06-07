@@ -98,6 +98,11 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                 .load(temp).resize(200, 200)
                                 .into(holder.img);
 
+                        holder.favorite_title.setText(item.getName());
+                        String str=item.getDescription().replaceAll("<p>","");
+                        holder.favorite_description.setText(str.replaceAll("</p>",""));
+
+
                     }
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
@@ -145,11 +150,15 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         public Button del;
         public ImageView img;
         public NetRequest request;
+        public TextView favorite_title;
+        public TextView favorite_description;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             img = (ImageView) itemView.findViewById(R.id.imgF);
             del = (Button) itemView.findViewById(R.id.btnDelete);
+            favorite_title=(TextView)itemView.findViewById(R.id.txtView_favorite_title);
+            favorite_description=(TextView)itemView.findViewById(R.id.txtView_favorite_description);
             request = new NetRequest(context);
 
             del.setOnClickListener(new View.OnClickListener() {

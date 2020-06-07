@@ -68,7 +68,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        //Splash Screen
+        //Splash Screen
         if (Splashscreen.Splash == 0){
             Intent intent = new Intent(this,Splashscreen.class);
             startActivity(intent);
