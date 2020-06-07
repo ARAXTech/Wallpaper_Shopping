@@ -308,17 +308,31 @@ public class Fragment_recycler extends Fragment {
                     //Log.d("j**response number",String.valueOf(iteration_number) + "***"+String.valueOf(response_number) );
                     //get image urls and save in arraylist
                     imageList.add(image_series_json);
-
+                    ListItem item;
                     Log.d("response*****", response.getJSONObject(i).getString("name"));
-                    ListItem item = new ListItem(
-                            response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
-                            response.getJSONObject(i).getString("name"),
-                            /*image_series_json*/
-                            response.getJSONObject(i).getString("id"),
-                            response.getJSONObject(i).getString("short_description"),
-                            response.getJSONObject(i).getJSONArray("images"),
-                            new ArrayList()
-                    );
+                    if (!response.getJSONObject(i).getString("price").equals("")){
+                        item = new ListItem(
+                                response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
+                                response.getJSONObject(i).getString("name"),
+                                /*image_series_json*/
+                                response.getJSONObject(i).getString("id"),
+                                response.getJSONObject(i).getString("short_description"),
+                                response.getJSONObject(i).getJSONArray("images"),
+                                new ArrayList()
+                                ,Integer.parseInt(response.getJSONObject(i).getString("price"))
+                        );
+                    }else {
+                        item = new ListItem(
+                                response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
+                                response.getJSONObject(i).getString("name"),
+                                /*image_series_json*/
+                                response.getJSONObject(i).getString("id"),
+                                response.getJSONObject(i).getString("short_description"),
+                                response.getJSONObject(i).getJSONArray("images"),
+                                new ArrayList()
+                                , 0
+                        );
+                    }
 
 
                     for (int u = 0; u < response.getJSONObject(i).getJSONArray("images").length(); u++) {

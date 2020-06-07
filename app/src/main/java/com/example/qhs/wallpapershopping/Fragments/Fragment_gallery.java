@@ -76,7 +76,6 @@ public class Fragment_gallery extends Fragment {
     private Timer swipeTimer;
     private AuthHelper mAuthHelper;
     private Menu mOptionsMenu;
-    private Button profileBtn;
     private NetRequest request;
     private RequestQueue queue;
     private DatabaseHandler db;
@@ -122,7 +121,6 @@ public class Fragment_gallery extends Fragment {
 
         //DataBase Define
         db = new DatabaseHandler(getContext());
-        final DatabaseHandler db1 = new DatabaseHandler(getContext());
 
         //log in
         mAuthHelper = AuthHelper.getInstance(getContext());
@@ -157,18 +155,20 @@ public class Fragment_gallery extends Fragment {
         //Set circle indicator radius
         indicator.setRadius(5 * density);
 
+        //Get values from recyclerAdapter by intent to show description of products
         Bundle bundle = this.getArguments();
         id = bundle.getString("id");
-
-
-
-        //Get values from recyclerAdapter by intent to show description of products
+        final String name = bundle.getString("name");
         final String description = bundle.getString("description");
+        final int price = bundle.getInt("price");
         final int currentPosition = bundle.getInt("position");
 
         //Textview of details
         TextView txt_name = (TextView) view.findViewById(R.id.txt1);
-        final TextView txt_description = (TextView) view.findViewById(R.id.txt2);
+        txt_name.setText( name );
+        //txt_name.setTypeface(face);
+
+        TextView txt_description = (TextView) view.findViewById(R.id.txt2);
         txt_description.setText(
                 "\n" + Html.fromHtml(description) +
                  "\n" + Html.fromHtml(description));
@@ -177,16 +177,11 @@ public class Fragment_gallery extends Fragment {
         //txt_description.setMovementMethod(new ScrollingMovementMethod());
         //txt_description.setTypeface(face);
 
-          TextView txt_id=(TextView)view.findViewById(R.id.txt_productCode);
+        TextView txt_id=(TextView)view.findViewById(R.id.txt_productCode);
         String product_code=" کد محصول: " ;
         txt_id.setText(product_code + bundle.getString("id"));
         txt_id.setTextColor(Color.parseColor("#FF0000"));
 
-        final String name = bundle.getString("name");
-        txt_name.setText( name );
-
-
-        //txt_name.setTypeface(face);
 
         init();
         final ArrayList<String> image_list = bundle.getStringArrayList("imageJsonObj");
@@ -211,7 +206,7 @@ public class Fragment_gallery extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),1000,0,1,Integer.parseInt(mAuthHelper.getIdUser()));
+                ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),price,0,1,Integer.parseInt(mAuthHelper.getIdUser()));
                 if (isChecked ){
                     db.addListItem(item);
                     addProduct(Integer.parseInt(id));
@@ -237,10 +232,10 @@ public class Fragment_gallery extends Fragment {
             public void onClick(View view) {
 
                 if (mAuthHelper.isLoggedIn()) {
-                    ListItem item1 = new ListItem(id,name,description, finalS,"false",image_list.size(),1000,1,1,Integer.parseInt(mAuthHelper.getIdUser()));
+                    ListItem item1 = new ListItem(id, name, description, finalS,"false", image_list.size(), price,1,1,Integer.parseInt(mAuthHelper.getIdUser()));
 
                     db.addListItem(item1);
-                    addProductToCart(Integer.parseInt(id), 1);
+                    //addProductToCart(Integer.parseInt(id), 1);
                     shoppingBtn.setEnabled(true);
                     shoppingBtn.setClickable(false);
                     shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
@@ -529,8 +524,6 @@ public class Fragment_gallery extends Fragment {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment2);
             fragmentTransaction.commit();
-            // profileBtn.setVisibility(View.VISIBLE );
-            //finish();
         }
         return super.onOptionsItemSelected(item);
     }

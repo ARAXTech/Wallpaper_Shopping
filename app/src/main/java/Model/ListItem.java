@@ -41,13 +41,14 @@ public class ListItem {
 
     }
 
-    public ListItem(String imgLink,String name,String id, String description, JSONArray image_json,ArrayList img_src) {
+    public ListItem(String imgLink,String name,String id, String description, JSONArray image_json,ArrayList img_src, int price) {
         this.imgLink = imgLink;
         this.description = description;
         this.image_json = image_json;
         this.name = name;
         this.id = id;
         this.img_src = img_src;
+        this.price = price;
     }
 
 

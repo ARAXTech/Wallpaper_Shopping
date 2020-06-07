@@ -125,6 +125,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                     bundle.putString("name",item.getName());
                     bundle.putString("id",item.getId());
                     bundle.putString("description",item.getDescription());
+                    bundle.putInt("price", item.getPrice());
                     bundle.putInt("position",getAdapterPosition());
 
                     Fragment fragment = new Fragment_gallery();
@@ -133,8 +134,8 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                             getSupportFragmentManager()
                             .beginTransaction()
                             .addSharedElement(imgR, imgR.getTransitionName())
-                            .replace(R.id.frame, fragment).
-                            addToBackStack("tag")
+                            .replace(R.id.frame, fragment)
+                            .addToBackStack("tag")
                             .commit();
 //                    ActivityOptionsCompat option  =
 //                            ActivityOptionsCompat.makeSceneTransitionAnimation(Fragment_recycler.class,imgR,

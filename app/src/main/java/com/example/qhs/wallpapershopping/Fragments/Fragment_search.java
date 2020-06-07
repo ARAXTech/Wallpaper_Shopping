@@ -306,16 +306,34 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                             //get image urls and save in arraylist
                             imageList.add(image_series_json);
 
-                            ListItem item=new ListItem(
-                                    products.getJSONObject(i).getJSONArray("images").
-                                            getJSONObject(0).getString("src"),
-                                    products.getJSONObject(i).getString("name"),
-                                    /*image_series_json*/
-                                    products.getJSONObject(i).getString("id"),
-                                    products.getJSONObject(i).getString("description"),
-                                    products.getJSONObject(i).getJSONArray("images"),
-                                    new ArrayList()
-                            );
+                            ListItem item;
+                            if (!products.getJSONObject(i).getString("price").equals("")){
+                                item=new ListItem(
+                                        products.getJSONObject(i).getJSONArray("images").
+                                                getJSONObject(0).getString("src"),
+                                        products.getJSONObject(i).getString("name"),
+                                        /*image_series_json*/
+                                        products.getJSONObject(i).getString("id"),
+                                        products.getJSONObject(i).getString("description"),
+                                        products.getJSONObject(i).getJSONArray("images"),
+                                        new ArrayList(),
+                                        Integer.parseInt(products.getJSONObject(i).getString("price"))
+                                );
+                            }else {
+                                item=new ListItem(
+                                        products.getJSONObject(i).getJSONArray("images").
+                                                getJSONObject(0).getString("src"),
+                                        products.getJSONObject(i).getString("name"),
+                                        /*image_series_json*/
+                                        products.getJSONObject(i).getString("id"),
+                                        products.getJSONObject(i).getString("description"),
+                                        products.getJSONObject(i).getJSONArray("images"),
+                                        new ArrayList(),
+                                        0
+                                );
+                            }
+
+                            
 
                             listItems.add(item);
                             adapter.notifyDataSetChanged();
