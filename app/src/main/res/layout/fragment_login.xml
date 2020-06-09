@@ -19,6 +19,7 @@
         android:gravity="center"
         android:text="@string/text_login"
         android:textSize="@dimen/text_title"
+        android:fontFamily="@font/shabnam"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -49,7 +50,8 @@
             android:hint="@string/hint_username"
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:fontFamily="@font/shabnam"/>
     </com.github.florent37.materialtextfield.MaterialTextField>
 
     <com.github.florent37.materialtextfield.MaterialTextField
@@ -89,7 +91,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/materialTextField_password"/>
+        app:layout_constraintTop_toBottomOf="@id/materialTextField_password"
+        android:fontFamily="@font/shabnam"/>
 
     <TextView
         android:id="@+id/prompt_action"

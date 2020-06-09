@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -75,6 +77,7 @@ public class Fragment_recycler extends Fragment {
     private Admin admin;
     private Menu mOptionsMenu;
     private Button profileBtn;
+    Animation frombottom;
 
     //com.example.qhs.deydigital.Json parametr
     private final static String URL_products = "https://mobifytech.ir/wc-api/v3/products?filter[limit] =-1";
@@ -119,8 +122,10 @@ public class Fragment_recycler extends Fragment {
 //        //End Splash
 
 
+        frombottom = AnimationUtils.loadAnimation(getContext(), R.anim.frombottom);
 
-       // prepareTransitions();
+
+        // prepareTransitions();
        // postponeEnterTransition();
 
         request = new NetRequest(getContext());
@@ -187,6 +192,8 @@ public class Fragment_recycler extends Fragment {
         ///com.example.qhs.deydigital.Recycler
         recyclerView = (RecyclerView) view.findViewById(R.id.reciclerViewID);
         recyclerView.setHasFixedSize(true);
+        //recyclerView.startAnimation(frombottom);
+        recyclerView.startLayoutAnimation();
         //********************
         SpannableGridLayoutManager gridLayoutManager = new
                 SpannableGridLayoutManager(new SpannableGridLayoutManager.GridSpanLookup() {

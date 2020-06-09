@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="50dp"
     android:background="@color/SecondaryLight"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:elevation="40dp"
+    android:layoutAnimation="@anim/item_layout_animation">
     <!--android:paddingBottom="3dp" -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,8 +18,8 @@
         <!-- android:padding="4dp" -->
      <ImageView
          android:id="@+id/iconH"
-         android:layout_width="140dp"
-         android:layout_height="110dp"
+         android:layout_width="70dp"
+         android:layout_height="70dp"
          android:layout_centerVertical="true"
          android:layout_gravity="center_horizontal"
          android:scaleType="fitXY"
@@ -33,7 +35,8 @@
          android:gravity="center"
          android:textColor="#ffffffff"
          android:background="#AA000000"
-         android:textSize="17dp"
-         android:textStyle="bold"/>
+         android:textSize="10sp"
+         android:textStyle="bold"
+         android:fontFamily="@font/shabnam"/>
  </RelativeLayout>
 </android.support.v7.widget.CardView>

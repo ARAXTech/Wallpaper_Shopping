@@ -32,6 +32,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="#0E1843"
                 android:textSize="18sp"
-                android:fontFamily="@assets/font/byekan"
+                android:fontFamily="@font/shabnam"
                 />
 </LinearLayout>
