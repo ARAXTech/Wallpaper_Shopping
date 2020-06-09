@@ -333,8 +333,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                                 );
                             }
 
-                            
-
                             listItems.add(item);
                             adapter.notifyDataSetChanged();
                             pgsBar.setVisibility(GONE);
