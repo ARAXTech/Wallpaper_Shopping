@@ -13,6 +13,7 @@
         android:text="جزئیات صورتحساب"
         android:textSize="25dp"
         android:textStyle="bold"
+        android:fontFamily="@font/shabnam"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="184dp"
         tools:ignore="MissingConstraints" />
@@ -27,7 +28,8 @@
         app:layout_constraintTop_toBottomOf="@+id/detail"
         tools:ignore="MissingConstraints"
         android:background="@null"
-        android:hint=" نام" />
+        android:hint=" نام"
+        android:fontFamily="@font/shabnam"/>
     <EditText
         android:id="@+id/last_name"
         android:layout_width="200dp"
@@ -39,7 +41,8 @@
         tools:layout_editor_absoluteX="72dp"
         tools:ignore="MissingConstraints"
         android:background="@null"
-        android:hint=" نام خانوادگی"/>
+        android:hint=" نام خانوادگی"
+        android:fontFamily="@font/shabnam"/>
     <EditText
         android:id="@+id/address"
         android:layout_width="352dp"
@@ -51,7 +54,8 @@
         tools:layout_editor_absoluteX="72dp"
         android:background="@null"
         tools:ignore="MissingConstraints"
-        android:hint="   آدرس"/>
+        android:hint="   آدرس"
+        android:fontFamily="@font/shabnam"/>
     <Spinner
         android:id="@+id/city"
         android:layout_width="100dp"
@@ -87,7 +91,8 @@
         tools:layout_editor_absoluteX="72dp"
         tools:ignore="MissingConstraints"
         android:background="@null"
-        android:hint=" کدپستی"/>
+        android:hint=" کدپستی"
+        android:fontFamily="@font/shabnam"/>
     <EditText
         android:id="@+id/email"
         android:layout_width="352dp"

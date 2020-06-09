@@ -56,7 +56,7 @@ public class Fragment_home extends Fragment {
     ImageView bgApp, clover;
     Animation bgAnim, cloverAnim;
     LinearLayout textSplash, textHome;
-    Animation frombottom;
+     Animation frombottom;
     private Toolbar toolbar;
 
     //CurvedBottomNavigationView curvedBottomNavigationView;

@@ -59,7 +59,6 @@ public class Fragment_favorite extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
 
         //Toolbar
-
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("علاقه مندی ها");

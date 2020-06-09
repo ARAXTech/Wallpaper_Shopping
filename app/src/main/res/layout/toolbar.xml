@@ -30,7 +30,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
                 android:layout_margin="8dp"
-                android:fontFamily="cursive"
+                android:fontFamily="@font/shabnam"
                 android:layoutDirection="locale"
                 android:textColor="@color/colorBackgroundGrey"
                 android:textDirection="locale"
@@ -41,7 +41,8 @@
                 app:layout_constraintHorizontal_bias="0.317"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.272" />
+                app:layout_constraintVertical_bias="0.272"
+                />
 
             <ImageButton
                 android:id="@+id/ProfileBtn"

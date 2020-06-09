@@ -100,7 +100,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
                         holder.favorite_title.setText(item.getName());
                         String str=item.getDescription().replaceAll("<p>","");
-                        holder.favorite_description.setText(str.replaceAll("</p>",""));
+                        String[] splited = str.split("\\s+");
+                        holder.favorite_description.setText(
+                                splited[0]+" "+splited[1]+" "+splited[2]+"...");
 
 
                     }
