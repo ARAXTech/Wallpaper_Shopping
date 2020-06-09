@@ -88,6 +88,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private CardView cardN;
     private List<CartItem> line_items;
     private NetRequest request;
+    private int orderId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,6 +169,10 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
             ZarinPal.getPurchase(getContext()).verificationPayment(data, new OnCallbackVerificationPaymentListener() {
                 @Override
                 public void onCallbackResultVerificationPayment(boolean isPaymentSuccess, String refID, PaymentRequest paymentRequest) {
+                    if (isPaymentSuccess) {
+                        NetRequest netRequest = new NetRequest(getContext());
+                        netRequest.JsonObjectNetRequest("PUT", "wc/v3/orders/"+orderId+"?status=completed", null, admin.getAdminAuth());
+                    }
                     Log.i("TAG", "onCallbackResultVerificationPayment: " + refID);
                 }
             });
@@ -214,15 +219,6 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                 }
             }
         });
-//
-//        ZarinPal.getPurchase(getApplicationContext()).startPayment(payment, new OnCallbackRequestPaymentListener() {
-//            @Override
-//            public void onCallbackResultPaymentRequest(int status, String authority, Uri paymentGatewayUri, Intent intent) {
-//
-//                startActivity(intent);
-//            }
-//        });
-
     }
 
     public void addProduct(final int productId, final int quantity){
@@ -326,6 +322,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
     private NetworkRequest.Callback<Order> mOrderCallback = new NetworkRequest.Callback<Order>() {
         @Override
         public void onResponse(@NonNull Order response) {
+            orderId = response.getId();
             Toast.makeText(getContext(), response.getId()+" ", Toast.LENGTH_LONG ).show();
 
             myPayment();
