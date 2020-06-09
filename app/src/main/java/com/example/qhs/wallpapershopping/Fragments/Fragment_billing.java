@@ -1,5 +1,7 @@
 package com.example.qhs.wallpapershopping.Fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,10 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.network.NetworkRequest;
 import com.google.gson.Gson;
+import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener;
+import com.zarinpal.ewallets.purchase.OnCallbackVerificationPaymentListener;
+import com.zarinpal.ewallets.purchase.PaymentRequest;
+import com.zarinpal.ewallets.purchase.ZarinPal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,6 +123,19 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
         });
         city_spinner.setOnItemSelectedListener(this);
 
+
+        // zarinpal Payment
+        Uri data = getActivity().getIntent().getData();
+        if (data != null) {
+
+            ZarinPal.getPurchase(getContext()).verificationPayment(data, new OnCallbackVerificationPaymentListener() {
+                @Override
+                public void onCallbackResultVerificationPayment(boolean isPaymentSuccess, String refID, PaymentRequest paymentRequest) {
+                    Log.i("TAG", "onCallbackResultVerificationPayment: " + refID);
+                }
+            });
+        }
+
         return view;
     }
 
@@ -145,15 +164,7 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
 
         Customer customer = new Customer(email.getText().toString().trim(), first_name.getText().toString().trim(), last_name.getText().toString().trim(), billing, shipping);
 
-
-//        JSONObject customer = new JSONObject();
         try {
-//            customer.put("first_name", first_name.getText().toString().trim());
-//            customer.put("last_name", last_name.getText().toString().trim());
-//            customer.put("email", email.getText().toString().trim());
-//            customer.
-//            customer.put("billing", gson.toJson(billing));
-//            customer.put("shipping", gson.toJson(shipping));
 
             request.customerPostRequest("http://mobifytech.ir/wp-json/wc/v3/customers/" + mAuthHelper.getIdUser(), customer, mCustomerCallback);
 
@@ -194,6 +205,7 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
         @Override
         public void onResponse(@NonNull Order response) {
             Toast.makeText(getContext(), response.getId()+" ", Toast.LENGTH_LONG ).show();
+            myPayment(Integer.parseInt(response.getTotal()));
 
 
         }
@@ -208,5 +220,32 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
             return Order.class;
         }
     };
+
+    private void myPayment(int totalPrice){
+
+        ZarinPal purchase = ZarinPal.getPurchase(getContext());
+
+        PaymentRequest payment = ZarinPal.getPaymentRequest();
+
+
+        payment.setMerchantID("71c705f8-bd37-11e6-aa0c-000c295eb8fc");
+        payment.setAmount(totalPrice);
+        payment.setDescription("In App Purchase Test SDK");
+        payment.setCallbackURL("app://zarinpalpayment"); // scheme://host in manifest
+        payment.setMobile("09355106005");
+        payment.setEmail("imannamix@gmail.com");
+
+        purchase.startPayment(payment, new OnCallbackRequestPaymentListener() {
+            @Override
+            public void onCallbackResultPaymentRequest(int status, String authority, Uri paymentGatewayUri, Intent intent) {
+                if (status == 100){
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getContext(),"خطا در ایجاد درخواست پرداخت", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
 }
