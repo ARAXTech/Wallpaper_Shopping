@@ -200,6 +200,7 @@ public class Fragment_home extends Fragment {
                             fragmentManager = getFragmentManager();
                             fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
+                            fragmentTransaction.addToBackStack("tag");
                             fragmentTransaction.commit();
                         }else {
 
@@ -209,6 +210,7 @@ public class Fragment_home extends Fragment {
                             fragmentManager = getFragmentManager();
                             fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
+                            fragmentTransaction.addToBackStack("tag");
                             fragmentTransaction.commit();
                         }
                         //End animation
@@ -227,6 +229,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
+                        fragmentTransaction.addToBackStack("tag");
                         fragmentTransaction.commit();
                         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
@@ -242,6 +245,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
+                        fragmentTransaction.addToBackStack("tag");
                         fragmentTransaction.commit();
                         break;
                     case 3:
@@ -255,6 +259,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
+                        fragmentTransaction.addToBackStack("tag");
                         fragmentTransaction.commit();
                         break;
 
@@ -269,6 +274,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
+                        fragmentTransaction.addToBackStack("tag");
                         fragmentTransaction.commit();
                         break;
                     case 5:
@@ -282,6 +288,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
+                        fragmentTransaction.addToBackStack("tag");
                         fragmentTransaction.commit();
                         break;
 
