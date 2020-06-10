@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -37,6 +38,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.qhs.wallpapershopping.AuthHelper;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_home;
+import com.example.qhs.wallpapershopping.Fragments.Fragment_search;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.network.Admin;
@@ -256,7 +260,6 @@ public class Fragment_recycler extends Fragment {
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText(name_string);
-
         toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,7 +267,6 @@ public class Fragment_recycler extends Fragment {
                 ((AppCompatActivity)getActivity()).onBackPressed();
             }
         });
-
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -361,7 +363,6 @@ public class Fragment_recycler extends Fragment {
 
         }
     };
-
 
 
 }
