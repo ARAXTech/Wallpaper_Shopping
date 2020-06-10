@@ -284,6 +284,14 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         updateOptionsMenu();
         super.onConfigurationChanged(newConfig);
     }
-
-
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (!getFragmentManager().popBackStackImmediate()){
+            if (fm.getBackStackEntryCount() > 0) {
+                fm.popBackStack();
+            } else {
+                super.onBackPressed();
+            }}
+    }
 }
