@@ -126,6 +126,21 @@ public class Fragment_recycler extends Fragment {
 //        //End Splash
 
 
+        Bundle ext = this.getArguments();
+        String name_string = ext.getString("name");
+        //Toolbar
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText(name_string);
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
+
         frombottom = AnimationUtils.loadAnimation(getContext(), R.anim.frombottom);
 
 
@@ -251,24 +266,24 @@ public class Fragment_recycler extends Fragment {
      */
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        Bundle extras = this.getArguments();
-        String name_string = extras.getString("name");
-        //Toolbar
-        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-        title.setText(name_string);
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((AppCompatActivity)getActivity()).onBackPressed();
-            }
-        });
-        super.onActivityCreated(savedInstanceState);
-    }
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//
+//        Bundle extras = this.getArguments();
+//        String name_string = extras.getString("name");
+//        //Toolbar
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+//        title.setText(name_string);
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((AppCompatActivity)getActivity()).onBackPressed();
+//            }
+//        });
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
     private HostnameVerifier getHostnameVerifier() {
         return new HostnameVerifier() {

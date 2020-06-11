@@ -91,11 +91,19 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        //Toolbar
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("جستجو");
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
 
         admin = Admin.getInstance(getContext());
-        //Toolbar
-        TextView title = (TextView) getActivity().findViewById(R.id.txtTitle);
-        title.setText("جستجو");
 
         pgsBar = (ProgressBar) view.findViewById(R.id.SearchpBar);
 
@@ -210,19 +218,24 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         return view;
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("جستجو");
-        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-        title.setText("جستجو");
-
-
-
-
-        super.onActivityCreated(savedInstanceState);
-
-    }
+//
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        //Toolbar
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+//        title.setText("جستجو");
+//
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((AppCompatActivity)getActivity()).onBackPressed();
+//            }
+//        });
+//
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
 
     public void search( String query){
