@@ -92,6 +92,20 @@ public class Fragment_gallery extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        //Toolbar
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+        title.setText("گالری");
+
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
         //constraint layout animation
 
         ConstraintLayout cc1;
@@ -247,7 +261,7 @@ public class Fragment_gallery extends Fragment {
                     View layout = getActivity().findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     layout.setBackground(ob);
-                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("tag")
+                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.frame, fragment).commit();
 
                 }
@@ -322,23 +336,23 @@ public class Fragment_gallery extends Fragment {
 //    //end anim
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        //Toolbar
-        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-        title.setText("گالری");
-
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((AppCompatActivity)getActivity()).onBackPressed();
-            }
-        });
-
-        super.onActivityCreated(savedInstanceState);
-    }
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        //Toolbar
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+//        title.setText("گالری");
+//
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((AppCompatActivity)getActivity()).onBackPressed();
+//            }
+//        });
+//
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
 
     private NetRequest.Callback<JSONArray> mWishlistProductCallback = new NetRequest.Callback<JSONArray>(){
@@ -523,6 +537,7 @@ public class Fragment_gallery extends Fragment {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment2);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
         return super.onOptionsItemSelected(item);

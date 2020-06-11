@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,10 +31,19 @@ public class Fragment_about extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
+
         //Toolbar
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("درباره ما");
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
 
 
         ImageView map = (ImageView) view.findViewById(R.id.imgView_map);
@@ -159,6 +169,22 @@ public class Fragment_about extends Fragment {
 
         return view;
     }
-
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        //Toolbar
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+//        title.setText("درباره ما");
+//
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((AppCompatActivity)getActivity()).onBackPressed();
+//            }
+//        });
+//
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
 }

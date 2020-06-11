@@ -135,9 +135,10 @@ public class Fragment_home extends Fragment {
         //Toolbar
 
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("خانه");
+
+        toolbar.setNavigationIcon(null);
 
 
         //comment here
@@ -200,7 +201,7 @@ public class Fragment_home extends Fragment {
                             fragmentManager = getFragmentManager();
                             fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
-                            fragmentTransaction.addToBackStack("tag");
+                           fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                         }else {
 
@@ -210,7 +211,7 @@ public class Fragment_home extends Fragment {
                             fragmentManager = getFragmentManager();
                             fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
-                            fragmentTransaction.addToBackStack("tag");
+                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                         }
                         //End animation
@@ -229,7 +230,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack("tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
@@ -245,7 +246,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack("tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         break;
                     case 3:
@@ -259,7 +260,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack("tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         break;
 
@@ -274,7 +275,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack("tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         break;
                     case 5:
@@ -288,7 +289,7 @@ public class Fragment_home extends Fragment {
                         fragmentManager = getFragmentManager();
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack("tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         break;
 

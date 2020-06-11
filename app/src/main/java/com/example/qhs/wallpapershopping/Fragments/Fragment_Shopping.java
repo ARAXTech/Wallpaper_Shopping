@@ -107,10 +107,16 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 
         //Toolbar
-
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("سبد خرید");
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
 
         db = new DatabaseHandler(getContext());
         num = db.getShoppingItemCount();
@@ -183,6 +189,24 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
         return view;
     }
+
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        //Toolbar
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+//        title.setText("سبد خرید");
+//
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((AppCompatActivity)getActivity()).onBackPressed();
+//            }
+//        });
+//
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
     private void displayArray() {
         System.out.println("-------------------------------------");

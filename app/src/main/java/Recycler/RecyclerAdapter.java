@@ -135,7 +135,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                             .beginTransaction()
                             .addSharedElement(imgR, imgR.getTransitionName())
                             .replace(R.id.frame, fragment)
-                            .addToBackStack("tag")
+                            .addToBackStack(null)
                             .commit();
 //                    ActivityOptionsCompat option  =
 //                            ActivityOptionsCompat.makeSceneTransitionAnimation(Fragment_recycler.class,imgR,
