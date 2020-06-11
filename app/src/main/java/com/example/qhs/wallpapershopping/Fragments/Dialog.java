@@ -34,7 +34,7 @@ public class Dialog extends Fragment {
                 Fragment fragment;
                 fragment = new Fragment_login();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).commit();
+                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
 
             }
         });
