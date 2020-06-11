@@ -175,7 +175,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     fragment = new Fragment_Shopping();
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).commit();;
+                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 } else {
                     Blur blur=new Blur();
                     Bitmap map = blur.takeScreenShot(this);
@@ -184,7 +184,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     ConstraintLayout constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
-                    getSupportFragmentManager().beginTransaction().addToBackStack("tag")
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.frame, fragment).commit();
                 }
                 break;
@@ -194,7 +194,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).commit();
+                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 break;
 
             case R.id.menu_home:
@@ -202,7 +202,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).commit();
+                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 break;
 
             case R.id.menu_favorite:
@@ -211,7 +211,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).commit();
+                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 } else {
                     Blur blur=new Blur();
                     Bitmap map = blur.takeScreenShot(this);
@@ -220,7 +220,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     ConstraintLayout constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
-                    getSupportFragmentManager().beginTransaction().addToBackStack("tag")
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.frame, fragment).commit();
                 }
                 break;
@@ -231,7 +231,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).commit();
+                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 break;
 
         }
