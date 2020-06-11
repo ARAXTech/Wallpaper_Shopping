@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -60,10 +61,18 @@ public class Fragment_login extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         //Toolbar
-
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
         title.setText("ورود");
+
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity)getActivity()).onBackPressed();
+            }
+        });
+
 
         mAuthHelper = AuthHelper.getInstance(getContext());
         mProgressDialog = new ProgressDialog(getContext());
@@ -80,7 +89,23 @@ public class Fragment_login extends Fragment {
 
         return view;
     }
-
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        //Toolbar
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
+//        title.setText("ورود");
+//
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((AppCompatActivity)getActivity()).onBackPressed();
+//            }
+//        });
+//
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
     /**
      * Sets up the view based on whether or not the sign up screen is showing
