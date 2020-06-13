@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="300dp"
-            android:layout_height="71dp"
+            android:layout_height="77dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/shabnam"
