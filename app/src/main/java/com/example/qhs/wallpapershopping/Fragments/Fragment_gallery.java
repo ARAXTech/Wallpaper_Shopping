@@ -93,6 +93,7 @@ public class Fragment_gallery extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
+        View layout = view.findViewById(R.id.constraintLayout);
         //Toolbar
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
@@ -142,13 +143,6 @@ public class Fragment_gallery extends Fragment {
         queue = newRequestQueue(getContext());
 
 
-        TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
-
-        //updateOptionsMenu();
-        if (mAuthHelper.isLoggedIn()) {
-            // setupView();
-        }
-
         imageModelArrayList = new ArrayList<>();
         try {
             imageModelArrayList = populateList();
@@ -185,7 +179,7 @@ public class Fragment_gallery extends Fragment {
         TextView txt_description = (TextView) view.findViewById(R.id.txt2);
         txt_description.setText(
                 "\n" + Html.fromHtml(description) +
-                 "\n" + Html.fromHtml(description));
+                 "\n" + Html.fromHtml(String.valueOf(price))+ " تومان");
         txt_description.setTextColor(Color.parseColor("#000000"));
         //txt_description.setPaintFlags(txt_description.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         //txt_description.setMovementMethod(new ScrollingMovementMethod());
@@ -193,7 +187,7 @@ public class Fragment_gallery extends Fragment {
 
         TextView txt_id=(TextView)view.findViewById(R.id.txt_productCode);
         String product_code=" کد محصول: " ;
-        txt_id.setText(product_code + bundle.getString("id"));
+        txt_id.setText(product_code + id);
         txt_id.setTextColor(Color.parseColor("#FF0000"));
 
 
@@ -246,6 +240,7 @@ public class Fragment_gallery extends Fragment {
             public void onClick(View view) {
 
                 if (mAuthHelper.isLoggedIn()) {
+                    layout.setBackgroundColor(0xFFFFFF);
                     ListItem item1 = new ListItem(id, name, description, finalS,"false", image_list.size(), price,1,1,Integer.parseInt(mAuthHelper.getIdUser()));
 
                     db.addListItem(item1);
