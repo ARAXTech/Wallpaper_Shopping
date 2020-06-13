@@ -22,17 +22,13 @@ public class Dialog extends Fragment {
 
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_dialog, container, false);
-        View layout = getActivity().findViewById(R.id.constraintLayout);
-
 
         //register
         btnRegister=(Button)view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layout.setBackgroundColor(0xFFFFFF);
-                Fragment fragment;
-                fragment = new Fragment_login();
+                Fragment fragment = new Fragment_login();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame, fragment).commit();
 
@@ -46,7 +42,6 @@ public class Dialog extends Fragment {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
-                layout.setBackgroundColor(0xFFFFFF);
                 getFragmentManager().popBackStackImmediate();
 
             }

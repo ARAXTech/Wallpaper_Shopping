@@ -93,6 +93,7 @@ public class Fragment_gallery extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
+        View layout = view.findViewById(R.id.constraintLayout);
         //Toolbar
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
@@ -246,6 +247,7 @@ public class Fragment_gallery extends Fragment {
             public void onClick(View view) {
 
                 if (mAuthHelper.isLoggedIn()) {
+                    layout.setBackgroundColor(0xFFFFFF);
                     ListItem item1 = new ListItem(id, name, description, finalS,"false", image_list.size(), price,1,1,Integer.parseInt(mAuthHelper.getIdUser()));
 
                     db.addListItem(item1);

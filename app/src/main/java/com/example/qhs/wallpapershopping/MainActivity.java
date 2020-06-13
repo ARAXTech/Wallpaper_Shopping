@@ -1,18 +1,10 @@
 package com.example.qhs.wallpapershopping;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -23,10 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.example.qhs.wallpapershopping.Fragments.Dialog;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_Shopping;
@@ -35,16 +23,10 @@ import com.example.qhs.wallpapershopping.Fragments.Fragment_favorite;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_home;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_login;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_search;
-import com.sdsmdg.harjot.vectormaster.VectorMasterView;
-import com.sdsmdg.harjot.vectormaster.models.PathModel;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity<navigation> extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -53,8 +35,6 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     private AuthHelper mAuthHelper;
     private Menu mOptionsMenu;
     private ImageButton profileBtn;
-    private TextView txtView_login;
-    private TextView txtView_signUp;
     private Toolbar toolbar;
     private BottomNavigationView navigation;
     private Fragment fragment;
@@ -124,8 +104,6 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //toolbar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#550000ff")));
-     //Toolbar
-       // toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
 
@@ -144,11 +122,11 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
             }
         });
 
-//        //updateOptionsMenu();
         if (mAuthHelper.isLoggedIn()) {
             Log.d("USERNAME: ", "isloggedin");
             profileBtn.setVisibility(View.GONE);
         }
+
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
@@ -165,18 +143,20 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        View layout = this.findViewById(R.id.constraintLayout);
+//        View layout = this.findViewById(R.id.constraintLayout);
         switch (menuItem.getItemId()){
             case R.id.menu_shopping_cart:
 
                 if (mAuthHelper.isLoggedIn()) {
-                    layout.setBackgroundColor(0xFFFFFF);
                     getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_Shopping();
 
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 } else {
+                    TextView title = (TextView) findViewById(R.id.txtTitle);
+                    title.setText("عضویت");
+                    toolbar.setNavigationIcon(null);
                     Blur blur=new Blur();
                     Bitmap map = blur.takeScreenShot(this);
                     Bitmap fast = blur.fastblur(map, 10);
@@ -184,13 +164,13 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     ConstraintLayout constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
-                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                            .replace(R.id.frame, fragment).commit();
+                    //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 }
                 break;
             case R.id.menu_search:
 
-                layout.setBackgroundColor(0xFFFFFF);
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
                 getSupportFragmentManager().beginTransaction()
@@ -198,7 +178,6 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 break;
 
             case R.id.menu_home:
-                layout.setBackgroundColor(0xFFFFFF);
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
@@ -207,12 +186,14 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
             case R.id.menu_favorite:
                 if (mAuthHelper.isLoggedIn()) {
-                    layout.setBackgroundColor(0xFFFFFF);
                     getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 } else {
+                    TextView title = (TextView) findViewById(R.id.txtTitle);
+                    title.setText("عضویت");
+                    toolbar.setNavigationIcon(null);
                     Blur blur=new Blur();
                     Bitmap map = blur.takeScreenShot(this);
                     Bitmap fast = blur.fastblur(map, 10);
@@ -220,14 +201,13 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     ConstraintLayout constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
-                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                            .replace(R.id.frame, fragment).commit();
+                    //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
                 }
                 break;
 
             case R.id.menu_call:
-
-                layout.setBackgroundColor(0xFFFFFF);
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
                 getSupportFragmentManager().beginTransaction()
@@ -245,7 +225,6 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
             mAuthHelper.clear();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             profileBtn.setVisibility(View.VISIBLE );
-            //finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -261,7 +240,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     public boolean onPrepareOptionsMenu(Menu menu)
     {
         MenuItem register = menu.findItem(R.id.action_signout);
-        //register.setVisible(false);
+
         if(mAuthHelper.isLoggedIn())
         {
             register.setVisible(true);
@@ -270,7 +249,6 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         {
             register.setVisible(false);
         }
-        //invalidateOptionsMenu();
         return true;
     }
     private void updateOptionsMenu() {
@@ -286,10 +264,12 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     }
     @Override
     public void onBackPressed() {
+
         FragmentManager fm = getSupportFragmentManager();
         if (!getFragmentManager().popBackStackImmediate()){
             if (fm.getBackStackEntryCount() > 0) {
                 fm.popBackStack();
+
             } else {
                 super.onBackPressed();
             }}
