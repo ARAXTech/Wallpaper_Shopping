@@ -143,13 +143,6 @@ public class Fragment_gallery extends Fragment {
         queue = newRequestQueue(getContext());
 
 
-        TextView txtView_title = (TextView) view.findViewById(R.id.txtTitle);
-
-        //updateOptionsMenu();
-        if (mAuthHelper.isLoggedIn()) {
-            // setupView();
-        }
-
         imageModelArrayList = new ArrayList<>();
         try {
             imageModelArrayList = populateList();
@@ -186,7 +179,7 @@ public class Fragment_gallery extends Fragment {
         TextView txt_description = (TextView) view.findViewById(R.id.txt2);
         txt_description.setText(
                 "\n" + Html.fromHtml(description) +
-                 "\n" + Html.fromHtml(description));
+                 "\n" + Html.fromHtml(String.valueOf(price))+ " تومان");
         txt_description.setTextColor(Color.parseColor("#000000"));
         //txt_description.setPaintFlags(txt_description.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         //txt_description.setMovementMethod(new ScrollingMovementMethod());
@@ -194,7 +187,7 @@ public class Fragment_gallery extends Fragment {
 
         TextView txt_id=(TextView)view.findViewById(R.id.txt_productCode);
         String product_code=" کد محصول: " ;
-        txt_id.setText(product_code + bundle.getString("id"));
+        txt_id.setText(product_code + id);
         txt_id.setTextColor(Color.parseColor("#FF0000"));
 
 

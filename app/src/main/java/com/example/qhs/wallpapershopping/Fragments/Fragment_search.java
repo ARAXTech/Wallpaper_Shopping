@@ -23,34 +23,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.qhs.wallpapershopping.R;
 import com.example.qhs.wallpapershopping.network.Admin;
 import com.example.qhs.wallpapershopping.network.NetRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +41,6 @@ import Ui.SpannableGridLayoutManager;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.android.volley.toolbox.Volley.newRequestQueue;
 import Model.RecyclerHorizentalItem;
 
 
@@ -74,7 +51,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
     private List<ListItem> listItems;
     private List<JSONArray> imageList;
     private Admin admin;
-    private RequestQueue queue;
     //public  View view;
     public  JSONArray image_series_json;
     private ProgressBar pgsBar;
@@ -315,22 +291,24 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                         image_series_json = products.getJSONObject(i).getJSONArray("images");
                         //viewDialog.hideDialog();
 
+                        String price = products.getJSONObject(i).getString("price");
+
                         if (image_series_json.length() > 0) {
                             //get image urls and save in arraylist
                             imageList.add(image_series_json);
 
                             ListItem item;
-                            if (!products.getJSONObject(i).getString("price").equals("")){
+                            if (!price.equals("")){
                                 item=new ListItem(
                                         products.getJSONObject(i).getJSONArray("images").
                                                 getJSONObject(0).getString("src"),
                                         products.getJSONObject(i).getString("name"),
                                         /*image_series_json*/
                                         products.getJSONObject(i).getString("id"),
-                                        products.getJSONObject(i).getString("description"),
-                                        products.getJSONObject(i).getJSONArray("images"),
+                                        products.getJSONObject(i).getString("short_description"),
+                                        image_series_json,
                                         new ArrayList(),
-                                        Integer.parseInt(products.getJSONObject(i).getString("price"))
+                                        Integer.parseInt(price)
                                 );
                             }else {
                                 item=new ListItem(
@@ -339,8 +317,8 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                                         products.getJSONObject(i).getString("name"),
                                         /*image_series_json*/
                                         products.getJSONObject(i).getString("id"),
-                                        products.getJSONObject(i).getString("description"),
-                                        products.getJSONObject(i).getJSONArray("images"),
+                                        products.getJSONObject(i).getString("short_description"),
+                                        image_series_json,
                                         new ArrayList(),
                                         0
                                 );
