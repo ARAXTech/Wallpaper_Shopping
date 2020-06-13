@@ -58,7 +58,7 @@ public class GridAdapter  extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.activity_gridview, null); // inflate the layout
 
-       // AnimationDrawable imageAnimation;
+        // AnimationDrawable imageAnimation;
 
         ImageView icon =  view.findViewById(R.id.icon); // get the reference of ImageView
         //icon.setBackgroundResource(R.drawable.animation_navigation_home);

@@ -120,7 +120,7 @@ public class Fragment_home extends Fragment {
 //        clover = view.findViewById(R.id.clover);
 
         // init GridView
-        simpleGrid = (GridView) view.findViewById(R.id.simpleGridView);
+        simpleGrid = (GridView) view.findViewById(R.id.simpleGridLayout);
 
 //        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
 //        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
