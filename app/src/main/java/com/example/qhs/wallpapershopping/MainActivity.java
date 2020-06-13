@@ -198,7 +198,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 break;
 
             case R.id.menu_home:
-
+                layout.setBackgroundColor(0xFFFFFF);
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
