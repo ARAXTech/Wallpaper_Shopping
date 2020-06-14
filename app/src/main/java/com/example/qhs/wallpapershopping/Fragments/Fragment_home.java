@@ -11,6 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
@@ -35,6 +38,7 @@ import com.example.qhs.wallpapershopping.AuthHelper;
 import com.example.qhs.wallpapershopping.GridAdapter;
 import com.example.qhs.wallpapershopping.MainActivity;
 import com.example.qhs.wallpapershopping.R;
+import com.example.qhs.wallpapershopping.StaggeredRecyclerAdapter;
 import com.example.qhs.wallpapershopping.UIElement;
 import com.example.qhs.wallpapershopping.network.Admin;
 
@@ -45,8 +49,11 @@ import Recycler.Fragment_recycler;
 
 public class Fragment_home extends Fragment {
     //Decleration
-    GridView simpleGrid;
-    GridAdapter gridAdapter;
+   // GridView simpleGrid;
+    //GridAdapter gridAdapter;
+    private RecyclerView staggeredRv;
+    private StaggeredRecyclerAdapter adapter;
+    private StaggeredGridLayoutManager manager;
     private AuthHelper mAuthHelper;
     private Admin admin;
     private Menu mOptionsMenu;
@@ -120,7 +127,7 @@ public class Fragment_home extends Fragment {
 //        clover = view.findViewById(R.id.clover);
 
         // init GridView
-        simpleGrid = (GridView) view.findViewById(R.id.simpleGridView);
+  //      simpleGrid = (GridView) view.findViewById(R.id.simpleGridView);
 
 //        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
 //        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
@@ -130,7 +137,7 @@ public class Fragment_home extends Fragment {
 //        textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
 //        textHome.startAnimation(frombottom);
 
-        simpleGrid.startAnimation(frombottom);
+  //      simpleGrid.startAnimation(frombottom);
 
         //Toolbar
 
@@ -146,6 +153,14 @@ public class Fragment_home extends Fragment {
         UIElement cls = new UIElement(getContext(), getActivity());
 
         mAuthHelper = AuthHelper.getInstance(getContext());
+
+
+        staggeredRv = (RecyclerView) view.findViewById(R.id.staggeredRv);
+       staggeredRv.setHasFixedSize(true);
+        manager= new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        staggeredRv.setLayoutManager(manager);
+        adapter = new StaggeredRecyclerAdapter(getContext(), vector,txt,false);
+        staggeredRv.setAdapter(adapter);
 //        txtView_login = view.findViewById(R.id.nameuser);
 //        txtView_signUp= view.findViewById(R.id.walletuser);
 
@@ -167,135 +182,135 @@ public class Fragment_home extends Fragment {
 //        });
 
         // Create an object of GridAdapter and set Adapter to GirdView
-        GridAdapter gridAdapter = new GridAdapter(getContext(), vector,txt,false);
-        simpleGrid.setAdapter(gridAdapter);
+      //  GridAdapter gridAdapter = new GridAdapter(getContext(), vector,txt,false);
+        //simpleGrid.setAdapter(gridAdapter);
 
         // implement setOnItemClickListener event on GridView
 
-        simpleGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                Fragment fragment;
-                FragmentManager fragmentManager;
-                FragmentTransaction fragmentTransaction;
-                switch (position){
-                    case 0:
-                        //salon paziraee
-
-                        bundle.putString("key", "18");
-                        bundle.putString("count", "15");
-                        bundle.putString("name","سالن پذیرایی");
-//                        Intent intent = new Intent(getContext(), Fragment_recycler.class);
-//                        intent.putExtra("key", "18"); // put image data in Intent
+//        staggeredRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Bundle bundle = new Bundle();
+//                Fragment fragment;
+//                FragmentManager fragmentManager;
+//                FragmentTransaction fragmentTransaction;
+//                switch (position){
+//                    case 0:
+//                        //salon paziraee
+//
+//                        bundle.putString("key", "18");
+//                        bundle.putString("count", "15");
+//                        bundle.putString("name","سالن پذیرایی");
+////                        Intent intent = new Intent(getContext(), Fragment_recycler.class);
+////                        intent.putExtra("key", "18"); // put image data in Intent
+////                        //intent.putExtra("count", "275"); // put number of image data in Intent
+////                        intent.putExtra("count", "15");
+//                        //animation
+//                        if(Build.VERSION.SDK_INT>20){
+////                            ActivityOptions options =
+////                                    ActivityOptions.makeSceneTransitionAnimation(getActivity());
+////                            startActivity(intent,options.toBundle());
+//
+//                            fragment = new Fragment_recycler();
+//                            fragment.setArguments(bundle);
+//                            fragmentManager = getFragmentManager();
+//                            fragmentTransaction = fragmentManager.beginTransaction();
+//                            fragmentTransaction.replace(R.id.frame, fragment);
+//                           fragmentTransaction.addToBackStack(null);
+//                            fragmentTransaction.commit();
+//                        }else {
+//
+//                            //startActivity(intent);
+//                            fragment = new Fragment_recycler();
+//                            fragment.setArguments(bundle);
+//                            fragmentManager = getFragmentManager();
+//                            fragmentTransaction = fragmentManager.beginTransaction();
+//                            fragmentTransaction.replace(R.id.frame, fragment);
+//                             fragmentTransaction.addToBackStack(null);
+//                            fragmentTransaction.commit();
+//                        }
+//                        //End animation
+//                        //the below line commented because of animation
+//                        //startActivity(intent); // start Intent
+//                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                        break;
+//                    case 1:
+//                        //otagh koodak
+//                        bundle.putString("key", "111");// put image data in Intent
+//                        bundle.putString ("count", "5");
+//                        bundle.putString("name","اتاق کودک");
 //                        //intent.putExtra("count", "275"); // put number of image data in Intent
-//                        intent.putExtra("count", "15");
-                        //animation
-                        if(Build.VERSION.SDK_INT>20){
-//                            ActivityOptions options =
-//                                    ActivityOptions.makeSceneTransitionAnimation(getActivity());
-//                            startActivity(intent,options.toBundle());
-
-                            fragment = new Fragment_recycler();
-                            fragment.setArguments(bundle);
-                            fragmentManager = getFragmentManager();
-                            fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, fragment);
-                           fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                        }else {
-
-                            //startActivity(intent);
-                            fragment = new Fragment_recycler();
-                            fragment.setArguments(bundle);
-                            fragmentManager = getFragmentManager();
-                            fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, fragment);
-                             fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                        }
-                        //End animation
-                        //the below line commented because of animation
-                        //startActivity(intent); // start Intent
-                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-                    case 1:
-                        //otagh koodak
-                        bundle.putString("key", "111");// put image data in Intent
-                        bundle.putString ("count", "5");
-                        bundle.putString("name","اتاق کودک");
-                        //intent.putExtra("count", "275"); // put number of image data in Intent
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        fragmentManager = getFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-
-                    case 2:
-                        //posht e TV
-                        bundle.putString("key", "20");// put image data in Intent
-                        bundle.putString ("count", "5");
-                        bundle.putString("name","پشت TV");
-                        //intent.putExtra("count", "275"); // put number of image data in Intent
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        fragmentManager = getFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        break;
-                    case 3:
-                        //otagh khab
-                        bundle.putString("key", "112");// put image data in Intent
-                        bundle.putString ("count", "5");
-                        bundle.putString("name","اتاق خواب");
-                        //intent.putExtra("count", "275"); // put number of image data in Intent
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        fragmentManager = getFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        break;
-
-                    case 4:
-                        //3 boodi
-                        bundle.putString("key", "113");// put image data in Intent
-                        bundle.putString ("count", "5");
-                        bundle.putString("name","سه بعدی");
-                        //intent.putExtra("count", "275"); // put number of image data in Intent
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        fragmentManager = getFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        break;
-                    case 5:
-                        //honari
-                        bundle.putString("key", "21");// put image data in Intent
-                        bundle.putString ("count", "5");
-                        bundle.putString("name","هنری");
-                        //intent.putExtra("count", "275"); // put number of image data in Intent
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        fragmentManager = getFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        break;
-
-                }
-            }
-        });
+//                        fragment = new Fragment_recycler();
+//                        fragment.setArguments(bundle);
+//                        fragmentManager = getFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.frame, fragment);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
+//                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                        break;
+//
+//                    case 2:
+//                        //posht e TV
+//                        bundle.putString("key", "20");// put image data in Intent
+//                        bundle.putString ("count", "5");
+//                        bundle.putString("name","پشت TV");
+//                        //intent.putExtra("count", "275"); // put number of image data in Intent
+//                        fragment = new Fragment_recycler();
+//                        fragment.setArguments(bundle);
+//                        fragmentManager = getFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.frame, fragment);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
+//                        break;
+//                    case 3:
+//                        //otagh khab
+//                        bundle.putString("key", "112");// put image data in Intent
+//                        bundle.putString ("count", "5");
+//                        bundle.putString("name","اتاق خواب");
+//                        //intent.putExtra("count", "275"); // put number of image data in Intent
+//                        fragment = new Fragment_recycler();
+//                        fragment.setArguments(bundle);
+//                        fragmentManager = getFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.frame, fragment);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
+//                        break;
+//
+//                    case 4:
+//                        //3 boodi
+//                        bundle.putString("key", "113");// put image data in Intent
+//                        bundle.putString ("count", "5");
+//                        bundle.putString("name","سه بعدی");
+//                        //intent.putExtra("count", "275"); // put number of image data in Intent
+//                        fragment = new Fragment_recycler();
+//                        fragment.setArguments(bundle);
+//                        fragmentManager = getFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.frame, fragment);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
+//                        break;
+//                    case 5:
+//                        //honari
+//                        bundle.putString("key", "21");// put image data in Intent
+//                        bundle.putString ("count", "5");
+//                        bundle.putString("name","هنری");
+//                        //intent.putExtra("count", "275"); // put number of image data in Intent
+//                        fragment = new Fragment_recycler();
+//                        fragment.setArguments(bundle);
+//                        fragmentManager = getFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.frame, fragment);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
+//                        break;
+//
+//                }
+//            }
+//        });
 
         return view;
     }
