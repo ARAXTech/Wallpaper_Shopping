@@ -54,6 +54,7 @@ public class GridAdapter  extends BaseAdapter {
     public long getItemId(int i) {
         return 0;
     }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.activity_gridview, null); // inflate the layout
