@@ -265,6 +265,8 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     @Override
     public void onBackPressed() {
 
+        
+
         FragmentManager fm = getSupportFragmentManager();
         if (!getFragmentManager().popBackStackImmediate()){
             if (fm.getBackStackEntryCount() > 0) {
