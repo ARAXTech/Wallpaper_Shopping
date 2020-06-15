@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -155,6 +156,29 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
         return view;
     }
 
+    public String getFirst_name() {
+        return first_name.getText().toString().trim();
+    }
+
+    public String getLast_name() {
+        return last_name.getText().toString().trim();
+    }
+
+    public String getAddress() {
+        return address.getText().toString().trim();
+    }
+
+    public String getPostcode() {
+        return postcode.getText().toString().trim();
+    }
+
+    public String getEmail() {
+        return email.getText().toString().trim();
+    }
+
+    public String getPhone() {
+        return phone.getText().toString().trim();
+    }
 //    @Override
 //    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 //        //Toolbar
@@ -190,14 +214,18 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
     }
 
     public void addInfo (){
-        billing = new Billing(first_name.getText().toString().trim(),last_name.getText().toString().trim(),address.getText().toString().trim(),city, state,
-                postcode.getText().toString().trim(), "ایران", email.getText().toString().trim(), phone.getText().toString().trim());
 
+        if (getFirst_name().matches("") || getLast_name().matches("") || getAddress().matches("") || getPostcode().matches("")
+                || getEmail().matches("") || getPhone().matches("")) {
+            Toast.makeText(getContext(), R.string.toast_no_empty_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        shipping = new Shipping(first_name.getText().toString().trim(),last_name.getText().toString().trim(),address.getText().toString().trim(),city, state,
-                postcode.getText().toString().trim(), "ایران");
+        billing = new Billing(getFirst_name(), getLast_name(), getAddress(), city, state, getPostcode(), "ایران", getEmail(), getPhone());
 
-        Customer customer = new Customer(email.getText().toString().trim(), first_name.getText().toString().trim(), last_name.getText().toString().trim(), billing, shipping);
+        shipping = new Shipping(getFirst_name(), getLast_name(), getAddress(), city, state, getPostcode(), "ایران");
+
+        Customer customer = new Customer(getEmail(), getFirst_name(), getLast_name(), billing, shipping);
 
         try {
 
