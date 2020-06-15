@@ -76,7 +76,7 @@ public class Fragment_home extends Fragment {
             R.drawable.logo6,
             R.drawable.logo8,
             R.drawable.logo5};
-    int vector[] = {
+    int[] vector = {
             R.drawable.livingroom,
             R.drawable.kids,
             R.drawable.tvroom,
@@ -85,7 +85,7 @@ public class Fragment_home extends Fragment {
             R.drawable.artistic};
 
     //Gridview Text
-    String txt[]={
+    String[] txt ={
             "سالن پذیرایی",
             "اتاق کودک",
             "پشت Tv",
@@ -156,10 +156,11 @@ public class Fragment_home extends Fragment {
 
 
         staggeredRv = (RecyclerView) view.findViewById(R.id.staggeredRv);
-       staggeredRv.setHasFixedSize(true);
+        //staggeredRv.setHasFixedSize(true);
         manager= new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         staggeredRv.setLayoutManager(manager);
-        adapter = new StaggeredRecyclerAdapter(getContext(), vector,txt,false);
+
+        adapter = new StaggeredRecyclerAdapter(getContext(), logos,txt,false);
         staggeredRv.setAdapter(adapter);
 //        txtView_login = view.findViewById(R.id.nameuser);
 //        txtView_signUp= view.findViewById(R.id.walletuser);

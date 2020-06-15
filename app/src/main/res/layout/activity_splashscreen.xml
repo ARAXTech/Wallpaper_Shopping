@@ -20,15 +20,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Good Morning"
+            android:text="Hermes"
             android:textColor="#FFF"
-            android:textSize="24sp" />
+            android:textSize="40sp"
+            android:fontFamily="@font/shabnam"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mr Panda Risky"
+            android:text="Shopping Store"
             android:textColor="#FFF"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:fontFamily="@font/shabnam"/>
 
     </LinearLayout>
     <ImageView
@@ -48,37 +50,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/bgapp"
+                android:src="@drawable/bgtest"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.936"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-    <LinearLayout
-        android:id="@+id/texthome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:elevation="6dp"
-        android:gravity="start"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/nameuser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFF"
-            android:textSize="24sp"
-            android:text="@string/text_login"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/walletuser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFF"
-            android:textSize="16sp"
-            android:text="@string/prompt_signup"
-            app:layout_constraintTop_toBottomOf="@+id/nameuser" />
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

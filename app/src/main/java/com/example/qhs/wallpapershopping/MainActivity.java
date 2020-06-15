@@ -29,7 +29,9 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MainActivity<navigation> extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+import java.util.Objects;
+
+public class MainActivity<navigation> extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     //Decleration
     private AuthHelper mAuthHelper;
@@ -44,13 +46,12 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     private static final String KEY_CURRENT_POSITION = "com.example.qhs.wallpapershopping.key.currentPosition";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //Splash Screen
-        if (Splashscreen.Splash == 0){
-            Intent intent = new Intent(this,Splashscreen.class);
+        if (Splashscreen.Splash == 0) {
+            Intent intent = new Intent(this, Splashscreen.class);
             startActivity(intent);
             super.onCreate(savedInstanceState);
             finish();
@@ -85,7 +86,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 //        }
         //End Full screen ui
         //Hide navigation bar
-       //   View decorView = getWindow().getDecorView();
+        //   View decorView = getWindow().getDecorView();
 // Hide both the navigation bar and the status bar.
 // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
 // a general rule, you should design your app to hide the status bar whenever you
@@ -106,7 +107,6 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         //toolbar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#550000ff")));
 
         setSupportActionBar(toolbar);
-
 
 
         //Profile
@@ -138,13 +138,14 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_CURRENT_POSITION, currentPosition);
     }
+
     //end anim shared element trans
     @SuppressLint("Range")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
 //        View layout = this.findViewById(R.id.constraintLayout);
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.menu_shopping_cart:
 
                 if (mAuthHelper.isLoggedIn()) {
@@ -152,21 +153,21 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     fragment = new Fragment_Shopping();
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).addToBackStack("fragment_shopping").commit();
+                            .replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
                 } else {
                     TextView title = (TextView) findViewById(R.id.txtTitle);
                     title.setText("عضویت");
                     toolbar.setNavigationIcon(null);
-                    Blur blur=new Blur();
+                    Blur blur = new Blur();
                     Bitmap map = blur.takeScreenShot(this);
                     Bitmap fast = blur.fastblur(map, 10);
                     fragment = new Dialog();
-                    ConstraintLayout constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
+                    ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
                     //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            .replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
                 }
                 break;
             case R.id.menu_search:
@@ -174,14 +175,14 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).addToBackStack("fragment_search").commit();
+                        .replace(R.id.frame, fragment, "fragment_search").addToBackStack("fragment_search").commit();
                 break;
 
             case R.id.menu_home:
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).addToBackStack("fragment_home").commit();
+                        .replace(R.id.frame, fragment, "fragment_home").addToBackStack("fragment_home").commit();
                 break;
 
             case R.id.menu_favorite:
@@ -189,21 +190,21 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
+                            .replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
                 } else {
                     TextView title = (TextView) findViewById(R.id.txtTitle);
                     title.setText("عضویت");
                     toolbar.setNavigationIcon(null);
-                    Blur blur=new Blur();
+                    Blur blur = new Blur();
                     Bitmap map = blur.takeScreenShot(this);
                     Bitmap fast = blur.fastblur(map, 10);
                     fragment = new Dialog();
-                    ConstraintLayout constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
+                    ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
                     //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            .replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
                 }
                 break;
 
@@ -211,7 +212,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).addToBackStack("fragment_call").commit();
+                        .replace(R.id.frame, fragment, "frgment_call").addToBackStack("fragment_call").commit();
                 break;
 
         }
@@ -221,10 +222,10 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_signout){
+        if (item.getItemId() == R.id.action_signout) {
             mAuthHelper.clear();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            profileBtn.setVisibility(View.VISIBLE );
+            profileBtn.setVisibility(View.VISIBLE);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -237,20 +238,17 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         return super.onCreateOptionsMenu(mOptionsMenu);
     }
 
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem register = menu.findItem(R.id.action_signout);
 
-        if(mAuthHelper.isLoggedIn())
-        {
+        if (mAuthHelper.isLoggedIn()) {
             register.setVisible(true);
-        }
-        else
-        {
+        } else {
             register.setVisible(false);
         }
         return true;
     }
+
     private void updateOptionsMenu() {
         if (mOptionsMenu != null) {
             onPrepareOptionsMenu(mOptionsMenu);
@@ -262,6 +260,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         updateOptionsMenu();
         super.onConfigurationChanged(newConfig);
     }
+
     @Override
     public void onBackPressed() {
 
@@ -307,6 +306,4 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
         }
     }
-
-
 }

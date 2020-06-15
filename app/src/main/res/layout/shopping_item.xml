@@ -20,49 +20,49 @@
             android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="28dp"
             android:layout_marginTop="55dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.024"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
 
             <Button
                 android:id="@+id/deleteBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/round_button"
+                android:elevation="4dp"
                 android:fontFamily="@font/shabnam"
-                android:text="@string/minus"
-                android:elevation="8dp"/>
+                android:text="@string/minus" />
 
             <TextView
                 android:id="@+id/counter"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/rounded_corner"
+                android:elevation="4dp"
                 android:fontFamily="@font/shabnam"
-                android:textAlignment="center"
-                android:elevation="8dp"/>
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/counterTxt"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/button_with_shadow"
+                android:elevation="4dp"
                 android:fontFamily="@font/shabnam"
                 android:text="@string/plus"
-                android:textStyle="bold"
-                android:elevation="8dp"/>
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -71,17 +71,20 @@
             android:id="@+id/linearLayout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="2dp"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical"
-            android:paddingStart="30dp"
-            android:paddingEnd="30dp"
             android:gravity="right"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imgF"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <TextView
                 android:id="@+id/name"
@@ -89,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/shabnam"
                 android:text="نام محصول: "
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -99,21 +102,21 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/shabnam"
                 android:text="@string/price"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/imgF"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.971"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.333" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

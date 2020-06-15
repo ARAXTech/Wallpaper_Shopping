@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#08979D</color>
+    <color name="colorPrimary">#05585C</color>
     <color name="colorPrimaryLight">#6EC6CA</color>
-    <color name="colorPrimaryDark">#05585C</color>
+    <color name="colorPrimaryDark">#012b2d</color>
+
     <color name="textColorPrimary">#FFFFFF</color>
 
     <color name="actionbar">#00000000</color>
