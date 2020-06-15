@@ -329,7 +329,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame, fragment);
-                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.addToBackStack("fragment_billing");
                     fragmentTransaction.commit();
 
                 }

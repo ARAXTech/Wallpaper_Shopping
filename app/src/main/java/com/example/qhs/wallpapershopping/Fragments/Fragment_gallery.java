@@ -93,7 +93,7 @@ public class Fragment_gallery extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        View layout = view.findViewById(R.id.constraintLayout);
+        View layout = view.findViewById(R.id.constraintLayout_gallery);
         //Toolbar
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);

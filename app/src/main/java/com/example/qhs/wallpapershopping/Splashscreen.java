@@ -62,21 +62,20 @@ public class Splashscreen extends Activity {
 //        iv.clearAnimation();
 //        iv.startAnimation(anim);
 
-        frombottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.frombottom);
-//
-        textSplash = findViewById(R.id.textsplash);
-        textHome = findViewById(R.id.texthome);
-
         bgApp = findViewById(R.id.bgapp);
         clover = findViewById(R.id.clover);
+        // textHome = findViewById(R.id.texthome);
+        textSplash = findViewById(R.id.textsplash);
 
-        bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
-//        cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
+
+        //frombottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.frombottom);
+        //bgAnim = AnimationUtils.loadAnimation(this, R.anim.bganim);
+//       cloverAnim = AnimationUtils.loadAnimation(this, R.anim.clovernim);
         //bgApp.startAnimation(bgAnim);
-        bgApp.animate().translationY(-1900).setDuration(2000).setStartDelay(300);
-        clover.animate().alpha(0).setDuration(800).setStartDelay(600);
-        textSplash.animate().translationY(140).alpha(0).setDuration(800).setStartDelay(300);
-        textHome.startAnimation(frombottom);
+        bgApp.animate().translationY(-3000).setDuration(4000).setStartDelay(300);
+        clover.animate().alpha(0).setDuration(3700).setStartDelay(500);
+        textSplash.animate().translationY(140).alpha(0).setDuration(3700).setStartDelay(700);
+        //textHome.startAnimation(frombottom);
 
         splashTread = new Thread() {
             @Override

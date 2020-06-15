@@ -13,19 +13,16 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="153dp"
         android:background="@color/colorBackgroundWhite"
         android:elevation="4dp"
-        android:gravity="right"
         android:focusableInTouchMode="true"
+        android:gravity="right"
         app:divider="@color/colorPrimary"
         app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txtView_category"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:queryHint="از اینجا جستجو کنید..." />
     <ProgressBar
         android:id="@+id/SearchpBar"
@@ -49,17 +46,15 @@
         android:id="@+id/txtView_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/shabnam"
         android:text="دسته بندی ها"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/searchReciclerViewHorizental"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_view"
-        android:fontFamily="@font/shabnam"/>
+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/searchReciclerViewHorizental"

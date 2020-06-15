@@ -12,37 +12,31 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
         android:layout_gravity="end"
-        android:theme="@style/ToolbarTheme">
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layoutDirection="locale">
+            android:layout_height="?attr/actionBarSize">
+
             <TextView
                 android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:layout_margin="8dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:fontFamily="@font/shabnam"
-                android:layoutDirection="locale"
                 android:textColor="@color/colorBackgroundGrey"
-                android:textDirection="locale"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.41"
+                app:layout_constraintHeight_percent=".6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.3"
-                />
+                app:layout_constraintWidth_percent=".5" />
 
             <ImageButton
                 android:id="@+id/ProfileBtn"
@@ -53,8 +47,8 @@
                 android:layout_gravity="end"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/profile"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/profile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
