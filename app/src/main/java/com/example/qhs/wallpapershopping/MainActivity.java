@@ -98,7 +98,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
         fragment = new Fragment_home();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame, fragment).commit();
+                .add(R.id.frame, fragment).addToBackStack("fragment_home").commit();
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -266,13 +266,47 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     public void onBackPressed() {
 
         FragmentManager fm = getSupportFragmentManager();
-        if (!getFragmentManager().popBackStackImmediate()){
+        if (!getFragmentManager().popBackStackImmediate()) {
             if (fm.getBackStackEntryCount() > 0) {
-                fm.popBackStack();
+                fm.popBackStackImmediate();
 
+                String tag = "";
+                tag = fm.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                Log.d("TAAG", tag);
+                for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+                    String name = fm.getBackStackEntryAt(i).getName();
+                    Log.d("name", name);
+
+                }
+
+                int index = 0;
+                switch (tag) {
+                    case "fragment_home":
+                        index = 0;
+                        break;
+                    case "fragment_shopping":
+                        index = 1;
+                        break;
+                    case "fragment_search":
+                        index = 2;
+                        break;
+                    case "fragment_favorite":
+                        index = 3;
+                        break;
+                    case "fragment_call":
+                        index = 4;
+                        break;
+
+
+                }
+                navigation.getMenu().getItem(index).setChecked(true);
             } else {
                 super.onBackPressed();
-            }}
+                //navigation.getMenu().getItem(0).setChecked(true);
+            }
+
+        }
     }
+
 
 }
