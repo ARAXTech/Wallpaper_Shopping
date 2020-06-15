@@ -152,7 +152,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     fragment = new Fragment_Shopping();
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            .replace(R.id.frame, fragment).addToBackStack("fragment_shopping").commit();
                 } else {
                     TextView title = (TextView) findViewById(R.id.txtTitle);
                     title.setText("عضویت");
@@ -174,14 +174,14 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                        .replace(R.id.frame, fragment).addToBackStack("fragment_search").commit();
                 break;
 
             case R.id.menu_home:
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                        .replace(R.id.frame, fragment).addToBackStack("fragment_home").commit();
                 break;
 
             case R.id.menu_favorite:
@@ -189,7 +189,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            .replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
                 } else {
                     TextView title = (TextView) findViewById(R.id.txtTitle);
                     title.setText("عضویت");
@@ -211,7 +211,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).addToBackStack(null).commit();
+                        .replace(R.id.frame, fragment).addToBackStack("fragment_call").commit();
                 break;
 
         }

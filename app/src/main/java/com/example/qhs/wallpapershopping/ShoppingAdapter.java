@@ -386,7 +386,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
             bundle.putStringArrayList("imageJsonObj", (ArrayList <String>) image_link);
             Fragment fragment = new Fragment_gallery();
             fragment.setArguments(bundle);
-            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_gallery").commit();
 
 
         }
