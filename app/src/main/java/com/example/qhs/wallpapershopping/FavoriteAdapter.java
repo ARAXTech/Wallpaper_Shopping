@@ -189,7 +189,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                             request.JsonStringNetRequest("POST", "wc/v3/wishlist/remove_product/" + response.getJSONObject(i).getInt("item_id"));
                             //context.startActivity(new Intent(context, FavoriteActivity.class));
                             Fragment fragment = new Fragment_favorite();
-                            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
 
                             break;
                         }
@@ -222,7 +222,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             bundle.putStringArrayList("imageJsonObj", (ArrayList <String>) image_link);
             Fragment fragment = new Fragment_gallery();
             fragment.setArguments(bundle);
-            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_gallery").commit();
 
 
         }

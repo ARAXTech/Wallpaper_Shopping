@@ -187,7 +187,7 @@ public class Fragment_favorite extends Fragment {
                     adapter.notifyDataSetChanged();
 
                     Fragment fragment = new Fragment_favorite();
-                    ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
 
 
                     //addProduct(wishlistProductId[0][i]);
@@ -220,7 +220,7 @@ public class Fragment_favorite extends Fragment {
                     adapter.notifyDataSetChanged();
 
                     Fragment fragment = new Fragment_favorite();
-                    ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
 
 
                     //addProduct(wishlistProductId[0][i]);

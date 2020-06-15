@@ -532,7 +532,7 @@ public class Fragment_gallery extends Fragment {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment2);
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.addToBackStack("fragment_home");
             fragmentTransaction.commit();
         }
         return super.onOptionsItemSelected(item);
