@@ -271,7 +271,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
                 String tag = "";
                 tag = fm.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-                Log.d("TAAG", tag);
+                //Log.d("TAAG", tag);
                 for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                     String name = fm.getBackStackEntryAt(i).getName();
                     Log.d("name", name);
