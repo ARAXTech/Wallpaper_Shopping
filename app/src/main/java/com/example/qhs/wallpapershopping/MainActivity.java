@@ -144,17 +144,20 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-//        View layout = this.findViewById(R.id.constraintLayout);
+        FragmentManager fm = getSupportFragmentManager();
+        //View layout = this.findViewById(R.id.constraintLayout);
         switch (menuItem.getItemId()) {
             case R.id.menu_shopping_cart:
-
                 if (mAuthHelper.isLoggedIn()) {
-                    getFragmentManager().popBackStackImmediate();
+                    //getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_Shopping();
 
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
                 } else {
+                    Log.d("SHOPPING", fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName()+"+"+fm.getBackStackEntryCount());
+                    if (fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName() == "fragment_dialog"){
+                        fm.popBackStackImmediate();
+                    }
                     TextView title = (TextView) findViewById(R.id.txtTitle);
                     title.setText("عضویت");
                     toolbar.setNavigationIcon(null);
@@ -166,32 +169,32 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
                     //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_dialog").addToBackStack("fragment_dialog").commit();
                 }
                 break;
             case R.id.menu_search:
 
-                getFragmentManager().popBackStackImmediate();
+                //getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment, "fragment_search").addToBackStack("fragment_search").commit();
+                fm.beginTransaction().replace(R.id.frame, fragment, "fragment_search").addToBackStack("fragment_search").commit();
                 break;
 
             case R.id.menu_home:
-                getFragmentManager().popBackStackImmediate();
+                //getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment, "fragment_home").addToBackStack("fragment_home").commit();
+                fm.beginTransaction().replace(R.id.frame, fragment, "fragment_home").addToBackStack("fragment_home").commit();
                 break;
 
             case R.id.menu_favorite:
                 if (mAuthHelper.isLoggedIn()) {
-                    getFragmentManager().popBackStackImmediate();
+                    //getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
                 } else {
+                    Log.d("FAVORITE", fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName()+"+"+fm.getBackStackEntryCount());
+                    if (fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName() == "fragment_dialog"){
+                        fm.popBackStackImmediate();
+                    }
                     TextView title = (TextView) findViewById(R.id.txtTitle);
                     title.setText("عضویت");
                     toolbar.setNavigationIcon(null);
@@ -203,16 +206,14 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
                     //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_dialog").addToBackStack("fragment_dialog").commit();
                 }
                 break;
 
             case R.id.menu_call:
-                getFragmentManager().popBackStackImmediate();
+                //getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment, "frgment_call").addToBackStack("fragment_call").commit();
+                fm.beginTransaction().replace(R.id.frame, fragment, "fragment_call").addToBackStack("fragment_call").commit();
                 break;
 
         }
@@ -271,7 +272,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
                 String tag = "";
                 tag = fm.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-                Log.d("TAAG", tag);
+                //Log.d("TAAG", tag);
                 for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                     String name = fm.getBackStackEntryAt(i).getName();
                     Log.d("name", name);

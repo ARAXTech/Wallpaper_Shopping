@@ -63,6 +63,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         String temp = item.getImgLink();
         Picasso.with(context)
                 .load(temp)
+                .fit().centerCrop()
                 .into(holder.imgR);
 
        // ViewCompat.setTransitionName(holder.imgR, mPhotoObjects.get(position).photo);
