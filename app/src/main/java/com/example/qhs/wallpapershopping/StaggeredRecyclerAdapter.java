@@ -110,36 +110,15 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
             switch (position){
                 case 0:
                     //salon paziraee
-
                     bundle.putString("key", "18");
                     bundle.putString("count", "15");
                     bundle.putString("name","سالن پذیرایی");
-//                        Intent intent = new Intent(getContext(), Fragment_recycler.class);
-//                        intent.putExtra("key", "18"); // put image data in Intent
-//                        //intent.putExtra("count", "275"); // put number of image data in Intent
-//                        intent.putExtra("count", "15");
-                    //animation
-                    if(Build.VERSION.SDK_INT>20){
-//                            ActivityOptions options =
-//                                    ActivityOptions.makeSceneTransitionAnimation(getActivity());
-//                            startActivity(intent,options.toBundle());
 
-
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
-                    }else {
-
-
-                        fragment = new Fragment_recycler();
-                        fragment.setArguments(bundle);
-                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
-                    }
-                    //End animation
-                    //the below line commented because of animation
-                    //startActivity(intent); // start Intent
-                    //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    fragment = new Fragment_recycler();
+                    fragment.setArguments(bundle);
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     break;
+
                 case 1:
                     //otagh koodak
                     bundle.putString("key", "111");// put image data in Intent
@@ -184,6 +163,8 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
                     fragment = new Fragment_recycler();
                     fragment.setArguments(bundle);
                     ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
+                    break;
+
                 case 5:
                     //honari
                     bundle.putString("key", "21");// put image data in Intent

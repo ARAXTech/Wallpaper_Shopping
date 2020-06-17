@@ -55,11 +55,6 @@ public class Fragment_home extends Fragment {
     private StaggeredRecyclerAdapter adapter;
     private StaggeredGridLayoutManager manager;
     private AuthHelper mAuthHelper;
-    private Admin admin;
-    private Menu mOptionsMenu;
-    private ImageButton profileBtn;
-    private TextView txtView_login;
-    private TextView txtView_signUp;
     ImageView bgApp, clover;
     Animation bgAnim, cloverAnim;
     LinearLayout textSplash, textHome;
@@ -103,7 +98,6 @@ public class Fragment_home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 
-        admin = Admin.getInstance(getContext());
 
 //        //Splash Screen
 //        if (Splashscreen.Splash==0){

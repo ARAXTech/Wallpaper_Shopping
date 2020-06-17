@@ -82,34 +82,12 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
 
                             bundle.putString("key", "18");
                             bundle.putString("count", "15");
-//                        Intent intent = new Intent(getContext(), Fragment_recycler.class);
-//                        intent.putExtra("key", "18"); // put image data in Intent
-//                        //intent.putExtra("count", "275"); // put number of image data in Intent
-//                        intent.putExtra("count", "15");
-                            //animation
-                            if(Build.VERSION.SDK_INT>20){
-//                            ActivityOptions options =
-//                                    ActivityOptions.makeSceneTransitionAnimation(getActivity());
-//                            startActivity(intent,options.toBundle());
 
-                                fragment = new Fragment_recycler();
-                                fragment.setArguments(bundle);
-                                // Fragment myFragment = new TaskApprovalFragmentDetails();
-                                activity.getSupportFragmentManager().beginTransaction().replace
-                                        (R.id.frame, fragment).addToBackStack(null).commit();
-                            }else {
+                            fragment = new Fragment_recycler();
+                            fragment.setArguments(bundle);
+                            // Fragment myFragment = new TaskApprovalFragmentDetails();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
 
-                                //startActivity(intent);
-                                fragment = new Fragment_recycler();
-                                fragment.setArguments(bundle);
-                                // Fragment myFragment = new TaskApprovalFragmentDetails();
-                                activity.getSupportFragmentManager().beginTransaction().replace
-                                        (R.id.frame, fragment).addToBackStack(null).commit();
-                            }
-                            //End animation
-                            //the below line commented because of animation
-                            //startActivity(intent); // start Intent
-                            //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             break;
                         case 1:
                             //otagh koodak
@@ -119,7 +97,7 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                             fragment = new Fragment_recycler();
                             fragment.setArguments(bundle);
                             // Fragment myFragment = new TaskApprovalFragmentDetails();
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                             //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             break;
 
@@ -131,7 +109,7 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                             fragment = new Fragment_recycler();
                             fragment.setArguments(bundle);
                             // Fragment myFragment = new TaskApprovalFragmentDetails();
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                             break;
                         case 3:
                             //otagh khab
@@ -141,7 +119,7 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                             fragment = new Fragment_recycler();
                             fragment.setArguments(bundle);
                             // Fragment myFragment = new TaskApprovalFragmentDetails();
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                             break;
 
                         case 4:
@@ -152,7 +130,7 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                             fragment = new Fragment_recycler();
                             fragment.setArguments(bundle);
                             // Fragment myFragment = new TaskApprovalFragmentDetails();
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                             break;
                         case 5:
                             //honari
@@ -162,7 +140,7 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
                             fragment = new Fragment_recycler();
                             fragment.setArguments(bundle);
                             // Fragment myFragment = new TaskApprovalFragmentDetails();
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                             break;
 
 
