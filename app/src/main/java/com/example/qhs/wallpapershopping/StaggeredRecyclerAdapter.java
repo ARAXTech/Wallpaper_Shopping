@@ -95,8 +95,8 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
         public ImageViewHolder(@NonNull View itemView)  {
             super(itemView);
             itemView.setOnClickListener(this);
-          icon = (ImageView) itemView.findViewById(R.id.icon);
-          Txt=(TextView)itemView.findViewById(R.id.txtView);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
+            Txt=(TextView)itemView.findViewById(R.id.txtView);
 
 
         }
@@ -127,13 +127,13 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
 
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
-                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     }else {
 
 
                         fragment = new Fragment_recycler();
                         fragment.setArguments(bundle);
-                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     }
                     //End animation
                     //the below line commented because of animation
@@ -148,7 +148,7 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
 
                     fragment = new Fragment_recycler();
                     fragment.setArguments(bundle);
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     break;
 
                 case 2:
@@ -160,7 +160,7 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
 
                     fragment = new Fragment_recycler();
                     fragment.setArguments(bundle);
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     break;
                 case 3:
                     //otagh khab
@@ -171,7 +171,7 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
 
                     fragment = new Fragment_recycler();
                     fragment.setArguments(bundle);
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     break;
 
                 case 4:
@@ -183,7 +183,7 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
 
                     fragment = new Fragment_recycler();
                     fragment.setArguments(bundle);
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                 case 5:
                     //honari
                     bundle.putString("key", "21");// put image data in Intent
@@ -193,7 +193,7 @@ public class StaggeredRecyclerAdapter extends RecyclerView.Adapter<StaggeredRecy
 
                     fragment = new Fragment_recycler();
                     fragment.setArguments(bundle);
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_recycler").commit();
                     break;
 
             }

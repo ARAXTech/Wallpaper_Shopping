@@ -11,17 +11,18 @@
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:layout_weight="2"
         app:layout_constraintBottom_toTopOf="@id/linear_description"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:transitionName="shared_image" />
@@ -114,12 +115,12 @@
 
         <Button
             android:id="@+id/ShoppingBtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/button_ripple_effect"
-            android:text="افزودن به سبد خرید"
+            android:text="  افزودن به سبد خرید  "
             android:fontFamily="@font/shabnam"
             android:textSize="20sp" />
     </LinearLayout>

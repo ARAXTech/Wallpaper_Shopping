@@ -66,10 +66,10 @@
             android:id="@+id/imgF"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="267dp"
+            android:layout_marginStart="215dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnDelete"
             app:layout_constraintTop_toTopOf="parent" />
 
 
