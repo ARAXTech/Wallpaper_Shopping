@@ -10,11 +10,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.qhs.wallpapershopping.network.Admin;
+
 import static android.support.test.InstrumentationRegistry.getContext;
 
 
 public class Splashscreen extends Activity {
 
+    private Admin admin;
     public ImageView bgApp, clover;
     public Animation bgAnim, cloverAnim;
     public LinearLayout textSplash, textHome;
@@ -36,6 +39,8 @@ public class Splashscreen extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
+
+        admin = Admin.getInstance(this);
 
         StartAnimations();
 
