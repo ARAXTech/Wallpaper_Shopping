@@ -118,20 +118,18 @@ public class Fragment_gallery extends Fragment {
 
         constraintSet.clone(getContext(), R.layout.fragment_gallery_animation);
         ChangeBounds transition = new ChangeBounds();
-        transition.setInterpolator(new AnticipateInterpolator(1.0f));
+        //transition.setInterpolator(new AnticipateInterpolator(1.0f));
         transition.setDuration(1200);
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Do something after 100ms
-
-
+                //Do something after 300ms
 
                 TransitionManager.beginDelayedTransition(cc1, transition);
                 constraintSet.applyTo(cc1);
             }
-        }, 300);
+        }, 100);
 //end constraint layout animation
 
         //DataBase Define

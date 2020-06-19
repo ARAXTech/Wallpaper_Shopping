@@ -64,13 +64,13 @@ public class Fragment_home extends Fragment {
     //CurvedBottomNavigationView curvedBottomNavigationView;
 
     //GridView images
-    int logos[] = {
-            R.drawable.logo1,
-            R.drawable.logo12,
-            R.drawable.logo3,
-            R.drawable.logo6,
-            R.drawable.logo8,
-            R.drawable.logo5};
+//    int logos[] = {
+//            R.drawable.logo1,
+//            R.drawable.logo12,
+//            R.drawable.logo3,
+//            R.drawable.logo6,
+//            R.drawable.logo8,
+//            R.drawable.logo5};
     int[] vector = {
             R.drawable.livingroom,
             R.drawable.kids,
@@ -154,7 +154,7 @@ public class Fragment_home extends Fragment {
         manager= new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         staggeredRv.setLayoutManager(manager);
 
-        adapter = new StaggeredRecyclerAdapter(getContext(), logos,txt,false);
+        adapter = new StaggeredRecyclerAdapter(getContext(), vector,txt,false);
         staggeredRv.setAdapter(adapter);
 //        txtView_login = view.findViewById(R.id.nameuser);
 //        txtView_signUp= view.findViewById(R.id.walletuser);

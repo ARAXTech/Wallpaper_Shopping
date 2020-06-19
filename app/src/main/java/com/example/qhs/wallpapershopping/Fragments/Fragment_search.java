@@ -127,9 +127,16 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
         //Horizental RecyclerView///////////////////////////////////////////////////////////////////////////////
         //image for horizental com.example.qhs.deydigital.Recycler
-        int logos[] = {
-                R.drawable.logo1, R.drawable.logo12, R.drawable.logo3, R.drawable.logo6,
-                R.drawable.logo8,R.drawable.logo5};
+//        int logos[] = {
+//                R.drawable.logo1, R.drawable.logo12, R.drawable.logo3, R.drawable.logo6,
+//                R.drawable.logo8,R.drawable.logo5};
+        int[] vector = {
+                R.drawable.livingroom,
+                R.drawable.kids,
+                R.drawable.tvroom,
+                R.drawable.bedroom,
+                R.drawable.threed,
+                R.drawable.artistic};
         //text for horizental com.example.qhs.deydigital.Recycler
         String txt[]={
                 "سالن پذیرایی",
@@ -145,9 +152,9 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
                 getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewHorizental.setLayoutManager(horizontalLayoutManager);
 
-        for (int i = 0; i < logos.length; i++) {
+        for (int i = 0; i < vector.length; i++) {
 
-            RecyclerHorizentalItem HItem = new RecyclerHorizentalItem(logos[i], txt[i]);
+            RecyclerHorizentalItem HItem = new RecyclerHorizentalItem(vector[i], txt[i]);
 
             HorizentalItems.add(HItem);
             //  adapterHorizental.notifyDataSetChanged();
