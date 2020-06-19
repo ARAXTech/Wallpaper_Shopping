@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -28,6 +29,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -40,7 +42,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     private Toolbar toolbar;
     private BottomNavigationView navigation;
     private Fragment fragment;
-
+    boolean doubleBackToExitPressedOnce = false;
     //anim
     public static int currentPosition;
     private static final String KEY_CURRENT_POSITION = "com.example.qhs.wallpapershopping.key.currentPosition";
@@ -102,7 +104,7 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 .add(R.id.frame, fragment).addToBackStack("fragment_home").commit();
 
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
 
         //toolbar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#550000ff")));
 
@@ -112,14 +114,11 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
         //Profile
         mAuthHelper = AuthHelper.getInstance(this);
 
-        profileBtn = (ImageButton) findViewById(R.id.ProfileBtn);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragment = new Fragment_login();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment).commit();
-            }
+        profileBtn = findViewById(R.id.ProfileBtn);
+        profileBtn.setOnClickListener(view -> {
+            fragment = new Fragment_login();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame, fragment).addToBackStack("fragment_login").commit();
         });
 
         if (mAuthHelper.isLoggedIn()) {
@@ -144,75 +143,76 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-//        View layout = this.findViewById(R.id.constraintLayout);
+        FragmentManager fm = getSupportFragmentManager();
+        //View layout = this.findViewById(R.id.constraintLayout);
         switch (menuItem.getItemId()) {
             case R.id.menu_shopping_cart:
-
                 if (mAuthHelper.isLoggedIn()) {
-                    getFragmentManager().popBackStackImmediate();
+                    //getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_Shopping();
 
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
                 } else {
-                    TextView title = (TextView) findViewById(R.id.txtTitle);
+                    Log.d("SHOPPING", fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName()+"+"+fm.getBackStackEntryCount());
+                    if (fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName() == "fragment_dialog"){
+                        fm.popBackStackImmediate();
+                    }
+                    TextView title = findViewById(R.id.txtTitle);
                     title.setText("عضویت");
                     toolbar.setNavigationIcon(null);
                     Blur blur = new Blur();
-                    Bitmap map = blur.takeScreenShot(this);
+                    Bitmap map = Blur.takeScreenShot(this);
                     Bitmap fast = blur.fastblur(map, 10);
                     fragment = new Dialog();
-                    ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+                    ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
                     //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_shopping").addToBackStack("fragment_shopping").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_dialog").addToBackStack("fragment_dialog").commit();
                 }
                 break;
             case R.id.menu_search:
 
-                getFragmentManager().popBackStackImmediate();
+                //getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_search();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment, "fragment_search").addToBackStack("fragment_search").commit();
+                fm.beginTransaction().replace(R.id.frame, fragment, "fragment_search").addToBackStack("fragment_search").commit();
                 break;
 
             case R.id.menu_home:
-                getFragmentManager().popBackStackImmediate();
+                //getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_home();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment, "fragment_home").addToBackStack("fragment_home").commit();
+                fm.beginTransaction().replace(R.id.frame, fragment, "fragment_home").addToBackStack("fragment_home").commit();
                 break;
 
             case R.id.menu_favorite:
                 if (mAuthHelper.isLoggedIn()) {
-                    getFragmentManager().popBackStackImmediate();
+                    //getFragmentManager().popBackStackImmediate();
                     fragment = new Fragment_favorite();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
                 } else {
-                    TextView title = (TextView) findViewById(R.id.txtTitle);
+                    Log.d("FAVORITE", fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName()+"+"+fm.getBackStackEntryCount());
+                    if (fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1).getName() == "fragment_dialog"){
+                        fm.popBackStackImmediate();
+                    }
+                    TextView title = findViewById(R.id.txtTitle);
                     title.setText("عضویت");
                     toolbar.setNavigationIcon(null);
                     Blur blur = new Blur();
-                    Bitmap map = blur.takeScreenShot(this);
+                    Bitmap map = Blur.takeScreenShot(this);
                     Bitmap fast = blur.fastblur(map, 10);
                     fragment = new Dialog();
-                    ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+                    ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
                     BitmapDrawable ob = new BitmapDrawable(getResources(), fast);
                     constraintLayout.setBackground(ob);
                     //constraintLayout.setBackground(this.getDrawable(R.drawable.back4dialog));
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, "fragment_favorite").addToBackStack("fragment_favorite").commit();
+                    fm.beginTransaction().replace(R.id.frame, fragment, "fragment_dialog").addToBackStack("fragment_dialog").commit();
                 }
                 break;
 
             case R.id.menu_call:
-                getFragmentManager().popBackStackImmediate();
+                //getFragmentManager().popBackStackImmediate();
                 fragment = new Fragment_about();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame, fragment, "frgment_call").addToBackStack("fragment_call").commit();
+                fm.beginTransaction().replace(R.id.frame, fragment, "fragment_call").addToBackStack("fragment_call").commit();
                 break;
 
         }
@@ -266,11 +266,10 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
 
         FragmentManager fm = getSupportFragmentManager();
         if (!getFragmentManager().popBackStackImmediate()) {
-            if (fm.getBackStackEntryCount() > 0) {
+            if (fm.getBackStackEntryCount() > 1) {
                 fm.popBackStackImmediate();
 
-                String tag = "";
-                tag = fm.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                String tag = fm.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 //Log.d("TAAG", tag);
                 for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                     String name = fm.getBackStackEntryAt(i).getName();
@@ -281,7 +280,11 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 int index = 0;
                 switch (tag) {
                     case "fragment_home":
+
+
                         index = 0;
+                        fm.popBackStack(1, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        //fm.beginTransaction().replace(R.id.frame, new Fragment_home(), "fragment_home").addToBackStack("fragment_home").commit();
                         break;
                     case "fragment_shopping":
                         index = 1;
@@ -300,10 +303,28 @@ public class MainActivity<navigation> extends AppCompatActivity implements Botto
                 }
                 navigation.getMenu().getItem(index).setChecked(true);
             } else {
-                super.onBackPressed();
+                if (doubleBackToExitPressedOnce) {
+                    //super.onBackPressed();
+                    //finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(1);
+                }
+
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+                //super.onBackPressed();
                 //navigation.getMenu().getItem(0).setChecked(true);
             }
 
         }
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }
