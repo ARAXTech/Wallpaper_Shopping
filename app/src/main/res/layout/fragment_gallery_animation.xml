@@ -22,7 +22,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:transitionName="shared_image" />
@@ -63,7 +63,7 @@
         android:gravity="center_horizontal"
         android:text="کدمحصول:"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:fontFamily="@font/shabnam"
         android:layout_marginStart="15dp"
@@ -108,7 +108,7 @@
             android:id="@+id/txt2"
             android:layout_width="397dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
+            android:textColor="#000000"
             android:gravity="center_horizontal"
             android:textSize="18sp"
             android:fontFamily="@font/shabnam"/>
@@ -119,9 +119,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/button_ripple_effect"
-            android:text="  افزودن به سبد خرید  "
             android:fontFamily="@font/shabnam"
+            android:text="  افزودن به سبد خرید  "
+            android:textColor="@color/colorBackgroundWhite"
             android:textSize="20sp" />
     </LinearLayout>
 

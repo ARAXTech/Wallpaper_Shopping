@@ -38,10 +38,11 @@
                 android:layout_height="25dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/round_button"
+                android:background="@drawable/button_with_shadow"
                 android:elevation="4dp"
                 android:fontFamily="@font/shabnam"
-                android:text="@string/minus" />
+                android:text="@string/minus"
+                android:textColor="@color/colorBackgroundWhite"/>
 
             <TextView
                 android:id="@+id/counter"
@@ -62,7 +63,8 @@
                 android:elevation="4dp"
                 android:fontFamily="@font/shabnam"
                 android:text="@string/plus"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/colorBackgroundWhite"/>
 
 
         </LinearLayout>
