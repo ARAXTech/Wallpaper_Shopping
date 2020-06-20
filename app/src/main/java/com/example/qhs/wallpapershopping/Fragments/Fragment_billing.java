@@ -56,7 +56,7 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
        private EditText email;
        private EditText phone;
        private Button payment;
-       private String[][] cities ={{"بومهن","رودهن","تهران"},{"رامسر","بابل","ساری"}};
+       private String[][] cities ={{"تهران", "فیروزکوه","دماوند"},{"رامسر","بابل","ساری"}};
        String[] State={"تهران","مازندران"};
        private int index = -1;
        private AuthHelper mAuthHelper;
@@ -90,7 +90,6 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
         city_spinner = (Spinner) view.findViewById(R.id.city);
         state_spinner = (Spinner) view.findViewById(R.id.state);
         postcode = (EditText) view.findViewById(R.id.passcode);
-        email = (EditText) view.findViewById(R.id.email);
         phone = (EditText) view.findViewById(R.id.phone);
         payment = (Button) view.findViewById(R.id.payment);
         payment.setOnClickListener(new View.OnClickListener() {

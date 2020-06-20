@@ -6,127 +6,253 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundWhite"
     tools:context=".Fragments.Fragment_Shopping">
+
     <TextView
         android:id="@+id/detail"
         android:layout_width="217dp"
         android:layout_height="64dp"
-        android:gravity="center"
-        android:text="جزئیات صورتحساب"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="18dp"
+        android:fontFamily="@font/shabnam"
+        android:text="پرداخت"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:fontFamily="@font/shabnam"
+        app:layout_constraintBottom_toTopOf="@+id/materialtextfield_first_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="184dp"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/first_name"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail"
-        tools:ignore="MissingConstraints"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialtextfield_first_name"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
         android:background="@null"
-        android:hint=" نام"
-        android:fontFamily="@font/shabnam"/>
+        android:fontFamily="@font/shabnam"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextField_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail"
+        app:mtf_labelColor="#989898"
+        app:mtf_openKeyboardOnFocus="true"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:fontFamily="@font/shabnam"
+            android:hint="نام"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1" />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialTextField_last_name"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
+        android:background="@null"
+        android:fontFamily="@font/shabnam"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextField_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialtextfield_first_name"
+        app:mtf_labelColor="#989898"
+        app:mtf_openKeyboardOnFocus="true"
+        tools:ignore="MissingConstraints">
+
     <EditText
         android:id="@+id/last_name"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_marginStart="197dp"
         android:layout_marginTop="18dp"
         android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/first_name"
-        tools:layout_editor_absoluteX="72dp"
-        tools:ignore="MissingConstraints"
+        android:layout_marginBottom="18dp"
         android:background="@null"
+        android:fontFamily="@font/shabnam"
         android:hint=" نام خانوادگی"
-        android:fontFamily="@font/shabnam"/>
+        />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialTextField_address"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
+        android:background="@null"
+        android:fontFamily="@font/shabnam"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toTopOf="@+id/spiner_holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextField_last_name"
+        app:mtf_labelColor="#989898"
+        app:mtf_openKeyboardOnFocus="true"
+        tools:ignore="MissingConstraints">
+
     <EditText
         android:id="@+id/address"
         android:layout_width="352dp"
         android:layout_height="50dp"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="18dp"
         android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/last_name"
-        tools:layout_editor_absoluteX="72dp"
+        android:layout_marginBottom="17dp"
         android:background="@null"
-        tools:ignore="MissingConstraints"
+        android:fontFamily="@font/shabnam"
         android:hint="   آدرس"
-        android:fontFamily="@font/shabnam"/>
-    <Spinner
-        android:id="@+id/city"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
+         />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+
+    <LinearLayout
+        android:id="@+id/spiner_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextField_passcode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address"
-        tools:layout_editor_absoluteX="72dp"
-        tools:ignore="MissingConstraints"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextField_address"
+        android:gravity="center"
+        >
+
+        <Spinner
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:minWidth="30dp"
+            android:minHeight="20dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint=" شهر"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:id="@+id/select_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/shabnam"
+            android:text="شهر:"
+            android:layout_marginEnd="20dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint=" استان"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:id="@+id/select_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/shabnam"
+            android:text="استان:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+
+    </LinearLayout>
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialTextField_passcode"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
         android:background="@null"
-        android:hint=" شهر"/>
-    <Spinner
-        android:id="@+id/state"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
+        android:fontFamily="@font/shabnam"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextField_phone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/city"
-        tools:layout_editor_absoluteX="72dp"
-        tools:ignore="MissingConstraints"
-        android:background="@null"
-        android:hint=" استان"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spiner_holder"
+        app:mtf_labelColor="#989898"
+        app:mtf_openKeyboardOnFocus="true"
+        tools:ignore="MissingConstraints">
+
     <EditText
         android:id="@+id/passcode"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/state"
-        tools:layout_editor_absoluteX="72dp"
-        tools:ignore="MissingConstraints"
+        android:layout_marginStart="195dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@null"
+        android:fontFamily="@font/shabnam"
         android:hint=" کدپستی"
-        android:fontFamily="@font/shabnam"/>
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="352dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passcode"
-        tools:layout_editor_absoluteX="72dp"
-        tools:ignore="MissingConstraints"
+        />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/materialTextField_phone"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
         android:background="@null"
-        android:hint="  ایمیل"/>
+        android:fontFamily="@font/shabnam"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toTopOf="@+id/payment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextField_passcode"
+        app:mtf_labelColor="#989898"
+        app:mtf_openKeyboardOnFocus="true"
+        tools:ignore="MissingConstraints">
+
+
     <EditText
         android:id="@+id/phone"
         android:layout_width="170dp"
         android:layout_height="50dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        tools:layout_editor_absoluteX="72dp"
-        tools:ignore="MissingConstraints"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
         android:background="@null"
-        android:hint=" تلفن"/>
+        android:hint=" تلفن"
+        />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
 
     <Button
         android:id="@+id/payment"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="250dp"
+        android:layout_width="245dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="72dp"
+        android:background="@drawable/button_ripple_effect"
+        android:fontFamily="@font/shabnam"
+        android:gravity="center"
         android:text="پرداخت"
-        android:textSize="25dp"
+        android:textColor="@color/colorBackgroundWhite"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextField_phone" />
 </android.support.constraint.ConstraintLayout>
