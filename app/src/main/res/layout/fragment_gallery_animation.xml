@@ -42,31 +42,29 @@
     </RelativeLayout>
     <TextView
         android:id="@+id/txt1"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:minWidth="150dp"
         android:layout_marginTop="40dp"
-        android:background="@color/colorBackgroundWhite"
         android:gravity="center_horizontal"
-        android:text="عنوان"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
+        android:background="#80000000"
+        android:textColor="#FFFF"
+        android:textSize="19sp"
+        android:textAlignment="center"
         android:textStyle="bold"
         android:fontFamily="@font/shabnam"
-        android:layout_marginStart="9dp"
         app:layout_constraintStart_toStartOf="@+id/relativeLayout2"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/txt_productCode"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBackgroundWhite"
-        android:gravity="center_horizontal"
-        android:text="کدمحصول:"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_height="30dp"
+        android:background="#80000000"
+        android:textColor="#FFFF"
+        android:gravity="start"
         android:textSize="16sp"
         android:textStyle="bold"
         android:fontFamily="@font/shabnam"
-        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="@+id/relativeLayout2"
         app:layout_constraintTop_toBottomOf="@+id/txt1" />
     <LinearLayout
@@ -86,7 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:orientation="horizontal"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="start">
             <ToggleButton
                 android:id="@+id/toggleButton"
@@ -94,6 +93,7 @@
                 android:layout_height="32dp"
                 android:textOff=" "
                 android:textOn=" "
+                android:layout_marginEnd="10dp"
                 />
             <ImageView
                 android:id="@+id/Share"
@@ -106,7 +106,7 @@
 
         <TextView
             android:id="@+id/txt2"
-            android:layout_width="397dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:gravity="center_horizontal"

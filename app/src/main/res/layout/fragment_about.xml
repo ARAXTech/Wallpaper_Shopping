@@ -11,7 +11,7 @@
             android:id="@+id/cardM"
             android:layout_width="0dp"
             android:layout_height="148dp"
-            app:layout_constraintBottom_toTopOf="@+id/listA"
+            app:layout_constraintBottom_toTopOf="@+id/linear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -19,7 +19,7 @@
             <ImageView
                 android:id="@+id/imgView_map"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="150dp"
                 android:src="@drawable/location" />
         </android.support.v7.widget.CardView>
 
