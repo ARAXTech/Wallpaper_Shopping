@@ -8,7 +8,8 @@
     android:background="@color/SecondaryLight"
     android:layout_margin="5dp"
     android:elevation="40dp"
-    android:layoutAnimation="@anim/item_layout_animation">
+    android:layoutAnimation="@anim/item_layout_animation"
+    android:foreground="?android:attr/selectableItemBackground">
     <!--android:paddingBottom="3dp" -->
     <RelativeLayout
         android:layout_width="match_parent"
