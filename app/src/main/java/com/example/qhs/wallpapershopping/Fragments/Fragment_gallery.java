@@ -175,9 +175,10 @@ public class Fragment_gallery extends Fragment {
         //txt_name.setTypeface(face);
 
         TextView txt_description = (TextView) view.findViewById(R.id.txt2);
-        txt_description.setText(
-                "\n" + Html.fromHtml(description) +
-                 "\n" + Html.fromHtml(String.valueOf(price))+ " تومان");
+        String description_full =  "\n" + Html.fromHtml(description) +
+                                   "\n" + " قیمت:" + Html.fromHtml(String.valueOf(price))+  " تومان"+
+                                   "\n";
+        txt_description.setText(description_full);
         txt_description.setTextColor(Color.parseColor("#000000"));
         //txt_description.setPaintFlags(txt_description.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         //txt_description.setMovementMethod(new ScrollingMovementMethod());
@@ -186,8 +187,6 @@ public class Fragment_gallery extends Fragment {
         TextView txt_id=(TextView)view.findViewById(R.id.txt_productCode);
         String product_code=" کد محصول: " ;
         txt_id.setText(product_code + id);
-        txt_id.setTextColor(Color.parseColor("#FF0000"));
-
 
         init();
         final ArrayList<String> image_list = bundle.getStringArrayList("imageJsonObj");

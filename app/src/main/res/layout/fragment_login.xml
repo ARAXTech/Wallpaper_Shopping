@@ -81,26 +81,25 @@
 
     <Button
         android:id="@+id/button_action"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginTop="0dp"
         android:background="@drawable/button_ripple_effect"
+        android:fontFamily="@font/shabnam"
+        android:gravity="center"
         android:text="@string/text_login"
+        android:textColor="@color/colorBackgroundWhite"
         app:layout_constraintBottom_toTopOf="@+id/prompt_action"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.576"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/materialTextField_password"
-        android:fontFamily="@font/shabnam"/>
+        app:layout_constraintTop_toBottomOf="@id/materialTextField_password" />
 
     <TextView
         android:id="@+id/prompt_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="264dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="196dp"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
