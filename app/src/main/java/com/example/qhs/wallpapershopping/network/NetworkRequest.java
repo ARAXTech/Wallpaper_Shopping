@@ -96,19 +96,6 @@ public class NetworkRequest {
     }
 
     /**
-     * Get protected quote
-     *
-     * @param token - token
-     * @param callback - callback
-     */
-    public void doGetProtectedQuote(@NonNull String token, @Nullable Callback callback) {
-        setCallback(callback);
-
-        String protectedQuoteUrl = BASE_URL + "wc/v3/products/categories";
-        doGetRequestWithToken(protectedQuoteUrl, new HashMap<String, String>(), token, callback);
-    }
-
-    /**
      * Execute post request
      *
      * @param url
@@ -136,13 +123,6 @@ public class NetworkRequest {
 
         RequestBody body = RequestBody.create(JSON, jsonObject.toString());
 
-//        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512); //or HS384 or HS512
-//
-//        String token = Jwts.builder() // (1)
-//                .setSubject("register")      // (2)
-//                .signWith(key)          // (3)
-//                .compact();
-
         Request request = new Request.Builder()
                 .url(httpUrl)
                 .post(body)
@@ -152,27 +132,6 @@ public class NetworkRequest {
         doRequest(request, callback);
     }
 
-    private void doGetRequestWithToken(@NonNull String url, @NonNull Map<String, String> params,
-                                       @Nullable String token, @Nullable Callback callback) {
-        HttpUrl httpUrl = HttpUrl.parse(url);
-
-        HttpUrl.Builder urlBuilder = httpUrl.newBuilder();
-        Log.d("paramsss", "ooo");
-        for (String key : params.keySet()) {
-            Log.d(key, params.get(key));
-            urlBuilder.addQueryParameter(key, params.get(key));
-        }
-
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(urlBuilder.build())
-                .get();
-
-        if (token != null) {
-            requestBuilder.addHeader("Authorization", "Bearer " + token);
-        }
-
-        doRequest(requestBuilder.build(), callback);
-    }
 
     public void customerPostRequest(@NonNull String url, @NonNull Customer customer,
                                  @Nullable final Callback callback) throws JSONException {
@@ -250,7 +209,7 @@ public class NetworkRequest {
                         if(callback != null) {
                             try {
                                 final String stringResponse = response.body().string();
-                                Log.d("onResponseDoRequest: ", stringResponse);
+                                Log.d("onResponseDoRequest ", stringResponse);
                                 mainHandler.post(new Runnable() {
                                     @Override
                                     public void run() {

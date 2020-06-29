@@ -28,6 +28,7 @@ import com.example.qhs.wallpapershopping.network.NetRequest;
 import com.example.qhs.wallpapershopping.network.NetworkRequest;
 import com.example.qhs.wallpapershopping.network.Token;
 import com.github.florent37.materialtextfield.MaterialTextField;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,8 +141,10 @@ public class Fragment_login extends Fragment {
         mProgressDialog.setMessage(getString(R.string.progress_login));
         mProgressDialog.setCancelable(true);
         mProgressDialog.show();
-        NetworkRequest request = new NetworkRequest();
-        request.doLogin(username, password, mLoginCallback);
+        NetRequest request = new NetRequest(getContext());
+        request.JsonObjectNetRequest("POST", "jwt-auth/v1/token?username="+username+"&password="+password, mLoginCallback, "no_need");
+//        NetworkRequest request = new NetworkRequest();
+//        request.doLogin(username, password, mLoginCallback);
     }
 
     /**
@@ -199,47 +202,60 @@ public class Fragment_login extends Fragment {
 
         // start profile page
         startActivity(new Intent(getContext(), MainActivity.class) );
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.frame, new Fragment_home());
-//        fragmentTransaction.commit();
 
     }
-
-    /**
-     * Callback for login
-     */
-    private NetworkRequest.Callback<Token> mLoginCallback = new NetworkRequest.Callback<Token>() {
+    private NetRequest.Callback<JSONObject> mLoginCallback = new NetRequest.Callback<JSONObject>() {
         @Override
-        public void onResponse(@NonNull Token response) {
+        public void onResponse(@NonNull JSONObject response) {
             dismissDialog();
+            Token tokenInfo = new Gson().fromJson(response.toString(), Token.class);
             // save token and go to profile page
-            saveSessionDetails(response);
-            Toast.makeText(getContext(), "Hi "+ response.getUser_display_name(), Toast.LENGTH_SHORT).show();
+            saveSessionDetails(tokenInfo);
+            Toast.makeText(getContext(), "Hi "+ tokenInfo.getUser_display_name(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(String error) {
             dismissDialog();
             Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-        }
 
-        @Override
-        public Class<Token> type() {
-            return Token.class;
         }
-
     };
+    /**
+     * Callback for login
+     */
+//    private NetworkRequest.Callback<Token> mLoginCallback = new NetworkRequest.Callback<Token>() {
+//        @Override
+//        public void onResponse(@NonNull Token response) {
+//            dismissDialog();
+//            // save token and go to profile page
+//            saveSessionDetails(response);
+//            Toast.makeText(getContext(), "Hi "+ response.getUser_display_name(), Toast.LENGTH_SHORT).show();
+//        }
+//
+//        @Override
+//        public void onError(String error) {
+//            dismissDialog();
+//            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+//        }
+//
+//        @Override
+//        public Class<Token> type() {
+//            return Token.class;
+//        }
+//
+//    };
 
 //    private NetRequest.Callback<JSONObject> mSignUpCallback = new NetRequest.Callback<JSONObject>() {
 //        @Override
 //        public void onResponse(@NonNull JSONObject response) {
+//
+//            doLogin();
 //            dismissDialog();
-//            try {
-//                Log.d("SIGN_UP ", response.getString("message"));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+//            // save token and go to profile page
+//            //saveSessionDetails(response);
+//            Toast.makeText(getContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
+//
 //        }
 //
 //        @Override
@@ -252,14 +268,28 @@ public class Fragment_login extends Fragment {
     /**
      * Callback for sign up
      */
-    private NetworkRequest.Callback<Token> mSignUpCallback = new NetworkRequest.Callback<Token>() {
+    private NetworkRequest.Callback<String> mSignUpCallback = new NetworkRequest.Callback<String>() {
         @Override
-        public void onResponse(@NonNull Token response) {
+        public void onResponse(@NonNull String response) {
+
+            String code = response.substring(8,11);
+            if (code.equals("200")){
+                Toast.makeText(getContext(),"ثبت نام با موفقیت انجام شد" , Toast.LENGTH_SHORT).show();
+                doLogin();
+            }
+            else {
+                if (response.contains("Username already exists"))
+                    Toast.makeText(getContext(),"نام کاربری تکراری است، لطفا نام جدیدی وارد کنید" , Toast.LENGTH_LONG).show();
+                else if (response.contains("Email already exists"))
+                    Toast.makeText(getContext(),"ایمیل تکراری است، لطفا ایمیل جدیدی وارد کنید" , Toast.LENGTH_LONG).show();
+
+
+            }
             dismissDialog();
-            doLogin();
-            // save token and go to profile page
-            //saveSessionDetails(response);
-            Toast.makeText(getContext(), "Sign Up Successful", Toast.LENGTH_SHORT).show();
+
+
+
+          //  Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -269,8 +299,8 @@ public class Fragment_login extends Fragment {
         }
 
         @Override
-        public Class<Token> type() {
-            return Token.class;
+        public Class<String> type() {
+            return String.class;
         }
     };
 
