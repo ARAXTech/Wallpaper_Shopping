@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -168,6 +169,9 @@ public class Fragment_gallery extends Fragment {
         final String description = bundle.getString("description");
         final int price = bundle.getInt("price");
         final int currentPosition = bundle.getInt("position");
+        final  int count=bundle.getInt("count");
+        final int count_shop=bundle.getInt("count_shop");
+        final String favorite=bundle.getString("favorite");
 
         //Textview of details
         TextView txt_name = (TextView) view.findViewById(R.id.txt1);
@@ -190,46 +194,83 @@ public class Fragment_gallery extends Fragment {
 
         init();
         final ArrayList<String> image_list = bundle.getStringArrayList("imageJsonObj");
+        Log.d("skkk", String.valueOf(image_list));
         String s="";
-        for (int i=1;i<image_list.size(); i=i+1)
+        for (int i=0;i<image_list.size(); i=i+1)
         {
             s=s+image_list.get(i)+",";
+            Log.d("slll", String.valueOf(s));
         }
+
+        Log.d("finalsize", String.valueOf(image_list.size()));
         //favorite button
         final ToggleButton toggleButton = (ToggleButton) view.findViewById(R.id.toggleButton);
-        if (db.Exists(id)==true) {
+
+        if (db.Exists(id)==true ) {
+            ListItem get_item=db.getListItem(Integer.valueOf(id));
+            if(get_item.getFavorite().equals("true")){
             toggleButton.setChecked(true);
             toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_yes));
+        }
+            else {
+                toggleButton.setChecked(false);
+                toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
+            }
         } else {
             toggleButton.setChecked(false);
             toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
         }
 
+
         //favorite button
         final String finalS = s;
+        Log.d("finalS",finalS);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),price,0,1,Integer.parseInt(mAuthHelper.getIdUser()));
-                if (isChecked ){
-                    db.addListItem(item);
-                    addProduct(Integer.parseInt(id));
-                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.favorite_yes)); }
-                else if (!isChecked ){
-                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
-                    db.deleteListItem(id);
+                if (mAuthHelper.isLoggedIn()){
 
+                if (isChecked ){
+                    Log.d("ischeck","ischeck");
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.favorite_yes));
+                    //get_item.setFavorite("true");
+                    ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),price,count,count_shop,
+                            Integer.parseInt(mAuthHelper.getIdUser()));
+                    if(db.Exists(id)){
+                        db.updateListItem(item);}
+                    else {
+                        db.addListItem(item);
+                    }
+                    addProduct(Integer.parseInt(id));
+                    }
+                else if (!isChecked ){
+                    Log.d("isnotcheck","isnotcheck");
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
+                    ListItem get_item=db.getListItem(Integer.valueOf(id));
+                    if(get_item.getCount_shop()==0){
+                        db.deleteListItem(id);
+                    }
+                     else
+                    {
+//                    ListItem item = new ListItem(id,name,description, finalS,"false",image_list.size(),price,count,count_shop,
+//                            Integer.parseInt(mAuthHelper.getIdUser()));
+                        get_item.setFavorite("false");
+                        db.updateListItem(get_item);}
                     //remove from site
                     request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products",
                             mWishlistProductCallback, null);
-                }
+                }}
+               else{
+                    Log.d("gall","notlog");
+                    Toast.makeText(getContext(),"لطفا با حساب کاربری خود وارد شوید", Toast.LENGTH_SHORT).show();}
+
             }
         });
 
         //end favorite button
 
         ///Shopping Cart
+
         final Button shoppingBtn = (Button) view.findViewById(R.id.ShoppingBtn);
         shoppingBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
@@ -238,9 +279,15 @@ public class Fragment_gallery extends Fragment {
 
                 if (mAuthHelper.isLoggedIn()) {
                     layout.setBackgroundColor(0xFFFFFF);
-                    ListItem item1 = new ListItem(id, name, description, finalS,"false", image_list.size(), price,1,1,Integer.parseInt(mAuthHelper.getIdUser()));
-
-                    db.addListItem(item1);
+                    ListItem get_item=db.getListItem(Integer.valueOf(id));
+                    ListItem item1 = new ListItem(id, name, description, finalS,favorite,
+                            image_list.size(), price,count,1,Integer.parseInt(mAuthHelper.getIdUser()));
+                    if(db.Exists(id)){
+                        db.updateListItem(item1);
+                     }
+                     else {
+                        db.addListItem(item1);
+                  }
                     //addProductToCart(Integer.parseInt(id), 1);
                     shoppingBtn.setEnabled(true);
                     shoppingBtn.setClickable(false);
@@ -279,73 +326,8 @@ public class Fragment_gallery extends Fragment {
             }
         });
 
-//        //anim shared element trans
-//        // Set the current position and add a listener that will update the selection coordinator when
-//        // paging the images.
-//
-//        prepareSharedElementTransition();
-//
-//        // Avoid a postponeEnterTransition on orientation change, and postpone only of first creation.
-//        if (savedInstanceState == null) {
-//            postponeEnterTransition();
-//        }
-//        //end anim shared element trans
-
         return view;
     }
-
-
-//    //anim shared element trans
-//    /**
-//     * Prepares the shared element transition from and back to the grid fragment.
-//     */
-//    private void prepareSharedElementTransition() {
-//        Transition transition =
-//                TransitionInflater.from(getContext())
-//                        .inflateTransition(R.transition.image_shared_element_transition);
-//        setSharedElementEnterTransition(transition);
-//
-//        // A similar mapping is set at the GridFragment with a setExitSharedElementCallback.
-//       setEnterSharedElementCallback(new SharedElementCallback() {
-//           @Override
-//           public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-//               // Locate the image view at the primary fragment (the ImageFragment that is currently
-//               // visible). To locate the fragment, call instantiateItem with the selection position.
-//               // At this stage, the method will simply return the fragment at the position and will
-//               // not create a new one.
-//               Fragment currentFragment = (Fragment) mPager.getAdapter()
-//                       .instantiateItem(mPager, currentPage);
-//               View view = currentFragment.getView();
-//               if (view == null) {
-//                   return;
-//               }
-//
-//               // Map the first shared element name to the child ImageView.
-//               sharedElements.put(names.get(0), view.findViewById(R.id.image));
-//           }
-//       });
-//    }
-//    //end anim
-
-
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        //Toolbar
-//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-//        title.setText("گالری");
-//
-//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ((AppCompatActivity)getActivity()).onBackPressed();
-//            }
-//        });
-//
-//        super.onActivityCreated(savedInstanceState);
-//    }
-
 
     private NetRequest.Callback<JSONArray> mWishlistProductCallback = new NetRequest.Callback<JSONArray>(){
 

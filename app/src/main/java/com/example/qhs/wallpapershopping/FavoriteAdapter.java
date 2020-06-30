@@ -84,16 +84,19 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final FavoriteAdapter.ViewHolder holder, final int position) {
-
+          Log.d("t4","hello");
         final ListItem item = listItems.get(position);
         List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
+        Log.d("t3", String.valueOf(image_link));
         final String temp = image_link.get(0);
+        Log.d("t2",temp);
         int id = Integer.parseInt(item.getId());
         JsonObjectRequest objectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://mobifytech.ir/wp-json/wc/v3/products/"+item.getId(), null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         //  temp = temp.replace("https", "http");
+                        Log.d("t1",temp);
                         Picasso.with(context)
                                 .load(temp).resize(200, 200)
                                 .into(holder.img);

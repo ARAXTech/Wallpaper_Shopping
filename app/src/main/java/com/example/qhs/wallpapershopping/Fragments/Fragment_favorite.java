@@ -91,7 +91,9 @@ public class Fragment_favorite extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         listItems = new ArrayList<>();
 
-        //db.deleteAll();
+
+
+      // db.deleteAll();
         if(db.getFavoriteItemCount()!=0){
             listItems = db.getAllFavoriteItem();}
 
@@ -124,27 +126,6 @@ public class Fragment_favorite extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        //Toolbar
-//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-//        title.setText("علاقه مندی ها");
-//
-//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ((AppCompatActivity)getActivity()).onBackPressed();
-//            }
-//        });
-//
-//        super.onActivityCreated(savedInstanceState);
-//    }
-
-    /**
-     * Dismiss the dialog if it's showing
-     */
     private void dismissDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
@@ -193,21 +174,7 @@ public class Fragment_favorite extends Fragment {
                     //addProduct(wishlistProductId[0][i]);
                 }
             }
-//            if(response.length()==0){
-//                for (int i = 0; i < num; i++) {
-//                    if (wishlistProductId[1][i] == -1) {
-//                        Log.d("index ", String.valueOf(wishlistProductId[0][i]));
-//                        db.deleteListItem(String.valueOf(wishlistProductId[0][i]));
-//                        adapter.notifyDataSetChanged();
-//
-//                        Fragment fragment = new Fragment_favorite();
-//                        ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
-//
-//
-//                        //addProduct(wishlistProductId[0][i]);
-//                    }
-//                }
-//            }
+
 
         }
 
@@ -242,29 +209,34 @@ public class Fragment_favorite extends Fragment {
         @Override
         public void onResponse(@NonNull JSONObject response) {
             try {
-                ListItem item = new ListItem(
-                        response.getString("id"),
-                        response.getString("name"),
-                        response.getString("short_description"),
-                        response.getJSONArray("images").getJSONObject(0).getString("src"),
-                        "true",
-                        response.getJSONArray("images").length(),
-                        1000,
-                        0,
-                        1,
-                        Integer.parseInt(mAuthHelper.getIdUser())
-                );
+                if(db.Exists(response.getString("id"))){
+                    ListItem get_item=db.getListItem(Integer.parseInt(response.getString("id")));
+                    get_item.setFavorite("true");
+                    db.updateListItem(get_item);
+                }
+                else {
+                    ListItem item = new ListItem(
+                            response.getString("id"),
+                            response.getString("name"),
+                            response.getString("short_description"),
+                            response.getJSONArray("images").getJSONObject(0).getString("src"),
+                            "true",
+                            response.getJSONArray("images").length(),
+                            Integer.parseInt(response.getString("price")),
+                            0,//response.getString("stock_quantity")
+                            0,//
+                            Integer.parseInt(mAuthHelper.getIdUser())
+                    );
 
-                db.addListItem(item);
-                //db.deleteListItem(response.getString("id"));
-                listItems.add(item);
-                adapter.notifyDataSetChanged();
-
+                    db.addListItem(item);
+                    //db.deleteListItem(response.getString("id"));
+                    listItems.add(item);
+                    adapter.notifyDataSetChanged();
+                }
             } catch (JSONException e) {
                 Log.d("JSONException_get", e.getMessage());
                 e.printStackTrace();
             }
-
         }
 
         @Override

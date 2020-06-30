@@ -111,7 +111,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
 
                                 String temp = item.getImage_json().getJSONObject(i).getString("src");
 
-                                temp = temp.replace("https", "http");
+///                                temp = temp.replace("https", "http");
                                 item.setImg_src(temp);
 
 
@@ -128,6 +128,9 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
                     bundle.putString("description",item.getDescription());
                     bundle.putInt("price", item.getPrice());
                     bundle.putInt("position",getAdapterPosition());
+                    bundle.putInt("count", item.getCount());
+                    bundle.putInt("count_shop", item.getCount_shop());
+                    bundle.putString("favorite",item.getFavorite());
 
                     Fragment fragment = new Fragment_gallery();
                     fragment.setArguments(bundle);

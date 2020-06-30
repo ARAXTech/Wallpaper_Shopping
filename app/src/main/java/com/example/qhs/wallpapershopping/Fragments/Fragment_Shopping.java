@@ -137,7 +137,7 @@ public class Fragment_Shopping extends Fragment implements ShoppingAdapter.ItemC
 
 
 
-        //db.deleteAll();
+       // db.deleteAll();
         listItems = db.getAllShoppingItem();
         adapter = new ShoppingAdapter(getContext(),listItems,this);
         recyclerView.setAdapter(adapter);
