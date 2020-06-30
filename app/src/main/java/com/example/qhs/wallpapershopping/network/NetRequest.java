@@ -65,27 +65,36 @@ public class NetRequest {
 
             }
         }, error -> {
-
+            JSONObject obj = new JSONObject();
+            String message = "";
             // As of f605da3 the following should work
             NetworkResponse response = error.networkResponse;
-            if (error instanceof ServerError && response != null) {
-                try {
-                    String res = new String(response.data,
+            try {
+                    String responseBody = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                    JSONObject obj = new JSONObject(res);
-                    if (obj!=null)
-                        callback.onResponse(obj);
-                } catch (UnsupportedEncodingException e1) {
-                    // Couldn't properly decode data to string
-                    e1.printStackTrace();
-                } catch (JSONException e2) {
-                    // returned data is not JSONObject?
-                    e2.printStackTrace();
-                }
+                obj = new JSONObject(responseBody);
+                message = obj.getString("message");
+
+            } catch (UnsupportedEncodingException e1) {
+                // Couldn't properly decode data to string
+                e1.printStackTrace();
+            } catch (JSONException e2) {
+                // returned data is not JSONObject?
+                e2.printStackTrace();
+            }
+
+
+            if (error instanceof ServerError && response != null) {
+                if (obj!=null)
+                    callback.onResponse(obj);
+                else
+                    Log.e("ServerError", message);
+
             }else if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                 Log.e("NoConnectionError", error.getMessage());
             } else if (error instanceof AuthFailureError) {
-                Log.e("AuthFailureError", error.getMessage());
+                Log.e("AuthFailureError", message);
+                callback.onError(message);
             } else if (error instanceof NetworkError) {
                 Log.e("NetworkError", error.getMessage());
             } else if (error instanceof ParseError) {
