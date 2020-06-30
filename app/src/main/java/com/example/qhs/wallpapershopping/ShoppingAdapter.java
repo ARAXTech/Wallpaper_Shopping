@@ -184,23 +184,31 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         @Override
         public void onResponse(@NonNull JSONObject response) {
             try {
-                ListItem item = new ListItem(
-                        response.getString("id"),
-                        response.getString("name"),
-                        response.getString("short_description"),
-                        response.getJSONArray("images").getJSONObject(0).getString("src"),
-                        "false",
-                        response.getJSONArray("images").length(),
-                        Integer.parseInt(response.getString("price")),
-                        1,
-                        quantity,
-                        Integer.parseInt(mAuthHelper.getIdUser())
-                );
+                if(db.Exists(response.getString("id")))
+                {
+                    ListItem get_item=db.getListItem(Integer.parseInt(response.getString("id")));
+                    get_item.setCount_shop(quantity);
+                    db.updateListItem(get_item);
+                }
+                //TODO: fill stock
+                else {
+                    ListItem item = new ListItem(
+                            response.getString("id"),
+                            response.getString("name"),
+                            response.getString("short_description"),
+                            response.getJSONArray("images").getJSONObject(0).getString("src"),
+                            "false",
+                            response.getJSONArray("images").length(),
+                            Integer.parseInt(response.getString("price")),
+                            1,
+                            quantity,
+                            Integer.parseInt(mAuthHelper.getIdUser())
+                    );
 
-                db.addListItem(item);
-                listItems.add(item);
-                notifyDataSetChanged();
-
+                    db.addListItem(item);
+                    listItems.add(item);
+                    notifyDataSetChanged();
+                }
             } catch (JSONException e) {
                 Log.d("JSONException_get", e.getMessage());
                 e.printStackTrace();

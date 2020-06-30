@@ -20,7 +20,7 @@ import Util.util;
  */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
- private AuthHelper mAuthHelper;
+    private AuthHelper mAuthHelper;
 
     public DatabaseHandler(Context context) {
         super(context, util.DATABASE_NAME, null, util.DATABASE_VERSION);
@@ -37,8 +37,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + util.KEY_FAVORITE + " TEXT DEFAULT 'false', "
                 + util.KEY_NUM_LINK + " INTEGER DEFAULT 0, "
                 + util.KEY_PRICE + " INTEGER DEFAULT 1, "
-                + util.KEY_COUNT + " INTEGER DEFAULT 0, "
-                + util.KEY_COUNT_SHOP + " INTEGER, "+ util.KEY_USER_ID + " INTEGER "+")";
+                + util.KEY_COUNT + " INTEGER DEFAULT 1, "
+                + util.KEY_COUNT_SHOP + " INTEGER DEFAULT 0, "+ util.KEY_USER_ID + " INTEGER "+")";
         sqLiteDatabase.execSQL(CREATE_GL_TABLE);
 
     }
@@ -128,7 +128,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //  List<Contact> contactList = new ArrayList<>();
         List <ListItem> ItemList = new ArrayList <>();
         //select all contacts
-        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_COUNT+"!=0 AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
+        String selectAll = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_COUNT_SHOP+"!=0 AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         Cursor cursor = db.rawQuery(selectAll, null);
         if (cursor.moveToFirst()) {
             do {
@@ -186,7 +186,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //Update row
         return db.update(util.TABLE_NAME, values, util.KEY_ID + "=? AND " + util.KEY_USER_ID+ "=?",
                 new String[]{String.valueOf(listItem.getId()),String.valueOf(listItem.getUser_id())});
-     //   return db.update(util.TABLE_NAME, values, "util.KEY_ID", null);
+        //   return db.update(util.TABLE_NAME, values, "util.KEY_ID", null);
 
     }
 
@@ -232,7 +232,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //get contacts count
     public int getShoppingItemCount() {
-        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_COUNT+"!=0 AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
+        String countQuery = "SELECT * FROM "+util.TABLE_NAME+" WHERE ("+util.KEY_COUNT_SHOP+"!=0 AND "+util.KEY_USER_ID+"="+mAuthHelper.getIdUser()+")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -274,5 +274,3 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 }
-
-
