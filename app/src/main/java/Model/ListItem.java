@@ -1,5 +1,8 @@
 package Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,7 +10,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListItem {
+public class ListItem implements Parcelable {
     public ArrayList<String> img_src;
     private String description;
     private String name;
@@ -19,11 +22,9 @@ public class ListItem {
     private int count_shop;
     private int user_id;
     private int num_link;
-    private JSONArray image_json;
-    private List<JSONArray> image_series;
 
 
-    public ListItem(  String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count, int count_shop,int user_id) {
+    public ListItem(String id,String name, String description, String imgLink, String favorite,int num_link,int price, int count, int count_shop,int user_id) {
         this.id=id;
         this.imgLink=imgLink;
         this.description = description;
@@ -40,14 +41,29 @@ public class ListItem {
 
     }
 
-    public ListItem(String imgLink,String name,String id, String description, JSONArray image_json,ArrayList img_src, int price) {
+    public ListItem(String imgLink,String name,String id, String description,ArrayList img_src, int price, int count) {
         this.imgLink = imgLink;
         this.description = description;
-        this.image_json = image_json;
         this.name = name;
         this.id = id;
         this.img_src = img_src;
         this.price = price;
+        this.count = count;
+    }
+
+    protected ListItem(Parcel in) {
+
+        user_id = in.readInt();
+        count = in.readInt();
+        count_shop = in.readInt();
+        price = in.readInt();
+        num_link = in.readInt();
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        imgLink = in.readString();
+        favorite = in.readString();
+        in.readStringList(img_src);
     }
 
 
@@ -125,25 +141,12 @@ public class ListItem {
     }
 
 
-    public List<JSONArray> getImage_series() {
-        return image_series;
-    }
-
-    public void setImage_series(List<JSONArray> image_series) {
-        this.image_series = image_series;
-    }
-
-
     public List<String> getImg_src() {
         return img_src;
     }
 
     public void setImg_src(ArrayList <String> img_src) {
         this.img_src = img_src;
-    }
-
-    public void setImg_src(String src) {
-        this.img_src.add(src);
     }
 
 
@@ -170,12 +173,36 @@ public class ListItem {
     }
 
 
-    public JSONArray getImage_json() {
-        return image_json;
+    public static final Creator CREATOR = new Creator() {
+        @Override
+        public ListItem createFromParcel(Parcel in) {
+            return new ListItem(in);
+        }
+
+        @Override
+        public ListItem[] newArray(int size) {
+            return new ListItem[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setImage_json(JSONArray image_json) {
-        this.image_json = image_json;
-    }
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(user_id);
+        parcel.writeInt(count);
+        parcel.writeInt(count_shop);
+        parcel.writeInt(price);
+        parcel.writeInt(num_link);
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeString(imgLink);
+        parcel.writeString(favorite);
+        parcel.writeStringList(img_src);
 
+    }
 }

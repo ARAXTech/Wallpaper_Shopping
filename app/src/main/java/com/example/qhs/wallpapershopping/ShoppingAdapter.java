@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.ListPreloader;
 import com.example.qhs.wallpapershopping.Fragments.Fragment_Shopping;
@@ -48,7 +49,6 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     private Context context;
     private NetRequest request;
     private List<ListItem> listItems;
-    private boolean mFlag;
     private String[][] id;
     private Admin admin;
     private AuthHelper mAuthHelper;
@@ -56,13 +56,13 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     private Integer[][] shoppingProductId;
     private int quantity;
     int num;
+    private ListItem activeItem;
     ItemCallback Listener;
 
-    public ShoppingAdapter(Context context, List listitem,ItemCallback Listener) {
+    public ShoppingAdapter(Context context, List listitem, ItemCallback Listener) {
         this.context = context;
         this.listItems = listitem;
-        this.Listener=Listener;
-        mFlag = false;
+        this.Listener = Listener;
         request = new NetRequest(context);
         admin = Admin.getInstance(context);
         mAuthHelper = AuthHelper.getInstance(context);
@@ -74,7 +74,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         for (int i = 0; i < num; i++) {
             shoppingProductId[i][0] = Integer.valueOf(listItems.get(i).getId());
             shoppingProductId[i][1] = -1;
-            shoppingProductId[i][2] = listItems.get(i).getCount();
+            shoppingProductId[i][2] = listItems.get(i).getCount_shop();
         }
 
 
@@ -107,17 +107,20 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-        final ListItem item = listItems.get(position);
-        final List <String> image_link = new ArrayList <>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
+        activeItem = listItems.get(position);
+
+        getProduct(Integer.parseInt(activeItem.getId()));// Update Stock
+
+        final List <String> image_link = new ArrayList <>(Arrays.asList(activeItem.getImgLink().split("\\s*,\\s*")));
         String temp = image_link.get(0);
-        //  temp = temp.replace("https", "http");
+
         if (URLUtil.isValidUrl(temp)) {
             Picasso.with(context)
                     .load(temp).resize(200, 200)
                     .into(holder.img);
 
-            holder.counter.setText(String.valueOf(item.getCount_shop()));
-             Log.d("shopcount1",String.valueOf(item.getCount_shop()));
+            holder.counter.setText(String.valueOf(activeItem.getCount_shop()));
+             Log.d("shopcount1",String.valueOf(activeItem.getCount_shop()));
 
 
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,20 +128,23 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                 @Override
                 public void onClick(View view) {
 
-                    holder.counter.setText(String.valueOf(item.getCount_shop()-1));
-                    item.setCount_shop(item.getCount_shop()-1);
-                    Log.d("shopcount2",String.valueOf(item.getCount_shop()));
+                    holder.counter.setText(String.valueOf(activeItem.getCount_shop()-1));
+                    activeItem.setCount_shop(activeItem.getCount_shop()-1);
+                    activeItem.setCount(activeItem.getCount()+1);
+                    Log.d("shopcount2",String.valueOf(activeItem.getCount_shop()));
 
-                    if (item.getCount_shop()<1) {
-                        String deleteId = item.getId();
+                    if (activeItem.getCount_shop()<1) {
+                        String deleteId = activeItem.getId();
                         db.deleteListItem(deleteId);
                         listItems.remove(position); // remove the item from list
                         notifyItemRemoved(position); // notify the adapter about the removed item
                         notifyItemRangeChanged(position, getItemCount());
                         //deleteFromServer(deleteId);
+                    } else {
+                        db.updateListItem(activeItem);
+                        //updateQuantityOnServer(item.getId(), item.getCount_shop());
                     }
-                    db.updateListItem(item);
-                    //updateQuantityOnServer(item.getId(), item.getCount_shop());
+
                     Listener.TotalPrice();
 
 
@@ -149,24 +155,31 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                 @Override
                 public void onClick(View view) {
 
-                    holder.counter.setText(String.valueOf(item.getCount_shop()+1));
-                    item.setCount_shop(item.getCount_shop()+1);
-                    Log.d("shopcount3",String.valueOf(item.getCount_shop()));
-                    db.updateListItem(item);
-                    //updateQuantityOnServer(item.getId(), item.getCount_shop());
-                    Listener.TotalPrice();
+                    if (activeItem.getCount()>0){
+                        holder.counter.setText(String.valueOf(activeItem.getCount_shop()+1));
+                        activeItem.setCount_shop(activeItem.getCount_shop()+1);
+                        activeItem.setCount(activeItem.getCount()-1);
+                        Log.d("shopcount3",String.valueOf(activeItem.getCount_shop()));
+                        db.updateListItem(activeItem);
+                        //updateQuantityOnServer(item.getId(), item.getCount_shop());
+                        Listener.TotalPrice();
+                    }
+                    else {
+                        Toast.makeText(context,"موجودی کافی نیست.", Toast.LENGTH_LONG).show();
+                    }
+
 
                }
             });
 
-            holder.price.setText(String.valueOf(item.getPrice()));
+            holder.price.setText(String.valueOf(activeItem.getPrice()));
 
-            holder.name.setText(" نام محصول:" + item.getName());
+            holder.name.setText(" نام محصول:" + activeItem.getName());
 
         }
         else
         {
-            db.deleteListItem(item.getId());
+            db.deleteListItem(activeItem.getId());
             listItems.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, getItemCount());
@@ -176,21 +189,37 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
 
     public void getProduct(int id){
         NetRequest request = new NetRequest(context);
-        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, admin.getAdminAuth());
+        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mStockCallback, admin.getAdminAuth());
+//        request.JsonObjectNetRequest("GET", "wc/v3/products/" + id, mProductCallback, admin.getAdminAuth());
 
     }
+    private NetRequest.Callback<JSONObject> mStockCallback = new NetRequest.Callback<JSONObject>() {
+
+        @Override
+        public void onResponse(@NonNull JSONObject response) {
+            try {
+                activeItem.setCount(Integer.parseInt(response.getString("stock_quantity")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(String error) {
+
+        }
+    };
 
     private NetRequest.Callback<JSONObject> mProductCallback = new NetRequest.Callback<JSONObject>() {
         @Override
         public void onResponse(@NonNull JSONObject response) {
             try {
-                if(db.Exists(response.getString("id")))
+                if(db.Exists(response.getString("id")))//check db because of favorite products
                 {
                     ListItem get_item=db.getListItem(Integer.parseInt(response.getString("id")));
                     get_item.setCount_shop(quantity);
                     db.updateListItem(get_item);
                 }
-                //TODO: fill stock
                 else {
                     ListItem item = new ListItem(
                             response.getString("id"),
@@ -200,7 +229,7 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
                             "false",
                             response.getJSONArray("images").length(),
                             Integer.parseInt(response.getString("price")),
-                            1,
+                            Integer.parseInt(response.getString("stock_quantity")),
                             quantity,
                             Integer.parseInt(mAuthHelper.getIdUser())
                     );
@@ -380,18 +409,18 @@ public class ShoppingAdapter  extends RecyclerView.Adapter<ShoppingAdapter.ViewH
         }
         @Override
         public void onClick(View view) {
-            //  List<String> image_link = null;
+
             int Position=getAdapterPosition();
             ListItem item=listItems.get(Position);
-            Bundle bundle = new Bundle();
-            bundle.putString("id",item.getId());
-            bundle.putString("name",item.getName());
-            bundle.putString("description",item.getDescription());
-            bundle.putInt("price", item.getPrice());
-            //convert string to array with , seperator
-            List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
 
-            bundle.putStringArrayList("imageJsonObj", (ArrayList <String>) image_link);
+            //convert string to array with , seperator
+            ArrayList<String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
+            item.setImg_src(image_link);
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("productItem", item);
+
+
             Fragment fragment = new Fragment_gallery();
             fragment.setArguments(bundle);
             ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_gallery").commit();

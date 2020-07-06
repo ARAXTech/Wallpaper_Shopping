@@ -12,6 +12,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +62,11 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         holder.name = item.getName();
         holder.description = item.getDescription();
 
-        String temp = item.getImgLink();
+        List <String> image_link = Arrays.asList(item.getImgLink().split("\\s*,\\s*"));
+
+        final String temp = image_link.get(0);
+
+        //String temp = item.getImgLink();
         Picasso.with(context)
                 .load(temp)
                 .fit().centerCrop()
@@ -85,12 +91,9 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imgR;
-        //public TextView txtdescriptionR;
-        public JSONArray image_obj ;
         public String id;
         public String description;
         public String name;
-        ArrayList<String> imageList;
 
 
 
@@ -100,37 +103,10 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    imageList = new ArrayList<>();
-                    image_obj = new JSONArray();
                     ListItem item = listItems.get(getAdapterPosition());
 
-                    if(item.get_img_src_size() == 0){
-
-                        for(int i=0; i < item.getImage_json().length(); i++) {
-                            try {
-
-                                String temp = item.getImage_json().getJSONObject(i).getString("src");
-
-///                                temp = temp.replace("https", "http");
-                                item.setImg_src(temp);
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
                     Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("imageJsonObj",item.img_src);
-                    bundle.putString("name",item.getName());
-                    bundle.putString("id",item.getId());
-                    bundle.putString("description",item.getDescription());
-                    bundle.putInt("price", item.getPrice());
-                    bundle.putInt("position",getAdapterPosition());
-                    bundle.putInt("count", item.getCount());
-                    bundle.putInt("count_shop", item.getCount_shop());
-                    bundle.putString("favorite",item.getFavorite());
+                    bundle.putParcelable("productItem", item);
 
                     Fragment fragment = new Fragment_gallery();
                     fragment.setArguments(bundle);

@@ -73,30 +73,14 @@ public class Fragment_recycler extends Fragment {
     public RecyclerView recyclerView;
     public RecyclerAdapter adapter;
     public List<ListItem> listItems;
-    private List<JSONArray> imageList;
     private NetRequest request;
     private ProgressDialog mProgressDialog;
     //log in
     private AuthHelper mAuthHelper;
     private Admin admin;
-    private Menu mOptionsMenu;
-    private Button profileBtn;
     Animation frombottom;
 
-    //com.example.qhs.deydigital.Json parametr
-    private final static String URL_products = "https://mobifytech.ir/wc-api/v3/products?filter[limit] =-1";
-    private final static String URL_category = "https://mobifytech.ir/wc-api/v3/products?filter[categories]=";
-    private static String URL;
-    private final static String URL_category_product = "http://mobifytech.ir/wp-json/wc/v3/products?category=";
-    private static String category_id;
-    private final static String per_page = "&per_page=";
-    private final static String per_page_number = "100";
-    private final static String offset = "&offset=";
-    private final static String offset_number = "0";
-    private RequestQueue queue;
     public View view;
-    public JSONArray image_series_json;
-    private int response_number = 0;
     private int iteration_number;
     public HurlStack hurlStack;
 
@@ -105,8 +89,6 @@ public class Fragment_recycler extends Fragment {
     private List<RecyclerHorizentalItem> HorizentalItems = new ArrayList<>();
 
     public ProgressBar pgsBar;
-    // public Context context;
-    public String URL_complete;
 
 
     @Override
@@ -148,7 +130,6 @@ public class Fragment_recycler extends Fragment {
        // postponeEnterTransition();
 
         request = new NetRequest(getContext());
-        queue = newRequestQueue(getContext());
         admin = Admin.getInstance(getContext());
 
         mProgressDialog = new ProgressDialog(getContext());
@@ -203,19 +184,6 @@ public class Fragment_recycler extends Fragment {
         recyclerViewHorizental.setAdapter(adapterHorizental);
 
 
-        //Retrieve Bundle value
-        Bundle extras = this.getArguments();
-        if (extras == null) {
-            category_id = null;
-            Log.d("key:", category_id);
-        } else {
-            category_id = extras.getString("key");
-        }
-
-        imageList = new ArrayList<JSONArray>();
-        image_series_json = new JSONArray();
-
-        ///com.example.qhs.deydigital.Recycler
         recyclerView = (RecyclerView) view.findViewById(R.id.reciclerViewID);
         recyclerView.setHasFixedSize(true);
         //recyclerView.startAnimation(frombottom);
@@ -273,25 +241,6 @@ public class Fragment_recycler extends Fragment {
      */
 
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//
-//        Bundle extras = this.getArguments();
-//        String name_string = extras.getString("name");
-//        //Toolbar
-//        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
-//        TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
-//        title.setText(name_string);
-//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ((AppCompatActivity)getActivity()).onBackPressed();
-//            }
-//        });
-//        super.onActivityCreated(savedInstanceState);
-//    }
-
     private HostnameVerifier getHostnameVerifier() {
         return new HostnameVerifier() {
             @Override
@@ -312,12 +261,11 @@ public class Fragment_recycler extends Fragment {
 
     public void category_Response_edited(){
 
-        imageList.clear();
+        //imageList.clear();
         Bundle extras = this.getArguments();
         String key_string = extras.getString("key");
 
-        request.JsonArrayNetRequest("GET", "wc/v3/products?category="+
-                key_string, mCategoryCallback, admin.getAdminAuth());
+        request.JsonArrayNetRequest("GET", "wc/v3/products?category="+ key_string, mCategoryCallback, admin.getAdminAuth());
 
     }
 
@@ -327,48 +275,45 @@ public class Fragment_recycler extends Fragment {
         public void onResponse(@NonNull JSONArray response) {
             try {
 
-                //JSONArray products = response.getJSONArray();
                 for (int i = 0; i < response.length(); i++) {
 
-                    response_number = response.length();
-
-
-                    image_series_json = response.getJSONObject(i).getJSONArray("images");
-                    //viewDialog.hideDialog();
-
-                    //Log.d("j**response number",String.valueOf(iteration_number) + "***"+String.valueOf(response_number) );
                     //get image urls and save in arraylist
-                    imageList.add(image_series_json);
+                    JSONArray image_series_json = response.getJSONObject(i).getJSONArray("images");
+                    ArrayList<String> images_src = new ArrayList<>();
+                    for (int j=0; j < image_series_json.length(); j++){
+                        images_src.add(image_series_json.getJSONObject(j).getString("src"));
+                    }
+
+                    String imgLink = images_src.toString().substring(1,images_src.toString().length()-1);
+
                     ListItem item;
-                    Log.d("response*****", response.getJSONObject(i).getString("name"));
+                    Log.d("response*****", response.getJSONObject(i).getString("name")+images_src.toString());
+
                     if (!response.getJSONObject(i).getString("price").equals("")){
                         item = new ListItem(
-                                response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
+                                imgLink,
                                 response.getJSONObject(i).getString("name"),
                                 /*image_series_json*/
                                 response.getJSONObject(i).getString("id"),
                                 response.getJSONObject(i).getString("short_description"),
-                                response.getJSONObject(i).getJSONArray("images"),
-                                new ArrayList()
-                                ,Integer.parseInt(response.getJSONObject(i).getString("price"))
+                                images_src,
+                                Integer.parseInt(response.getJSONObject(i).getString("price")),
+                                Integer.parseInt(response.getJSONObject(i).getString("stock_quantity"))
                         );
                     }else {
                         item = new ListItem(
-                                response.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("src"),
+                                imgLink,
                                 response.getJSONObject(i).getString("name"),
                                 /*image_series_json*/
                                 response.getJSONObject(i).getString("id"),
                                 response.getJSONObject(i).getString("short_description"),
-                                response.getJSONObject(i).getJSONArray("images"),
-                                new ArrayList()
-                                , 0
+                                images_src,
+                                0,
+                                Integer.parseInt(response.getJSONObject(i).getString("stock_quantity"))
                         );
                     }
+                    item.setNum_link(response.getJSONObject(i).getJSONArray("images").length());
 
-
-                    for (int u = 0; u < response.getJSONObject(i).getJSONArray("images").length(); u++) {
-                        Log.d("imgsrc***", response.getJSONObject(i).getJSONArray("images").getJSONObject(u).getString("src"));
-                    }
 
 
                     listItems.add(item);
