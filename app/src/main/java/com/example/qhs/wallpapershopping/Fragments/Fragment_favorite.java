@@ -93,7 +93,7 @@ public class Fragment_favorite extends Fragment {
 
 
 
-      // db.deleteAll();
+        //db.deleteAll();
         if(db.getFavoriteItemCount()!=0){
             listItems = db.getAllFavoriteItem();}
 
@@ -162,6 +162,7 @@ public class Fragment_favorite extends Fragment {
             }
 
             for (int i = 0; i < num; i++) {
+                //Delete those that have been deleted from the site
                 if (wishlistProductId[1][i] == -1) {
                     Log.d("index ", String.valueOf(wishlistProductId[0][i]));
                     db.deleteListItem(String.valueOf(wishlistProductId[0][i]));
@@ -170,8 +171,6 @@ public class Fragment_favorite extends Fragment {
                     Fragment fragment = new Fragment_favorite();
                     ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
 
-
-                    //addProduct(wishlistProductId[0][i]);
                 }
             }
 
@@ -209,27 +208,57 @@ public class Fragment_favorite extends Fragment {
         @Override
         public void onResponse(@NonNull JSONObject response) {
             try {
+                // if added through cart
                 if(db.Exists(response.getString("id"))){
                     ListItem get_item=db.getListItem(Integer.parseInt(response.getString("id")));
                     get_item.setFavorite("true");
                     db.updateListItem(get_item);
                 }
                 else {
-                    ListItem item = new ListItem(
-                            response.getString("id"),
-                            response.getString("name"),
-                            response.getString("short_description"),
-                            response.getJSONArray("images").getJSONObject(0).getString("src"),
-                            "true",
-                            response.getJSONArray("images").length(),
-                            Integer.parseInt(response.getString("price")),
-                            0,//response.getString("stock_quantity")
-                            0,//
-                            Integer.parseInt(mAuthHelper.getIdUser())
-                    );
+                    //fill img_src
+                    JSONArray image_series_json = response.getJSONArray("images");
+                    ArrayList<String> images_src = new ArrayList<>();
+                    for (int j=0; j < image_series_json.length(); j++){
+                        images_src.add(image_series_json.getJSONObject(j).getString("src"));
+                    }
+
+                    String imgLink = images_src.toString().substring(1,images_src.toString().length()-1);
+
+                    ListItem item;
+                    if (response.getJSONArray("images").length() != 0){
+                        item = new ListItem(
+                                response.getString("id"),
+                                response.getString("name"),
+                                response.getString("short_description"),
+                                imgLink,
+                                "true",
+                                response.getJSONArray("images").length(),
+                                Integer.parseInt(response.getString("price")),
+                                Integer.parseInt(response.getString("stock_quantity")),
+                                0,//
+                                Integer.parseInt(mAuthHelper.getIdUser())
+                        );
+                    }
+                    else {
+                        item = new ListItem(
+                                response.getString("id"),
+                                response.getString("name"),
+                                response.getString("short_description"),
+                                imgLink,
+                                "true",
+                                0,
+                                Integer.parseInt(response.getString("price")),
+                                Integer.parseInt(response.getString("stock_quantity")),
+                                0,//
+                                Integer.parseInt(mAuthHelper.getIdUser())
+                        );
+                    }
+
+
+                    item.setImg_src(images_src);
+
 
                     db.addListItem(item);
-                    //db.deleteListItem(response.getString("id"));
                     listItems.add(item);
                     adapter.notifyDataSetChanged();
                 }
