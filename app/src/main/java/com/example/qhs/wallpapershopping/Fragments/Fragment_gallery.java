@@ -87,6 +87,7 @@ public class Fragment_gallery extends Fragment {
 
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container,
                              @NonNull Bundle savedInstanceState) {
@@ -192,7 +193,7 @@ public class Fragment_gallery extends Fragment {
 
         if (db.Exists(id)) {
             ListItem get_item=db.getListItem(Integer.valueOf(id));
-            if(get_item.getFavorite().equals("true")){
+            if(get_item.getFavorite()=="true"){
                 toggleButton.setChecked(true);
                 toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_yes));
         }
@@ -200,7 +201,8 @@ public class Fragment_gallery extends Fragment {
                 toggleButton.setChecked(false);
                 toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
             }
-        } else {
+        }
+        else {
             toggleButton.setChecked(false);
             toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
         }
@@ -251,8 +253,18 @@ public class Fragment_gallery extends Fragment {
         //end favorite button
 
         ///Shopping Cart
-
         final Button shoppingBtn = (Button) view.findViewById(R.id.ShoppingBtn);
+        if(mAuthHelper.isLoggedIn()){
+          if(db.Exists(id)){
+              ListItem get_item=db.getListItem(Integer.valueOf(id));
+              if(get_item.getCount_shop()>0){
+                shoppingBtn.setEnabled(false);
+                shoppingBtn.setClickable(false);
+                shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
+              }
+           }
+         }
+
         shoppingBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
