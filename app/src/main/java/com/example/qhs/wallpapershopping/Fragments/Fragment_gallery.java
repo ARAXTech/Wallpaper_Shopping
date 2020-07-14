@@ -94,7 +94,6 @@ public class Fragment_gallery extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        View layout = view.findViewById(R.id.constraintLayout_gallery);
         //Toolbar
         Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         TextView title = (TextView) ((AppCompatActivity)getActivity()).findViewById(R.id.txtTitle);
@@ -164,23 +163,17 @@ public class Fragment_gallery extends Fragment {
 
         //Get values from recyclerAdapter by intent to show description of products
         Bundle bundle = this.getArguments();
-        id = bundle.getString("id");
-        final String name = bundle.getString("name");
-        final String description = bundle.getString("description");
-        final int price = bundle.getInt("price");
-        final int currentPosition = bundle.getInt("position");
-        final  int count=bundle.getInt("count");
-        final int count_shop=bundle.getInt("count_shop");
-        final String favorite=bundle.getString("favorite");
+        ListItem item = bundle.getParcelable("productItem");
+        id = item.getId();
 
         //Textview of details
         TextView txt_name = (TextView) view.findViewById(R.id.txt1);
-        txt_name.setText( name );
+        txt_name.setText( item.getName() );
         //txt_name.setTypeface(face);
 
         TextView txt_description = (TextView) view.findViewById(R.id.txt2);
-        String description_full =  "\n" + Html.fromHtml(description) +
-                                   "\n" + " قیمت:" + Html.fromHtml(String.valueOf(price))+  " تومان"+
+        String description_full =  "\n" + Html.fromHtml(item.getDescription()) +
+                                   "\n" + " قیمت: " + Html.fromHtml(String.valueOf(item.getPrice()))+  " تومان"+
                                    "\n";
         txt_description.setText(description_full);
         txt_description.setTextColor(Color.parseColor("#000000"));
@@ -193,24 +186,15 @@ public class Fragment_gallery extends Fragment {
         txt_id.setText(product_code + id);
 
         init();
-        final ArrayList<String> image_list = bundle.getStringArrayList("imageJsonObj");
-        Log.d("skkk", String.valueOf(image_list));
-        String s="";
-        for (int i=0;i<image_list.size(); i=i+1)
-        {
-            s=s+image_list.get(i)+",";
-            Log.d("slll", String.valueOf(s));
-        }
 
-        Log.d("finalsize", String.valueOf(image_list.size()));
         //favorite button
         final ToggleButton toggleButton = (ToggleButton) view.findViewById(R.id.toggleButton);
 
-        if (db.Exists(id)==true ) {
+        if (db.Exists(id)) {
             ListItem get_item=db.getListItem(Integer.valueOf(id));
             if(get_item.getFavorite().equals("true")){
-            toggleButton.setChecked(true);
-            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_yes));
+                toggleButton.setChecked(true);
+                toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_yes));
         }
             else {
                 toggleButton.setChecked(false);
@@ -223,46 +207,43 @@ public class Fragment_gallery extends Fragment {
 
 
         //favorite button
-        final String finalS = s;
-        Log.d("finalS",finalS);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mAuthHelper.isLoggedIn()){
 
-                if (isChecked ){
-                    Log.d("ischeck","ischeck");
-                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.favorite_yes));
-                    //get_item.setFavorite("true");
-                    ListItem item = new ListItem(id,name,description, finalS,"true",image_list.size(),price,count,count_shop,
-                            Integer.parseInt(mAuthHelper.getIdUser()));
-                    if(db.Exists(id)){
-                        db.updateListItem(item);}
-                    else {
-                        db.addListItem(item);
+                    if (isChecked ){
+                        Log.d("ischeck","ischeck");
+                        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.favorite_yes));
+
+                        item.setFavorite("true");
+                        item.setUser_id(Integer.parseInt(mAuthHelper.getIdUser()));
+
+                        if(db.Exists(id)){
+                            db.updateListItem(item);
+                        } else {
+                            db.addListItem(item);
+                        }
+                        addProduct(Integer.parseInt(id));
+                    } else {
+                        Log.d("isnotcheck","isnotcheck");
+                        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
+                        ListItem get_item=db.getListItem(Integer.valueOf(id));
+                        if(get_item.getCount_shop()==0){
+                            db.deleteListItem(id);
+                        } else {
+                            get_item.setFavorite("false");
+                            db.updateListItem(get_item);
+                        }
+
+                        //remove from site
+                        request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products",
+                                mWishlistProductCallback, null);
+
                     }
-                    addProduct(Integer.parseInt(id));
-                    }
-                else if (!isChecked ){
-                    Log.d("isnotcheck","isnotcheck");
-                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.favorite_no));
-                    ListItem get_item=db.getListItem(Integer.valueOf(id));
-                    if(get_item.getCount_shop()==0){
-                        db.deleteListItem(id);
-                    }
-                     else
-                    {
-//                    ListItem item = new ListItem(id,name,description, finalS,"false",image_list.size(),price,count,count_shop,
-//                            Integer.parseInt(mAuthHelper.getIdUser()));
-                        get_item.setFavorite("false");
-                        db.updateListItem(get_item);}
-                    //remove from site
-                    request.JsonArrayNetRequest("GET", "wc/v3/wishlist/"+mAuthHelper.getSharekey()+"/get_products",
-                            mWishlistProductCallback, null);
-                }}
-               else{
-                    Log.d("gall","notlog");
-                    Toast.makeText(getContext(),"لطفا با حساب کاربری خود وارد شوید", Toast.LENGTH_SHORT).show();}
+                } else {
+                    Toast.makeText(getContext(),"لطفا با حساب کاربری خود وارد شوید", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -278,20 +259,26 @@ public class Fragment_gallery extends Fragment {
             public void onClick(View view) {
 
                 if (mAuthHelper.isLoggedIn()) {
-                    layout.setBackgroundColor(0xFFFFFF);
-                    ListItem get_item=db.getListItem(Integer.valueOf(id));
-                    ListItem item1 = new ListItem(id, name, description, finalS,favorite,
-                            image_list.size(), price,count,1,Integer.parseInt(mAuthHelper.getIdUser()));
-                    if(db.Exists(id)){
-                        db.updateListItem(item1);
-                     }
-                     else {
-                        db.addListItem(item1);
-                  }
-                    //addProductToCart(Integer.parseInt(id), 1);
-                    shoppingBtn.setEnabled(true);
-                    shoppingBtn.setClickable(false);
-                    shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
+                    //check stock is enough
+                    if (item.getCount()>0) {
+
+                        item.setCount_shop(1);
+                        item.setUser_id(Integer.parseInt(mAuthHelper.getIdUser()));
+                        item.setCount(item.getCount()-1);
+
+                        if (db.Exists(id)) {
+                            db.updateListItem(item);
+                        } else {
+                            item.setFavorite("false");
+                            db.addListItem(item);
+                        }
+                        //addProductToCart(Integer.parseInt(id), 1);
+                        shoppingBtn.setEnabled(true);
+                        shoppingBtn.setClickable(false);
+                        shoppingBtn.setBackgroundColor(R.color.SecondaryLight);
+                    } else {
+                        Toast.makeText(getContext(),"موجودی کافی نیست.", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Blur blur=new Blur();
                     Bitmap map = blur.takeScreenShot(getActivity());
@@ -423,8 +410,9 @@ public class Fragment_gallery extends Fragment {
 
 
 
-        ArrayList<String> image_list = this.getArguments().getStringArrayList("imageJsonObj");
-
+//        ArrayList<String> image_list = this.getArguments().getStringArrayList("imageJsonObj");
+        ListItem item = this.getArguments().getParcelable("productItem");
+        List<String> image_list = item.getImg_src();
         // JsonParser parser = new JsonParser();
         //JSONObject scamDataJsonObject = parser.parse(scamDatas).getAsJsonObject();
 

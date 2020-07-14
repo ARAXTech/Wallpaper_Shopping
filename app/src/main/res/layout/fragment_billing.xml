@@ -76,12 +76,8 @@
 
     <EditText
         android:id="@+id/last_name"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="197dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@null"
         android:fontFamily="@font/shabnam"
         android:hint=" نام خانوادگی"
@@ -108,12 +104,8 @@
 
     <EditText
         android:id="@+id/address"
-        android:layout_width="352dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="17dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@null"
         android:fontFamily="@font/shabnam"
         android:hint="   آدرس"
@@ -194,12 +186,8 @@
 
     <EditText
         android:id="@+id/passcode"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="195dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@null"
         android:fontFamily="@font/shabnam"
         android:hint=" کدپستی"
@@ -226,11 +214,8 @@
 
     <EditText
         android:id="@+id/phone"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@null"
         android:hint=" تلفن"
         />

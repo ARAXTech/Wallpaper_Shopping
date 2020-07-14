@@ -114,7 +114,7 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
             public void onItemSelected(AdapterView <?> adapterView, View view, int position, long l) {
                 aa.notifyDataSetChanged();
                 String data= state_spinner.getItemAtPosition(position).toString();
-                Toast.makeText(getContext(), data, Toast.LENGTH_LONG).show();
+               // Toast.makeText(getContext(), data, Toast.LENGTH_LONG).show();
                 index = position;
                 switch(position){
                     case 0:
@@ -171,9 +171,9 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
         return postcode.getText().toString().trim();
     }
 
-    public String getEmail() {
-        return email.getText().toString().trim();
-    }
+//    public String getEmail() {
+//        return email.getText().toString().trim();
+//    }
 
     public String getPhone() {
         return phone.getText().toString().trim();
@@ -202,7 +202,7 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView <?> arg0, View arg1, int position, long id) {
        // state_spinner.getpositio
         city = cities[index][position];
-        Toast.makeText(getContext(), city, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), city, Toast.LENGTH_LONG).show();
 
     }
 
@@ -215,16 +215,16 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
     public void addInfo (){
 
         if (getFirst_name().matches("") || getLast_name().matches("") || getAddress().matches("") || getPostcode().matches("")
-                || getEmail().matches("") || getPhone().matches("")) {
+                /*|| getEmail().matches("")*/ || getPhone().matches("")) {
             Toast.makeText(getContext(), R.string.toast_no_empty_field, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        billing = new Billing(getFirst_name(), getLast_name(), getAddress(), city, state, getPostcode(), "ایران", getEmail(), getPhone());
+        billing = new Billing(getFirst_name(), getLast_name(), getAddress(), city, state, getPostcode(), "ایران", "mjavadi70@gmail.com", getPhone());
 
         shipping = new Shipping(getFirst_name(), getLast_name(), getAddress(), city, state, getPostcode(), "ایران");
 
-        Customer customer = new Customer(getEmail(), getFirst_name(), getLast_name(), billing, shipping);
+        Customer customer = new Customer("mjavadi70@gmail.com", getFirst_name(), getLast_name(), billing, shipping);
 
         try {
 
@@ -266,7 +266,7 @@ public class Fragment_billing extends Fragment implements AdapterView.OnItemSele
     private NetworkRequest.Callback<Order> mOrderCallback = new NetworkRequest.Callback<Order>() {
         @Override
         public void onResponse(@NonNull Order response) {
-            Toast.makeText(getContext(), response.getId()+" ", Toast.LENGTH_LONG ).show();
+           // Toast.makeText(getContext(), response.getId()+" ", Toast.LENGTH_LONG ).show();
             myPayment(Integer.parseInt(response.getTotal()));
 
 

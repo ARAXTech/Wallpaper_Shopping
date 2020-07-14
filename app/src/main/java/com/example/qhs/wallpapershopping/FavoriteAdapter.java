@@ -84,13 +84,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final FavoriteAdapter.ViewHolder holder, final int position) {
-          Log.d("t4","hello");
+
         final ListItem item = listItems.get(position);
-        List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
+
+        List <String> image_link = Arrays.asList(item.getImgLink().split("\\s*,\\s*"));
         Log.d("t3", String.valueOf(image_link));
         final String temp = image_link.get(0);
         Log.d("t2",temp);
-        int id = Integer.parseInt(item.getId());
+
         JsonObjectRequest objectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://mobifytech.ir/wp-json/wc/v3/products/"+item.getId(), null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
@@ -104,6 +105,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                         holder.favorite_title.setText(item.getName());
                         String str=item.getDescription().replaceAll("<p>","");
                         String[] splited = str.split("\\s+");
+                        Log.d("SPLIT ", item.getDescription()+" "+splited.length);
                         holder.favorite_description.setText(
                                 splited[0]+" "+splited[1]+" "+splited[2]+"...");
 
@@ -190,7 +192,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                         if (productId == Integer.parseInt(item.getId())){
 
                             request.JsonStringNetRequest("POST", "wc/v3/wishlist/remove_product/" + response.getJSONObject(i).getInt("item_id"));
-                            //context.startActivity(new Intent(context, FavoriteActivity.class));
+
                             Fragment fragment = new Fragment_favorite();
                             ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_favorite").commit();
 
@@ -212,17 +214,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            //  List<String> image_link = null;
+
             int Position=getAdapterPosition();
             ListItem item=listItems.get(Position);
-            Bundle bundle = new Bundle();
-            bundle.putString("id",item.getId());
-            bundle.putString("name",item.getName());
-            bundle.putString("description",item.getDescription());
-            //convert string to array with , seperator
-            List <String> image_link =new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
 
-            bundle.putStringArrayList("imageJsonObj", (ArrayList <String>) image_link);
+            //convert string to array with , seperator
+            ArrayList<String> image_link = new ArrayList<>(Arrays.asList(item.getImgLink().split("\\s*,\\s*")));
+            item.setImg_src(image_link);
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("productItem", item);
+
             Fragment fragment = new Fragment_gallery();
             fragment.setArguments(bundle);
             ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("fragment_gallery").commit();

@@ -49,10 +49,7 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItems;
-    private List<JSONArray> imageList;
     private Admin admin;
-    //public  View view;
-    public  JSONArray image_series_json;
     private ProgressBar pgsBar;
     private SpannableGridLayoutManager gridLayoutManager;
     private EditText editText;
@@ -96,10 +93,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         //  category_id=editText.getText().toString();
 
 
-
-
-        imageList = new ArrayList<JSONArray>();
-        image_series_json = new JSONArray();
 
         //********************
         gridLayoutManager = new
@@ -223,8 +216,6 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
 
     public void search( String query){
 
-        imageList = new ArrayList<JSONArray>();
-        image_series_json = new JSONArray();
 
 
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -292,49 +283,49 @@ public class Fragment_search extends Fragment implements SearchView.OnQueryTextL
         public void onResponse(@NonNull JSONArray products) {
             try {
 
-                   // JSONArray products = response.getJSONArray("products");
                     for (int i=0; i<products.length();i++){
-
-                        image_series_json = products.getJSONObject(i).getJSONArray("images");
                         //viewDialog.hideDialog();
-
-                        String price = products.getJSONObject(i).getString("price");
-
-                        if (image_series_json.length() > 0) {
-                            //get image urls and save in arraylist
-                            imageList.add(image_series_json);
-
-                            ListItem item;
-                            if (!price.equals("")){
-                                item=new ListItem(
-                                        products.getJSONObject(i).getJSONArray("images").
-                                                getJSONObject(0).getString("src"),
-                                        products.getJSONObject(i).getString("name"),
-                                        /*image_series_json*/
-                                        products.getJSONObject(i).getString("id"),
-                                        products.getJSONObject(i).getString("short_description"),
-                                        image_series_json,
-                                        new ArrayList(),
-                                        Integer.parseInt(price)
-                                );
-                            }else {
-                                item=new ListItem(
-                                        products.getJSONObject(i).getJSONArray("images").
-                                                getJSONObject(0).getString("src"),
-                                        products.getJSONObject(i).getString("name"),
-                                        /*image_series_json*/
-                                        products.getJSONObject(i).getString("id"),
-                                        products.getJSONObject(i).getString("short_description"),
-                                        image_series_json,
-                                        new ArrayList(),
-                                        0
-                                );
-                            }
-
-                            listItems.add(item);
-                            adapter.notifyDataSetChanged();
-                            pgsBar.setVisibility(GONE);
+                        JSONArray image_series_json = products.getJSONObject(i).getJSONArray("images");
+                        ArrayList<String> images_src = new ArrayList<>();
+                        for (int j=0; j < image_series_json.length(); j++){
+                            images_src.add(image_series_json.getJSONObject(j).getString("src"));
                         }
+
+                        String imgLink = images_src.toString().substring(1,images_src.toString().length()-1);
+
+                        ListItem item;
+                        String price = products.getJSONObject(i).getString("price");
+                        if (!price.equals("")){
+                            item=new ListItem(
+                                    imgLink,
+                                    products.getJSONObject(i).getString("name"),
+                                    /*image_series_json*/
+                                    products.getJSONObject(i).getString("id"),
+                                    products.getJSONObject(i).getString("short_description"),
+                                    images_src,
+                                    Integer.parseInt(price),
+                                    Integer.parseInt(products.getJSONObject(i).getString("stock_quantity"))
+                            );
+
+                        }else {
+                            item=new ListItem(
+                                    imgLink,
+                                    products.getJSONObject(i).getString("name"),
+                                    /*image_series_json*/
+                                    products.getJSONObject(i).getString("id"),
+                                    products.getJSONObject(i).getString("short_description"),
+                                    images_src,
+                                    0,
+                                    Integer.parseInt(products.getJSONObject(i).getString("stock_quantity"))
+                            );
+
+                        }
+
+
+                        listItems.add(item);
+                        adapter.notifyDataSetChanged();
+                        pgsBar.setVisibility(GONE);
+
 
                     }
                 } catch (JSONException e) {
